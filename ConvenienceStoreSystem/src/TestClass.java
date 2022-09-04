@@ -8,5 +8,5 @@
  * @author Yu
  */
 public class TestClass {
-    //This is a test class.
+    private int testInt;
 }
