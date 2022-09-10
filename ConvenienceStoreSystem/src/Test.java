@@ -8,11 +8,7 @@
  * @author Yu
  */
 public class Test { 
-            jalskdjf;lkasdj
-                    a;lsdkfj;akl
-                            asld;kfj
-                                    as;ldkfj
-
-                                            
-
+    public static void main(String[] args) {
+        System.out.println("Test output.");
+    }
 }
