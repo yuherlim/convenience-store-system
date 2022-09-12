@@ -16,11 +16,6 @@ public class Test implements FileFunctions {
     }
     
     @Override
-    public void readFile(ArrayList<Object> obj, String filename) {
-        System.out.println("add function body");
-    }
-    
-    @Override
     public void add() {
         System.out.println("add function body");
     }
