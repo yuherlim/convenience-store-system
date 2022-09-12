@@ -11,7 +11,6 @@ import java.util.ArrayList;
  * @author Yu
  */
 public interface FileFunctions {
-    void readFile(ArrayList<Object> obj, String filename);
     void add();
     void search();
     void modify();
