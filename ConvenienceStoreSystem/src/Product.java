@@ -20,19 +20,23 @@ public class Product implements FileFunctions{
     private String category;
     private ArrayList<TransactionDetails> transactionDetails;
     private ArrayList<StockDetails> stockDetails;
+    
+    private static int nextCode = 0;     //Read from file to get nextCode
 
     public Product() {
-        
+        code = "P" + String.format("%04d", nextCode);
+        nextCode++;
     }
     
     public Product(String code, String name, double currentSellingPrice, double currentCostPrice, int stockQty, int minReorderQty, String category) {
-        this.code = code;
+        code = "P" + nextCode;
         this.name = name;
         this.currentSellingPrice = currentSellingPrice;
         this.currentCostPrice = currentCostPrice;
         this.stockQty = stockQty;
         this.minReorderQty = minReorderQty;
         this.category = category;
+        nextCode++;
     }
 
     public String getCode() {
@@ -125,5 +129,10 @@ public class Product implements FileFunctions{
     @Override
     public void display() {
         System.out.println("add function body");
+    }
+    
+    @Override
+    public String toString() {
+        return "Product code: " + code + ", Product name: " + name + ", Current selling price: " + currentSellingPrice + ", Current cost price: " + currentCostPrice + ", Stock quantity: " + stockQty + ", Product minimum reorder quantity: " + minReorderQty +  ", Category: " + category;        
     }
 }
