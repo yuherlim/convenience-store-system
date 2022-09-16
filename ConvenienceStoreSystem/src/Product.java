@@ -1,5 +1,7 @@
 
+import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -10,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author Yu
  */
-public class Product implements FileFunctions{
+public class Product {
     private String code;
     private String name;
     private double currentSellingPrice;
@@ -119,26 +121,44 @@ public class Product implements FileFunctions{
 
     public void setStockDetails(ArrayList<StockDetails> stockDetails) {
         this.stockDetails = stockDetails;
-    } 
-    
-    @Override
-    public void add() {
-        System.out.println("add function body");
     }
     
-    @Override
+    public static void add(String fileName, ArrayList<Product> products) {
+        Product.writeFile(fileName, products);
+    }
+    
     public void search() {
         System.out.println("add function body");
     }
     
-    @Override
     public void modify() {
         System.out.println("add function body");
     }
     
-    @Override
     public void display() {
         System.out.println("add function body");
+    }
+    
+    public static void writeFile(String fileName, ArrayList<Product> products) {
+        String line;
+        try {
+            //Create FileWriter set to write mode
+            FileWriter writer = new FileWriter("src\\" + fileName, false);
+  
+            for (int i = 0; i < products.size(); i++) {
+                //Create a new record to be written
+                line = String.format("%s|%s%%%.2f|%.2f%%%d|%d%%%s\n", products.get(i).getCode(), products.get(i).getName(), products.get(i).getCurrentSellingPrice(), products.get(i).getAverageCostPrice(), products.get(i).getStockQty(), products.get(i).getMinReorderQty(), products.get(i).getCategory());
+                //Writes the record to the file.
+                writer.write(line);
+            }
+  
+            // Closes the writer
+            writer.close();
+        }
+  
+        catch (Exception e) {
+            e.getStackTrace();
+        }
     }
     
     @Override
