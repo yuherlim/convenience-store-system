@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -20,19 +19,13 @@ public class ProductDriver {
 
         //Used to store the current products array list
 
-//        ArrayList<Product> products = new ArrayList<>();
-//        //Used when reading record details for the products.
-//        ArrayList<TransactionDetails> transactionDetails = new ArrayList<>();
-//        ArrayList<StockDetails> stockDetails = new ArrayList<>();
-
-        //Used to store the current products array list
-//        ArrayList<Product> products = new ArrayList<>();
-//        //Used when reading record details for the products.
-//        ArrayList<TransactionDetails> transactionDetails = new ArrayList<>();
-//        ArrayList<StockDetails> stockDetails = new ArrayList<>();
-
-//        Product p1 = new Product();
-        ProductDriver.addProduct(new ArrayList<>(), new Product());
+        ArrayList<Product> products = new ArrayList<>();
+        //Used when reading record details for the products.
+        ArrayList<TransactionDetails> transactionDetails = new ArrayList<>();
+        ArrayList<StockDetails> stockDetails = new ArrayList<>();
+        Product p1 = new Product();
+        
+        ProductDriver.addProduct(products, p1);
         
 //        products = readFile(Product.fileName, products, transactionDetails, stockDetails);
         
@@ -158,27 +151,36 @@ public class ProductDriver {
             //Array list to store the stock available to create product from.
             ArrayList<String> productName = new ArrayList<>();
 
-            //Loops through the stock details to show available stocks to create product from.
-            for (int i = 0; i < currentStockDetails.size(); i++) {
-                if (products.get(i).getName().equals(currentStockDetails.get(i).getProductName()))
-                    continue;
-                else { //if the product name does not exist in the product records, store it into productName array list.
-                    //This if statement is to prevent storing duplicate product names.
-                    if (!productName.contains(currentStockDetails.get(i).getProductName()))
-                        productName.add(currentStockDetails.get(i).getProductName());
+            //for each product, loop through the stock details to show available stocks to create product from.
+            for (Product p: products) {
+                for(StockDetails sd: currentStockDetails) {
+                    if (!p.getName().equals(sd.getProductName()))
+                        if (!productName.contains(sd.getProductName()))
+                             productName.add(sd.getProductName());
                 }
+                
             }
+            
+//            for (int i = 0; i < currentStockDetails.size(); i++) {
+//                if (!products.get(i).getName().equals(currentStockDetails.get(i).getProductName())) {
+//                     //if the product name does not exist in the product records, store it into productName array list.
+//                    //This if statement is to prevent storing duplicate product names.
+//                    if (!productName.isEmpty())
+//                        if (!productName.contains(currentStockDetails.get(i).getProductName()))
+//                             productName.add(currentStockDetails.get(i).getProductName());
+//                }
+//            }
 
             //prints out the available stocks to create product name from.
             System.out.println("Stock available: ");
             for (int i = 0; i < productName.size(); i++) {
-                System.out.printf("%2d. %s", i + 1, productName.get(i).toUpperCase());
+                System.out.printf("%2d. %s\n", i + 1, productName.get(i).toUpperCase());
             }
             
             //input validation for product name.
             boolean validName = false;
             do {
-                System.out.printf("Choose product name: ");
+                System.out.printf("Choose product name (Enter string of product name): ");
                 String name = sc.nextLine().toUpperCase();
 
                 for (String p: productName) {
@@ -221,7 +223,6 @@ public class ProductDriver {
                 } else 
                     System.out.println("Product current selling price cannot be smaller than the average cost price. Try again.");
             } while(validSellingPrice == false);
-            p1.setCurrentSellingPrice(sc.nextDouble());
 
             //set current product's quantity
             int prodQty = 0;
