@@ -20,10 +20,10 @@ public class ProductDriver {
 
         //Used to store the current products array list
 
-        ArrayList<Product> products = new ArrayList<>();
-        //Used when reading record details for the products.
-        ArrayList<TransactionDetails> transactionDetails = new ArrayList<>();
-        ArrayList<StockDetails> stockDetails = new ArrayList<>();
+//        ArrayList<Product> products = new ArrayList<>();
+//        //Used when reading record details for the products.
+//        ArrayList<TransactionDetails> transactionDetails = new ArrayList<>();
+//        ArrayList<StockDetails> stockDetails = new ArrayList<>();
 
         //Used to store the current products array list
 //        ArrayList<Product> products = new ArrayList<>();
@@ -32,7 +32,7 @@ public class ProductDriver {
 //        ArrayList<StockDetails> stockDetails = new ArrayList<>();
 
 //        Product p1 = new Product();
-        ProductDriver.addProduct(new ArrayList<Product>(), new Product());
+        ProductDriver.addProduct(new ArrayList<>(), new Product());
         
 //        products = readFile(Product.fileName, products, transactionDetails, stockDetails);
         
@@ -58,7 +58,7 @@ public class ProductDriver {
             String line;
  
             while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
+//                System.out.println(line);
                 String[] buffer = line.split("\\%");
                 String[] string1 = buffer[0].split("\\|");
                 String[] string2 = buffer[1].split("\\|");
@@ -142,10 +142,13 @@ public class ProductDriver {
         //Read the current product list
         products = readFile(Product.fileName, products, transactionDetails, stockDetails);
         
-        //Used when reading records available from stock details
-        ArrayList<StockDetails> currentStockDetails = new ArrayList<>();
-        //Read the current stock details list
-        currentStockDetails = StockDetailsDriver.readFile(StockDetails.fileName, currentStockDetails);
+//        //Used when reading records available from stock details
+//        ArrayList<StockDetails> currentStockDetails = new ArrayList<>();
+//        //Read the current stock details list
+//        currentStockDetails = StockDetailsDriver.readFile(StockDetails.fileName, currentStockDetails);
+        
+        //Read the current stock details list and store a copy of it in currentStockDetails
+        ArrayList<StockDetails> currentStockDetails = (ArrayList<StockDetails>) StockDetailsDriver.readFile(StockDetails.fileName, stockDetails).clone();
         
         char cont = 'Y';
         do {

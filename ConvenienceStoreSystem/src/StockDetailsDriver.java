@@ -25,7 +25,7 @@ public class StockDetailsDriver {
             String line;
  
             while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
+//                System.out.println(line);
                 String[] buffer = line.split("\\%");
                 //first string is product name, second string is either invoice number or credit note number
                 String[] string1 = buffer[0].split("\\|");
