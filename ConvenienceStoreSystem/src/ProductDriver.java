@@ -17,27 +17,37 @@ import java.util.Scanner;
  */
 public class ProductDriver {
     public static void main(String[] args) {
+
         //Used to store the current products array list
+
         ArrayList<Product> products = new ArrayList<>();
         //Used when reading record details for the products.
         ArrayList<TransactionDetails> transactionDetails = new ArrayList<>();
         ArrayList<StockDetails> stockDetails = new ArrayList<>();
+
+        //Used to store the current products array list
+//        ArrayList<Product> products = new ArrayList<>();
+//        //Used when reading record details for the products.
+//        ArrayList<TransactionDetails> transactionDetails = new ArrayList<>();
+//        ArrayList<StockDetails> stockDetails = new ArrayList<>();
+
 //        Product p1 = new Product();
-//        addProduct(products, p1);
+        ProductDriver.addProduct(new ArrayList<Product>(), new Product());
         
-        products = readFile(Product.fileName, products, transactionDetails, stockDetails);
+//        products = readFile(Product.fileName, products, transactionDetails, stockDetails);
         
-        for (Product p: products) {
-            System.out.println("Product:");
-            System.out.println(p);
-            System.out.println("Product's Transaction Details: ");
-            for (TransactionDetails transDets: p.getTransactionDetails())
-                System.out.println(transDets);
-            System.out.println("Product's Stock Details");
-            for (StockDetails stockDets: p.getStockDetails())
-                System.out.println(stockDets);
-            System.out.println();
-        }
+//        for (Product p: products) {
+//            System.out.println("Product:");
+//            System.out.println(p);
+//            System.out.println("Product's Transaction Details: ");
+//            for (TransactionDetails transDets: p.getTransactionDetails())
+//                System.out.println(transDets);
+//            System.out.println("Product's Stock Details");
+//            for (StockDetails stockDets: p.getStockDetails())
+//                System.out.println(stockDets);
+//            System.out.println();
+//        }
+
     }
     
     public static ArrayList<Product> readFile(String fileName, ArrayList<Product> products, ArrayList<TransactionDetails> transactionDetails, ArrayList<StockDetails> stockDetails) {
@@ -69,46 +79,26 @@ public class ProductDriver {
                 for (int i = 0; i < string3.length; i++) {
                     intArr[i] = Integer.parseInt(string3[i]);
                 }
-                
+
                 //read from transactionDetails.txt and create a copy of transactionDetails records
                 ArrayList<TransactionDetails> allTD = (ArrayList<TransactionDetails>) TransactionDetailsDriver.readFile(TransactionDetails.fileName, transactionDetails).clone();
                 transactionDetails.clear();
                 //Add elements of transaction details that is associated with this product code.
-//                for (TransactionDetails td: allTD) {
-//                    if (td.getProductCode().equals(code))
-//                        transactionDetails.add(td);
-//                }
-                for (int i = 0; i < allTD.size(); i++) {
-                    if (allTD.get(i).getProductCode().equals(code))
-                        transactionDetails.add(allTD.get(i));
+                for (TransactionDetails td: allTD) {
+                    if (td.getProductCode().equals(code))
+                        transactionDetails.add(td);
                 }
-                
-//                //remove array list elements that do not contain the current product ID
-//                for(int i = 0; i < transactionDetails.size(); i++) {
-//                    if (!transactionDetails.get(i).getProductCode().equals(code)) 
-//                        transactionDetails.remove(transactionDetails.get(i));
-//                }
                 
                 //read from stockDetails.txt and create a copy of stock details records.
                 ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetailsDriver.readFile(StockDetails.fileName, stockDetails).clone();
                 stockDetails.clear();
                 //Add elements of stock details that is associated with this product name.
-//                for (StockDetails sd: allSD) {
-//                    if(sd.getProductName().equals(name))
-//                        stockDetails.add(sd);
-//                }
-                for (int i = 0; i < allSD.size(); i++) {
-                    if (allSD.get(i).getProductName().equals(name)) {
-                        stockDetails.add(allSD.get(i));
-                    }
+                for (StockDetails sd: allSD) {
+                    if(sd.getProductName().equals(name))
+                        stockDetails.add(sd);
                 }
                 
-//                //remove array list elements that do not contain the current product name
-//                for (int i = 0; i < stockDetails.size(); i++) {
-//                    if (!stockDetails.get(i).getProductName().equals(name)) 
-//                        stockDetails.remove(stockDetails.get(i));
-//                }
-                
+
                 products.add(new Product(code, name, doubleArr[0], doubleArr[1], intArr[0], intArr[1], category, transactionDetails, stockDetails));
                 
             
@@ -191,10 +181,12 @@ public class ProductDriver {
                 for (String p: productName) {
                     if (p.equals(name)) {
                         validName = true;
-                        p1.setName(sc.nextLine());
+                        p1.setName(name);
                         break;
                     }
                 }
+                if (validName == false)
+                    System.out.println("Invalid product name. Try again.");
             } while (validName == false);
 
             //loop calculate the sum of the cost prices for this product.
@@ -254,11 +246,16 @@ public class ProductDriver {
             String currentProductCode = "P" + String.format("%04d", Integer.parseInt(products.get(products.size() - 1).getCode().substring(1, 5)) + 1);
             p1.setCode(currentProductCode);
 
-            //Remove elements without this product name from currentStockDetails and store it in current product's stockDetails.
-            for (int i = 0; i < currentStockDetails.size(); i++) {
-                if (!currentStockDetails.get(i).getProductName().equals(p1.getName())) 
-                    currentStockDetails.remove(i);
+            
+            //read from stockDetails.txt and create a copy of stock details records.
+            ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetailsDriver.readFile(StockDetails.fileName, stockDetails).clone();
+            currentStockDetails.clear();
+            //Add elements of stock details that is associated with this product name.
+            for (StockDetails sd: allSD) {
+                if (sd.getProductName().equals(p1.getName())) 
+                    currentStockDetails.add(sd);
             }
+            
             
             //set stockDetails associated with this product.
             p1.setStockDetails(currentStockDetails);
@@ -279,9 +276,8 @@ public class ProductDriver {
 
             System.out.println("Continue adding new product? (Y/N)");
             cont = Character.toUpperCase(sc.next().charAt(0));
-        } while(cont == 'Y');
-        
-        
-        
+        } while(cont == 'Y'); 
+        //Write to file after finish adding products
+        Product.add(Product.fileName, products);
     }
 }
