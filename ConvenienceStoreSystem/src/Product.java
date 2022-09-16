@@ -21,23 +21,30 @@ public class Product implements FileFunctions{
     private ArrayList<TransactionDetails> transactionDetails;
     private ArrayList<StockDetails> stockDetails;
     
-    private static int nextCode = 0;     //Read from file to get nextCode
+//    private static int nextCode = 0;     //Read from file to get nextCode
 
     public Product() {
-        code = "P" + String.format("%04d", nextCode);
-        nextCode++;
+        this.code = "";
+        this.name = "";
+        this.category = "";
+//        code = "P" + String.format("%04d", nextCode);
+//        nextCode++;
     }
-    
-    public Product(String code, String name, double currentSellingPrice, double currentCostPrice, int stockQty, int minReorderQty, String category) {
-        code = "P" + nextCode;
+
+    public Product(String code, String name, double currentSellingPrice, double currentCostPrice, int stockQty, int minReorderQty, String category, ArrayList<TransactionDetails> transactionDetails, ArrayList<StockDetails> stockDetails) {
+//        code = "P" + nextCode;
+        this.code = code;
         this.name = name;
         this.currentSellingPrice = currentSellingPrice;
         this.currentCostPrice = currentCostPrice;
         this.stockQty = stockQty;
         this.minReorderQty = minReorderQty;
         this.category = category;
-        nextCode++;
+        this.transactionDetails = transactionDetails;
+        this.stockDetails = stockDetails;
+//        nextCode++;
     }
+    
 
     public String getCode() {
         return code;

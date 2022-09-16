@@ -66,5 +66,10 @@ public class StockDetails {
         this.invNo = invNo;
     }
     
+    @Override
+    public String toString() {
+        return "StockDetails{" + "productCode=" + productCode + ", qty=" + qty + ", costPrice=" + costPrice + ", cnNo=" + cnNo + ", invNo=" + invNo + '}';
+    }
+    
     
 }

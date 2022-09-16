@@ -55,6 +55,9 @@ public class TransactionDetails {
     public void setSellingPrice(double sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "TransactionDetails{" + "qty=" + qty + ", transactionId=" + transactionId + ", productCode=" + productCode + ", sellingPrice=" + sellingPrice + '}';
+    }
 }
