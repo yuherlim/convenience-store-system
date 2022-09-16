@@ -13,7 +13,7 @@ import java.util.Scanner;
  */
 public class ProductDriver {
     public static void main(String[] args) {
-        ArrayList<Product> products = new ArrayList();
+        ArrayList<Product> products = new ArrayList<Product>();
         Product p1 = new Product();
         addProduct(products, p1);
         
