@@ -14,12 +14,15 @@ public class Product implements FileFunctions{
     private String code;
     private String name;
     private double currentSellingPrice;
-    private double currentCostPrice;
+    private double averageCostPrice;
     private int stockQty;
     private int minReorderQty;
     private String category;
     private ArrayList<TransactionDetails> transactionDetails;
     private ArrayList<StockDetails> stockDetails;
+    
+    //File name to store product records.
+    public static String fileName = "products.txt";
     
 //    private static int nextCode = 0;     //Read from file to get nextCode
 
@@ -31,12 +34,12 @@ public class Product implements FileFunctions{
 //        nextCode++;
     }
 
-    public Product(String code, String name, double currentSellingPrice, double currentCostPrice, int stockQty, int minReorderQty, String category, ArrayList<TransactionDetails> transactionDetails, ArrayList<StockDetails> stockDetails) {
+    public Product(String code, String name, double currentSellingPrice, double averageCostPrice, int stockQty, int minReorderQty, String category, ArrayList<TransactionDetails> transactionDetails, ArrayList<StockDetails> stockDetails) {
 //        code = "P" + nextCode;
         this.code = code;
         this.name = name;
         this.currentSellingPrice = currentSellingPrice;
-        this.currentCostPrice = currentCostPrice;
+        this.averageCostPrice = averageCostPrice;
         this.stockQty = stockQty;
         this.minReorderQty = minReorderQty;
         this.category = category;
@@ -70,12 +73,12 @@ public class Product implements FileFunctions{
         this.currentSellingPrice = currentSellingPrice;
     }
 
-    public double getCurrentCostPrice() {
-        return currentCostPrice;
+    public double getAverageCostPrice() {
+        return averageCostPrice;
     }
 
-    public void setCurrentCostPrice(double currentCostPrice) {
-        this.currentCostPrice = currentCostPrice;
+    public void setAverageCostPrice(double averageCostPrice) {
+        this.averageCostPrice = averageCostPrice;
     }
 
     public int getStockQty() {
@@ -140,6 +143,6 @@ public class Product implements FileFunctions{
     
     @Override
     public String toString() {
-        return "Product code: " + code + ", Product name: " + name + ", Current selling price: " + currentSellingPrice + ", Current cost price: " + currentCostPrice + ", Stock quantity: " + stockQty + ", Product minimum reorder quantity: " + minReorderQty +  ", Category: " + category;        
+        return "Product code: " + code + ", Product name: " + name + ", Current selling price: " + currentSellingPrice + ", Average cost price: " + averageCostPrice + ", Stock quantity: " + stockQty + ", Product minimum reorder quantity: " + minReorderQty +  ", Category: " + category;        
     }
 }
