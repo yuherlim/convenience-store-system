@@ -26,8 +26,11 @@ public class ProductDriver {
         
         for (Product p: products) {
             System.out.println(p);
-            System.out.println(p.getTransactionDetails());
-            System.out.println(p.getStockDetails());
+            for (TransactionDetails transDets: p.getTransactionDetails())
+                System.out.println(transDets);
+            for (StockDetails stockDets: p.getStockDetails())
+                System.out.println(stockDets);
+            System.out.println();
         }
     }
     

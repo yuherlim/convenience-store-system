@@ -27,6 +27,7 @@ public class StockDetailsDriver {
             while ((line = bufferedReader.readLine()) != null) {
                 System.out.println(line);
                 String[] buffer = line.split("\\%");
+                //first code is product code, second code is either invoice number or credit note number
                 String[] codes = buffer[0].split("\\|");
                 String string2 = buffer[1];
                 String string3 = buffer[2];   
@@ -37,7 +38,10 @@ public class StockDetailsDriver {
                 //Convert string to double for transaction details selling price
                 double costPrice = Double.parseDouble(string3);
                 
-                stockDetails.add(new StockDetails(codes[0], qty, costPrice, "", codes[1]));
+                if (codes[1].substring(0,1).equals("I"))
+                    stockDetails.add(new StockDetails(codes[0], qty, costPrice, "", codes[1]));
+                else
+                    stockDetails.add(new StockDetails(codes[0], qty, costPrice, codes[1], ""));
             }
             reader.close();
  
