@@ -13,6 +13,7 @@ public class memberDriver {
 
     public static void main(String[] args) {
         menu();
+        add();
 
     }
 
@@ -62,26 +63,43 @@ public class memberDriver {
         String id;
         String name;
         String ic;
-        int[] birthdate = new int[3];
+        String birthdate;
         String phoneNum;
         String address;
+        int loop = 0;
+        boolean dateFormat;
         
         System.out.print("Name: ");
+        name = sc.nextLine();
+        sc.
+        do{
+        loop = 0;    
+        System.out.println("birthdate (yyyy/mm/dd): ");
+        birthdate = sc.next();
+        dateFormat = General.dateChecking(birthdate); 
+        }while(loop == 1);
         
         
         
-        System.out.print("ic: ");
-        
-        System.out.println("birthdate: ");
-        System.out.print("day: ");
-        System.out.print("month: ");
-        System.out.print("year: ");
+        General.icValidation(birthdate);
         
         
         
         System.out.print("address: ");
+        name = sc.nextLine();
+        
+        System.out.print("phone number: ");
+        phoneNum = sc.next();
         
         
+    Scanner scanner = new Scanner(System.in);
+    try {
+      int i = scanner.nextInt();
+    } catch (Exception e) {
+      System.out.println("Something went wrong.");
+    } finally {
+      System.out.println("The 'try catch' is finished.");
+    }
         
     
     
