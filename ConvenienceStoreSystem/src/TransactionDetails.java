@@ -13,6 +13,8 @@ public class TransactionDetails {
     private String productCode;
     private double sellingPrice;
 
+    public static String fileName = "transactionDetails.txt";
+    
     public TransactionDetails() {
         
     }
