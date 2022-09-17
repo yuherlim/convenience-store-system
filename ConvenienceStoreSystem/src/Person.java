@@ -11,7 +11,7 @@ public abstract class Person {
     //Data field
     protected String name;
     protected String ic;
-    protected int[] birthdate = new int[3];
+    protected String date;
     protected String phoneNum;
     protected String address;
     
@@ -31,9 +31,14 @@ public abstract class Person {
     public void setName(String name) {
         this.name = name;
     }
-    
-    //not yet birthdate
-    
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
     
     public String getIc() {
         return ic;
