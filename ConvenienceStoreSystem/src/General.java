@@ -14,49 +14,104 @@ import java.util.Scanner;
  */
 public class General {
 
-    public static int intValidation(String promptMsg, String errorMsg) {
+    public static String stringInput(String promptMsg, String errorMsg) {
+        String input;
+        int loop;
+        Scanner sc = new Scanner(System.in);
+        do {
+            loop = 0;
+            System.out.print(promptMsg);
+            input = sc.nextLine();
+            for (int i = 0; i < input.length(); i++) {
+                if (Character.isLetter(input.charAt(i)) == false && input.charAt(i) != ' ') {
+                    System.out.println(errorMsg);
+                    loop = 1;
+                }
+            }
+        } while (loop == 1);
+        return input;
+    }
+
+    public static int intInput(String promptMsg, String errorMsg) {
         int input = 0;
         int loop;
         Scanner sc = new Scanner(System.in);
         do {
             loop = 0;
-            System.out.println(promptMsg);
+            System.out.print(promptMsg);
             try {
                 input = sc.nextInt();
             } catch (Exception e) {
                 System.out.println(errorMsg);
                 loop = 1;
             }
-        }while(loop == 1);
+        } while (loop == 1);
         return input;
     }
 
-    public static void phoneNumValidation() {
+    public static double doubleInput(String promptMsg, String errorMsg) {
+        double input = 0.00;
+        int loop;
+        Scanner sc = new Scanner(System.in);
+        do {
+            loop = 0;
+            System.out.print(promptMsg);
+            try {
+                input = sc.nextDouble();
+            } catch (Exception e) {
+                System.out.println(errorMsg);
+                loop = 1;
+            }
+        } while (loop == 1);
+        return input;
+    }
+
+    public static char CharInput(String promptMsg, String errorMsg) {
+        String input;
+        int loop;
+        Scanner sc = new Scanner(System.in);
+        do {
+            loop = 0;
+            System.out.print(promptMsg);
+            input = sc.next();
+            if ((Character.isLetter(input.charAt(0)) != true) || (input.charAt(0) != ' ')) {
+                System.out.println(errorMsg);
+                loop = 1;
+            }
+        } while (loop == 1);
+        return input.charAt(0);
+    }
+
+    public static String phoneInput() {
         Scanner sc = new Scanner(System.in);
         String phoneNum;
         int loop = 0;
 
         do {
-            loop = 0;
             System.out.print("phoneNum: ");
             phoneNum = sc.next();
 
-            if (phoneNum.length() > 11 || phoneNum.length() < 10) {
+        } while (phoneNumValidation(phoneNum) == false );
+        return phoneNum;
+    }
+    
+     public static boolean phoneNumValidation (String phoneNum) {
+         if (phoneNum.length() > 11 || phoneNum.length() < 10) {
                 System.out.println("Invalid length of phone number");
-                loop = 1;
+                return false;
             } else {
                 for (int i = 0; i < phoneNum.length(); i++) {
                     if (Character.isDigit(phoneNum.charAt(i)) == false) {
                         System.out.println("Invalid phone number format");
-                        loop = 1;
-                        break;
+                        return false;
                     }
                 }
             }
-        } while (loop == 1);
-    }
+         return true;
+     }
+    
 
-    public static void icValidation(String birthDate) {
+    public static String icInput(String birthDate) {
         Scanner sc = new Scanner(System.in);
         String ic;
         int loop = 0;
@@ -83,20 +138,43 @@ public class General {
                 loop = 1;
                 continue;
             }
-
-            if (ic.length() != 12) {
+              
+        } while (icValidation(ic) == false || loop == 1 );
+        return ic;
+    }
+    
+     public static boolean icValidation (String ic) {
+           if (ic.length() != 12) {
                 System.out.println("Invalid length of ic");
-                loop = 1;
+                return false;
             } else {
                 for (int i = 0; i < ic.length(); i++) {
                     if (Character.isDigit(ic.charAt(i)) == false) {
                         System.out.println("Invalid ic number format");
-                        loop = 1;
-                        break;
+                         return false;              
                     }
                 }
             }
+         return true;
+     }
+    
+    
+    
+    public static String dateInput(String promptMsg, String errorMsg) {
+        Scanner sc = new Scanner(System.in);
+        String input;
+        int loop;
+        do {
+            loop = 0;
+            System.out.print(promptMsg);
+            input = sc.next();
+            if (dateChecking(input) == false) {
+                System.out.println(errorMsg);
+                loop = 1;
+            }
+
         } while (loop == 1);
+        return input;
     }
 
     public static boolean dateChecking(String dateStr) {

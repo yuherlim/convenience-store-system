@@ -69,39 +69,16 @@ public class memberDriver {
         int loop = 0;
         boolean dateFormat;
         
-        System.out.print("Name: ");
-        name = sc.nextLine();
-        sc.
-        do{
-        loop = 0;    
-        System.out.println("birthdate (yyyy/mm/dd): ");
-        birthdate = sc.next();
-        dateFormat = General.dateChecking(birthdate); 
-        }while(loop == 1);
+        name = General.stringInput("Name :", "Invalid Name format");
+
+        birthdate = General.dateInput("Birthdate (dd/mm/yyyy)   :","Invalid birthdate format");
         
+        ic = General.icInput(birthdate);
         
+        phoneNum = General.phoneInput();
         
-        General.icValidation(birthdate);
-        
-        
-        
-        System.out.print("address: ");
-        name = sc.nextLine();
-        
-        System.out.print("phone number: ");
-        phoneNum = sc.next();
-        
-        
-    Scanner scanner = new Scanner(System.in);
-    try {
-      int i = scanner.nextInt();
-    } catch (Exception e) {
-      System.out.println("Something went wrong.");
-    } finally {
-      System.out.println("The 'try catch' is finished.");
-    }
-        
-    
+        System.out.print("Address : ");
+        address = sc.nextLine();
     
     }
     
