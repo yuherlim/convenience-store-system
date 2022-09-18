@@ -1,4 +1,8 @@
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /*
@@ -12,6 +16,8 @@ import java.util.Scanner;
 public class memberDriver {
 
     public static void main(String[] args) {
+        ArrayList<Member> members = new ArrayList<>;
+        
         menu();
         add();
 
@@ -66,9 +72,8 @@ public class memberDriver {
         String birthdate;
         String phoneNum;
         String address;
-        int loop = 0;
-        boolean dateFormat;
-        
+
+       
         name = General.stringInput("Name :", "Invalid Name format");
 
         birthdate = General.dateInput("Birthdate (dd/mm/yyyy)   :","Invalid birthdate format");
@@ -79,8 +84,39 @@ public class memberDriver {
         
         System.out.print("Address : ");
         address = sc.nextLine();
-    
     }
     
+    
+    
+    public static ArrayList<Member> readFile(String fileName, ArrayList<Member> members) {
+        try {
+            FileReader reader = new FileReader("src\\" + fileName);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+ 
+            String line;
+ 
+            while ((line = bufferedReader.readLine()) != null) {
+//                System.out.println(line);
+                String[] buffer = line.split("\\|");
+                String memberId = buffer[0];
+                String name = buffer[1];
+                String ic = buffer[2];
+                String birthdate = buffer[3];
+                String phoneNum = buffer[4];
+                String address = buffer[5];
+                    
+
+                members.add(new Member(memberId, name, ic, birthdate, phoneNum, address));
+                
+            
+            }
+            reader.close();
+ 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        return members;
+    }
 
 }

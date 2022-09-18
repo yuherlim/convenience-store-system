@@ -11,18 +11,21 @@ public abstract class Person {
     //Data field
     protected String name;
     protected String ic;
-    protected int[] birthdate = new int[3];
+    protected String birthdate;
     protected String phoneNum;
     protected String address;
     
     //Constructor
-    public Person(String name, String ic, String phoneNum, String address) {
+    
+    
+    //Setter & getter
+
+    public Person(String name, String ic, String birthdate, String phoneNum, String address) {
         this.name = name;
         this.ic = ic;
+        this.birthdate = birthdate;
         this.phoneNum = phoneNum;
         this.address = address;
     }
-    
-    //Setter & getter
     
 }

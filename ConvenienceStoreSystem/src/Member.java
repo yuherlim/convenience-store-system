@@ -9,14 +9,14 @@
  */
 public class Member extends Person {
     private String id;
-    private static String currentId;
+    private static int NumOfCustomer;
     
     //Constructor
 
-    public Member(String name, String ic, String phoneNum, String address) {
-        super(name, ic, phoneNum, address);       
+    public Member(String id,String name, String ic, String birthdate, String phoneNum, String address) {
+        super(name, ic, birthdate, phoneNum, address);
+        this.id = id;
     }
-
     //Setter and getter
 
     public String getId() {
@@ -31,7 +31,7 @@ public class Member extends Person {
         return ic;
     }
 
-    public int[] getBirthdate() {
+    public String getBirthdate() {
         return birthdate;
     }
 
@@ -55,7 +55,7 @@ public class Member extends Person {
         this.ic = ic;
     }
 
-    public void setBirthdate(int[] birthdate) {
+    public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
     }
 
