@@ -13,6 +13,7 @@ public class memberDriver {
 
     public static void main(String[] args) {
         menu();
+        add();
 
     }
 
@@ -62,28 +63,22 @@ public class memberDriver {
         String id;
         String name;
         String ic;
-        int[] birthdate = new int[3];
+        String birthdate;
         String phoneNum;
         String address;
+        int loop = 0;
+        boolean dateFormat;
         
-        System.out.print("Name: ");
+        name = General.stringInput("Name :", "Invalid Name format");
+
+        birthdate = General.dateInput("Birthdate (dd/mm/yyyy)   :","Invalid birthdate format");
         
+        ic = General.icInput(birthdate);
         
+        phoneNum = General.phoneInput();
         
-        System.out.print("ic: ");
-        
-        System.out.println("birthdate: ");
-        System.out.print("day: ");
-        System.out.print("month: ");
-        System.out.print("year: ");
-        
-        
-        
-        System.out.print("address: ");
-        
-        
-        
-    
+        System.out.print("Address : ");
+        address = sc.nextLine();
     
     }
     
