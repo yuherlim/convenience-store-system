@@ -13,39 +13,10 @@ import java.util.ArrayList;
  *
  * @author Yu
  */
-public class Test { 
-    public static void main(String[] args) {
-        System.out.println("Test output.");
-        ArrayList<Product> products = new ArrayList<Product>();
-        //Used when reading record details for the products.
-        ArrayList<TransactionDetails> transactionDetails = new ArrayList<>();
-        ArrayList<StockDetails> stockDetails = new ArrayList<>();
-        //Read the current product list
-        products = ProductDriver.readFile(Product.fileName, products, transactionDetails, stockDetails);
-        
-        ArrayList<StockDetails> test = new ArrayList<>();
-        test = readFile(StockDetails.fileName, test);
-        
-        for(Product p: products) {
-            System.out.println("Product: ");
-            System.out.println(p);
-            for(TransactionDetails td: p.getTransactionDetails()) {
-                System.out.println("Transaction Details: ");
-                System.out.println(td);
-            }
-            for(StockDetails sd: p.getStockDetails()) {
-                System.out.println("Stock Details: ");
-                System.out.println(sd);
-            }
-        }
-            
-        System.out.println("----------------------------------------------");
-        
-        for(StockDetails t: test) 
-            System.out.println(t);
-            
-    }
+public class StockDetailsDriver {
     
+    
+    //reads file and returns StockDetails array list.
     public static ArrayList<StockDetails> readFile(String fileName, ArrayList<StockDetails> stockDetails) {
         try {
             FileReader reader = new FileReader("src\\stockDetails.txt");
@@ -54,7 +25,7 @@ public class Test {
             String line;
  
             while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
+//                System.out.println(line);
                 String[] buffer = line.split("\\%");
                 //first string is product name, second string is either invoice number or credit note number
                 String[] string1 = buffer[0].split("\\|");
@@ -80,8 +51,4 @@ public class Test {
         
         return stockDetails;
     }
-    
-    
 }
-
-

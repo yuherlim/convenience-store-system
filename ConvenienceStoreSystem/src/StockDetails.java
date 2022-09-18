@@ -8,30 +8,32 @@
  * @author Yu
  */
 public class StockDetails {
-    private String productCode;
+    private String productName;
     private int qty;
     private double costPrice;
     private String cnNo;
     private String invNo;
 
+    public static String fileName = "stockDetails.txt";
+    
     public StockDetails() {
         
     }
     
-    public StockDetails(String productCode, int qty, double costPrice, String cnNo, String invNo) {
-        this.productCode = productCode;
+    public StockDetails(String productName, int qty, double costPrice, String cnNo, String invNo) {
+        this.productName = productName;
         this.qty = qty;
         this.costPrice = costPrice;
         this.cnNo = cnNo;
         this.invNo = invNo;
     }
 
-    public String getProductCode() {
-        return productCode;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setProductCode(String productCode) {
-        this.productCode = productCode;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public int getQty() {
@@ -64,6 +66,11 @@ public class StockDetails {
 
     public void setInvNo(String invNo) {
         this.invNo = invNo;
+    }
+
+    @Override
+    public String toString() {
+        return "StockDetails{" + "productName=" + productName + ", qty=" + qty + ", costPrice=" + costPrice + ", cnNo=" + cnNo + ", invNo=" + invNo + '}';
     }
     
     
