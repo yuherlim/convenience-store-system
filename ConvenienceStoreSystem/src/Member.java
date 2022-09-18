@@ -43,6 +43,10 @@ public class Member extends Person {
         return address;
     }
 
+    public static int getNumOfCustomer() {
+        return NumOfCustomer;
+    }
+    
     public void setId(String id) {
         this.id = id;
     }
@@ -65,6 +69,15 @@ public class Member extends Person {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public static void setNumOfCustomer(int NumOfCustomer) {
+        Member.NumOfCustomer = NumOfCustomer;
+    }
+    
+    @Override
+    public String toString(){
+        return "Name : " + name +
     }
     
     
