@@ -17,9 +17,10 @@ public class memberDriver {
 
     public static void main(String[] args) {
         ArrayList<Member> members = new ArrayList<Member>();
-
         menu();
+        members = readFile("src\\member.txt",members);
         add(members);
+        display(members);
 
     }
 
@@ -150,15 +151,11 @@ public class memberDriver {
             }
         } while (charSelection == 'Y');
     }
-    
-    
+       
     public static void display(ArrayList<Member> members){
         for (int i = 0; i < members.size(); i++) {
-            System.out.println("");
-            
+            System.out.println(members.get(i).toString());            
         }
-    
-    
     }
     
     public static ArrayList<Member> readFile(String fileName, ArrayList<Member> members) {

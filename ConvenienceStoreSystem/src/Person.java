@@ -70,4 +70,11 @@ public abstract class Person {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    @Override
+    public String toString() {
+        return "name=" + name + ", ic=" + ic + ", birthdate=" + birthdate + ", phoneNum=" + phoneNum + ", address=" + address;
+    }
+    
+    
 }

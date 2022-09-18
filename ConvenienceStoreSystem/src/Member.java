@@ -74,11 +74,12 @@ public class Member extends Person {
     public static void setNumOfCustomer(int NumOfCustomer) {
         Member.NumOfCustomer = NumOfCustomer;
     }
-    
+   
     @Override
-    public String toString(){
-        return "Name : " + name +
+    public String toString() {
+        return  super.toString() + ",id=" + id;
     }
+   
     
     
     
