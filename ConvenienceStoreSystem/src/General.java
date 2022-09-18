@@ -2,6 +2,8 @@
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 /*
@@ -91,25 +93,24 @@ public class General {
             System.out.print("phoneNum: ");
             phoneNum = sc.next();
 
-        } while (phoneNumValidation(phoneNum) == false );
+        } while (phoneNumValidation(phoneNum) == false);
         return phoneNum;
     }
-    
-     public static boolean phoneNumValidation (String phoneNum) {
-         if (phoneNum.length() > 11 || phoneNum.length() < 10) {
-                System.out.println("Invalid length of phone number");
-                return false;
-            } else {
-                for (int i = 0; i < phoneNum.length(); i++) {
-                    if (Character.isDigit(phoneNum.charAt(i)) == false) {
-                        System.out.println("Invalid phone number format");
-                        return false;
-                    }
+
+    public static boolean phoneNumValidation(String phoneNum) {
+        if (phoneNum.length() > 11 || phoneNum.length() < 10) {
+            System.out.println("Invalid length of phone number");
+            return false;
+        } else {
+            for (int i = 0; i < phoneNum.length(); i++) {
+                if (Character.isDigit(phoneNum.charAt(i)) == false) {
+                    System.out.println("Invalid phone number format");
+                    return false;
                 }
             }
-         return true;
-     }
-    
+        }
+        return true;
+    }
 
     public static String icInput(String birthDate) {
         Scanner sc = new Scanner(System.in);
@@ -138,28 +139,26 @@ public class General {
                 loop = 1;
                 continue;
             }
-              
-        } while (icValidation(ic) == false || loop == 1 );
+
+        } while (icValidation(ic) == false || loop == 1);
         return ic;
     }
-    
-     public static boolean icValidation (String ic) {
-           if (ic.length() != 12) {
-                System.out.println("Invalid length of ic");
-                return false;
-            } else {
-                for (int i = 0; i < ic.length(); i++) {
-                    if (Character.isDigit(ic.charAt(i)) == false) {
-                        System.out.println("Invalid ic number format");
-                         return false;              
-                    }
+
+    public static boolean icValidation(String ic) {
+        if (ic.length() != 12) {
+            System.out.println("Invalid length of ic");
+            return false;
+        } else {
+            for (int i = 0; i < ic.length(); i++) {
+                if (Character.isDigit(ic.charAt(i)) == false) {
+                    System.out.println("Invalid ic number format");
+                    return false;
                 }
             }
-         return true;
-     }
-    
-    
-    
+        }
+        return true;
+    }
+
     public static String dateInput(String promptMsg, String errorMsg) {
         Scanner sc = new Scanner(System.in);
         String input;
@@ -188,4 +187,31 @@ public class General {
         }
         return true;
     }
+
+    public static String getCurrentDateTime(String mode) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(dtf.format(now));
+        if (mode == "dateTime") {
+            return dtf.format(now);
+        } else if (mode == "time") {
+            return dtf.format(now).substring(11);
+        } else if (mode == "date") {
+            return dtf.format(now).substring(0, 10);
+        } else if (mode == "yy") {
+            return dtf.format(now).substring(2, 4);
+        } else if (mode == "yyyy") {
+            return dtf.format(now).substring(0, 4);
+        } else if (mode == "mm") {
+            return dtf.format(now).substring(5, 7);
+        } else if (mode == "dd") {
+            return dtf.format(now).substring(8, 10);
+        } else if (mode == "yymm") {
+            return dtf.format(now).substring(2, 4) + dtf.format(now).substring(5, 7);
+        } else {
+            System.out.println("Invalid mode selection");
+            return "Invalid mode selection";
+        }
+    }
 }
+

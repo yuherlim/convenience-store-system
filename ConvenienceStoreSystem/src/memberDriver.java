@@ -16,8 +16,8 @@ import java.util.Scanner;
 public class memberDriver {
 
     public static void main(String[] args) {
-        ArrayList<Member> members = new ArrayList<>;
-        
+        ArrayList<Member> members = new ArrayList<Member>();
+
         menu();
         add();
 
@@ -64,37 +64,44 @@ public class memberDriver {
         } while (selection > 5 || selection < 0);
     }
 
-    public static void add(){
+    public static void add() {
         Scanner sc = new Scanner(System.in);
+        int numOfTotal;
         String id;
         String name;
         String ic;
         String birthdate;
         String phoneNum;
         String address;
-
-       
+        char selection;
+        
+        do{
+            
         name = General.stringInput("Name :", "Invalid Name format");
 
-        birthdate = General.dateInput("Birthdate (dd/mm/yyyy)   :","Invalid birthdate format");
-        
+        birthdate = General.dateInput("Birthdate (dd/mm/yyyy)   :", "Invalid birthdate format");
+
         ic = General.icInput(birthdate);
-        
+
         phoneNum = General.phoneInput();
-        
+
         System.out.print("Address : ");
         address = sc.nextLine();
+        
+        System.out.printf("Name : %s \nIC : %s \nBirthdate : %s \nPhoneNum : %s \nAddress : %s\n",id,name,ic,birthdate,phoneNum,address  );
+        
+        selection = Character.toUpperCase(General.CharInput("Confirm (Y/N) : ", ("Invalid input : ")));
+        
+        }while(selection == 'Y');
     }
-    
-    
-    
+
     public static ArrayList<Member> readFile(String fileName, ArrayList<Member> members) {
         try {
             FileReader reader = new FileReader("src\\" + fileName);
             BufferedReader bufferedReader = new BufferedReader(reader);
- 
+
             String line;
- 
+
             while ((line = bufferedReader.readLine()) != null) {
 //                System.out.println(line);
                 String[] buffer = line.split("\\|");
@@ -104,19 +111,19 @@ public class memberDriver {
                 String birthdate = buffer[3];
                 String phoneNum = buffer[4];
                 String address = buffer[5];
-                    
 
                 members.add(new Member(memberId, name, ic, birthdate, phoneNum, address));
-                
-            
+
             }
             reader.close();
- 
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         return members;
     }
 
+    
+    
 }
