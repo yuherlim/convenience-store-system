@@ -70,7 +70,7 @@ public class StockDetails {
 
     @Override
     public String toString() {
-        return "StockDetails{" + "productName=" + productCode + ", qty=" + qty + ", costPrice=" + costPrice + ", cnNo=" + cnNo + ", invNo=" + invNo + '}';
+        return "StockDetails{" + "productCode=" + productCode + ", qty=" + qty + ", costPrice=" + costPrice + ", cnNo=" + cnNo + ", invNo=" + invNo + '}';
     }
     
     
