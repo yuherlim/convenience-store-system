@@ -82,7 +82,7 @@ public class memberDriver {
 
             name = General.stringInput("Name :", "Invalid Name format");
 
-            ic = General.icInput();
+            ic = General.icInput("ic : ");
 
             birthdate = General.birthDateInput("Birthdate (dd/mm/yyyy)   :", "Invalid birthdate format", ic);
             if (General.ageCalc(birthdate) < 18) {
@@ -126,7 +126,7 @@ public class memberDriver {
                                 case 2:
                                     do {
                                         loop = 0;
-                                        ic = General.icInput();
+                                        ic = General.icInput("ic : ");
                                         birthdate = General.birthDateInput("Birthdate (dd/mm/yyyy)   :", "Invalid birthdate format", ic);
                                         if (General.ageCalc(birthdate) < 18) {
                                             System.out.println("The birthDate entered is invalid");
