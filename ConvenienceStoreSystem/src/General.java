@@ -68,7 +68,7 @@ public class General {
         return input;
     }
 
-    public static char CharInput(String promptMsg, String errorMsg) {
+    public static char charInput(String promptMsg, String errorMsg) {
         String input;
         int loop;
         Scanner sc = new Scanner(System.in);
