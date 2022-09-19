@@ -4,7 +4,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -43,7 +45,9 @@ public class General {
             System.out.print(promptMsg);
             try {
                 input = sc.nextInt();
+                sc.nextLine();
             } catch (Exception e) {
+                sc.next();
                 System.out.println(errorMsg);
                 loop = 1;
             }
@@ -60,7 +64,9 @@ public class General {
             System.out.print(promptMsg);
             try {
                 input = sc.nextDouble();
+                sc.nextLine();
             } catch (Exception e) {
+                sc.next();
                 System.out.println(errorMsg);
                 loop = 1;
             }
@@ -76,7 +82,7 @@ public class General {
             loop = 0;
             System.out.print(promptMsg);
             input = sc.next();
-            if ((Character.isLetter(input.charAt(0)) != true) || (input.charAt(0) != ' ')) {
+            if ((Character.isLetter(input.charAt(0)) != true) && (input.charAt(0) != ' ' && input.charAt(1) == '\n')) {
                 System.out.println(errorMsg);
                 loop = 1;
             }
@@ -84,13 +90,13 @@ public class General {
         return input.charAt(0);
     }
 
-    public static String phoneInput() {
+    public static String phoneInput(String promptMsg ) {
         Scanner sc = new Scanner(System.in);
         String phoneNum;
         int loop = 0;
 
         do {
-            System.out.print("phoneNum: ");
+            System.out.print(promptMsg);
             phoneNum = sc.next();
 
         } while (phoneNumValidation(phoneNum) == false);
@@ -112,7 +118,7 @@ public class General {
         return true;
     }
 
-    public static String icInput(String birthDate) {
+    public static String icInput() {
         Scanner sc = new Scanner(System.in);
         String ic;
         int loop = 0;
@@ -121,24 +127,6 @@ public class General {
             loop = 0;
             System.out.print("ic: ");
             ic = sc.next();
-
-            if (ic.charAt(0) != birthDate.charAt(8) || ic.charAt(1) != birthDate.charAt(9)) {
-                System.out.println("Invalid ic number format");
-                loop = 1;
-                continue;
-            }
-
-            if (ic.charAt(2) != birthDate.charAt(3) || ic.charAt(3) != birthDate.charAt(4)) {
-                System.out.println("Invalid ic number format");
-                loop = 1;
-                continue;
-            }
-
-            if (ic.charAt(4) != birthDate.charAt(0) || ic.charAt(5) != birthDate.charAt(1)) {
-                System.out.println("Invalid ic number format");
-                loop = 1;
-                continue;
-            }
 
         } while (icValidation(ic) == false || loop == 1);
         return ic;
@@ -149,6 +137,19 @@ public class General {
             System.out.println("Invalid length of ic");
             return false;
         } else {
+           
+            if (Integer.parseInt(ic.substring(0, 2)) <= 20) {
+                if (dateChecking(ic.substring(4, 6) + "/" + ic.substring(2, 4) + "/20" + ic.substring(0, 2)) == false) {
+                    System.out.println("Invalid ic birthdate format");
+                    return false;
+                }
+            } else {
+                if (dateChecking(ic.substring(4, 6) + "/" + ic.substring(2, 4) + "/19" + ic.substring(0, 2)) == false) {
+                    System.out.println("Invalid ic birthdate format");
+                    return false;
+                }
+            }
+
             for (int i = 0; i < ic.length(); i++) {
                 if (Character.isDigit(ic.charAt(i)) == false) {
                     System.out.println("Invalid ic number format");
@@ -176,8 +177,39 @@ public class General {
         return input;
     }
 
+    public static String birthDateInput(String promptMsg, String errorMsg, String ic) {
+        Scanner sc = new Scanner(System.in);
+        String input;
+        int loop;
+        do {
+            loop = 0;
+
+            input = dateInput(promptMsg, errorMsg);
+
+            if (ic.charAt(0) != input.charAt(8) || ic.charAt(1) != input.charAt(9)) {
+                System.out.println("Birthdate didnt same as IC");
+                loop = 1;
+                continue;
+            }
+
+            if (ic.charAt(2) != input.charAt(3) || ic.charAt(3) != input.charAt(4)) {
+                System.out.println("Birthdate didnt same as IC");
+                loop = 1;
+                continue;
+            }
+
+            if (ic.charAt(4) != input.charAt(0) || ic.charAt(5) != input.charAt(1)) {
+                System.out.println("Birthdate didnt same as IC");
+                loop = 1;
+                continue;
+            }
+
+        } while (loop == 1);
+        return input;
+    }
+
     public static boolean dateChecking(String dateStr) {
-        DateFormat date = new SimpleDateFormat("dd/mm/yyyy");
+        DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
         date.setLenient(false);
         try {
             date.parse(dateStr);
@@ -191,27 +223,63 @@ public class General {
     public static String getCurrentDateTime(String mode) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
-        System.out.println(dtf.format(now));
-        if (mode == "dateTime") {
-            return dtf.format(now);
-        } else if (mode == "time") {
-            return dtf.format(now).substring(11);
-        } else if (mode == "date") {
-            return dtf.format(now).substring(0, 10);
-        } else if (mode == "yy") {
-            return dtf.format(now).substring(2, 4);
-        } else if (mode == "yyyy") {
-            return dtf.format(now).substring(0, 4);
-        } else if (mode == "mm") {
-            return dtf.format(now).substring(5, 7);
-        } else if (mode == "dd") {
-            return dtf.format(now).substring(8, 10);
-        } else if (mode == "yymm") {
-            return dtf.format(now).substring(2, 4) + dtf.format(now).substring(5, 7);
-        } else {
-            System.out.println("Invalid mode selection");
-            return "Invalid mode selection";
+        switch (mode) {
+            case "dateTime":
+                return dtf.format(now);
+            case "time":
+                return dtf.format(now).substring(11);
+            case "date":
+                return dtf.format(now).substring(0, 10);
+            case "yy":
+                return dtf.format(now).substring(2, 4);
+            case "yyyy":
+                return dtf.format(now).substring(0, 4);
+            case "mm":
+                return dtf.format(now).substring(5, 7);
+            case "dd":
+                return dtf.format(now).substring(8, 10);
+            case "yymm":
+                return dtf.format(now).substring(2, 4) + dtf.format(now).substring(5, 7);
+            default:
+                System.out.println("Invalid mode selection");
+                return "Invalid mode selection";
         }
     }
+    
+    public static int ageCalc(String birthDate){
+        SimpleDateFormat sdf  = new SimpleDateFormat("dd/MM/yyyy");
+        long difference_In_Years = 0;
+          try {
+  
+            // parse method is used to parse
+            // the text from a string to
+            // produce the date
+            Date d1 = sdf.parse(birthDate);
+            Date d2 = sdf.parse(getCurrentDateTime("date"));
+            
+            // Calucalte time difference
+            // in milliseconds
+            long difference_In_Time
+                = d1.getTime() - d2.getTime();
+  
+            // Calucalte time difference in seconds,
+            // minutes, hours, years, and days
+            
+               difference_In_Years = TimeUnit
+                      .MILLISECONDS
+                      .toDays(difference_In_Time)
+                  / 365l;
+  
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+        }
+          return (int)difference_In_Years;
+    }
+  
+    
+    
+ 
+    
+    
 }
-
