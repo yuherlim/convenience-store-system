@@ -221,7 +221,7 @@ public class General {
     }
 
     public static String getCurrentDateTime(String mode) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         switch (mode) {
             case "dateTime":
@@ -231,15 +231,15 @@ public class General {
             case "date":
                 return dtf.format(now).substring(0, 10);
             case "yy":
-                return dtf.format(now).substring(2, 4);
-            case "yyyy":
-                return dtf.format(now).substring(0, 4);
-            case "mm":
-                return dtf.format(now).substring(5, 7);
-            case "dd":
                 return dtf.format(now).substring(8, 10);
+            case "yyyy":
+                return dtf.format(now).substring(6, 10);
+            case "mm":
+                return dtf.format(now).substring(3, 5);
+            case "dd":
+                return dtf.format(now).substring(0, 2);
             case "yymm":
-                return dtf.format(now).substring(2, 4) + dtf.format(now).substring(5, 7);
+                return dtf.format(now).substring(8, 10) + dtf.format(now).substring(3, 5);
             default:
                 System.out.println("Invalid mode selection");
                 return "Invalid mode selection";
@@ -260,7 +260,7 @@ public class General {
             // Calucalte time difference
             // in milliseconds
             long difference_In_Time
-                = d1.getTime() - d2.getTime();
+                = d2.getTime() - d1.getTime();
   
             // Calucalte time difference in seconds,
             // minutes, hours, years, and days

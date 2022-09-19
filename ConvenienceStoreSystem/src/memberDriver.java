@@ -17,10 +17,8 @@ public class memberDriver {
 
     public static void main(String[] args) {
         ArrayList<Member> members = new ArrayList<Member>();
-        int age = General.ageCalc("25/11/1999");
-        menu();
-      
         members = readFile("member",members);
+        menu();
         add(members);
         display(members);
         
@@ -102,7 +100,7 @@ public class memberDriver {
                 }
                 
 
-            phoneNum = General.phoneInput();
+            phoneNum = General.phoneInput("Phone Number : ");
 
             System.out.print("Address : ");
             address = sc.nextLine();
@@ -132,7 +130,7 @@ public class memberDriver {
                                     birthdate = General.birthDateInput("Birthdate (dd/mm/yyyy)   :", "Invalid birthdate format",ic);
                                     break;
                                 case 3:
-                                    phoneNum = General.phoneInput();
+                                    phoneNum = General.phoneInput("Phone Number : ");
                                     break;
                                 case 4:
                                     System.out.print("Address : ");
