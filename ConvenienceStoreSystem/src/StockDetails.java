@@ -8,7 +8,7 @@
  * @author Yu
  */
 public class StockDetails {
-    private String productName;
+    private String productCode;
     private int qty;
     private double costPrice;
     private String cnNo;
@@ -20,20 +20,20 @@ public class StockDetails {
         
     }
     
-    public StockDetails(String productName, int qty, double costPrice, String cnNo, String invNo) {
-        this.productName = productName;
+    public StockDetails(String productCode, int qty, double costPrice, String cnNo, String invNo) {
+        this.productCode = productCode;
         this.qty = qty;
         this.costPrice = costPrice;
         this.cnNo = cnNo;
         this.invNo = invNo;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getProductCode() {
+        return productCode;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
     }
 
     public int getQty() {
@@ -70,7 +70,7 @@ public class StockDetails {
 
     @Override
     public String toString() {
-        return "StockDetails{" + "productName=" + productName + ", qty=" + qty + ", costPrice=" + costPrice + ", cnNo=" + cnNo + ", invNo=" + invNo + '}';
+        return "StockDetails{" + "productName=" + productCode + ", qty=" + qty + ", costPrice=" + costPrice + ", cnNo=" + cnNo + ", invNo=" + invNo + '}';
     }
     
     

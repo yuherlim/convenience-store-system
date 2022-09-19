@@ -62,12 +62,14 @@ public class ProductDriver {
                 String name = string1[1];
                 
                 //Convert string to double for currentSellingPrice and currentCostPrice
+                //element 1 is currentSellingPrice and element 2 is currentCostPrice
                 double[] doubleArr = new double[2];
                 for (int i = 0; i < string2.length; i++) {
                     doubleArr[i] = Double.parseDouble(string2[i]);
                 }
                 
                 //Convert string to integer for stockQty and minReorderQty
+                //element 1 is stockQty and element 2 is minReorderQty
                 int[] intArr = new int[2];
                 for (int i = 0; i < string3.length; i++) {
                     intArr[i] = Integer.parseInt(string3[i]);
@@ -85,9 +87,9 @@ public class ProductDriver {
                 //read from stockDetails.txt and create a copy of stock details records.
                 ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetailsDriver.readFile(StockDetails.fileName, stockDetails).clone();
                 stockDetails.clear();
-                //Add elements of stock details that is associated with this product name.
+                //Add elements of stock details that is associated with this product code.
                 for (StockDetails sd: allSD) {
-                    if(sd.getProductName().equals(name))
+                    if(sd.getProductCode().equals(code))
                         stockDetails.add(sd);
                 }
                 
