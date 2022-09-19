@@ -17,11 +17,10 @@ public class memberDriver {
 
     public static void main(String[] args) {
         ArrayList<Member> members = new ArrayList<Member>();
-        members = readFile("member",members);
+        members = readFile("member", members);
         menu();
         add(members);
         display(members);
-        
 
     }
 
@@ -84,21 +83,20 @@ public class memberDriver {
             name = General.stringInput("Name :", "Invalid Name format");
 
             ic = General.icInput();
-            
-            birthdate = General.birthDateInput("Birthdate (dd/mm/yyyy)   :", "Invalid birthdate format",ic);
-                if(General.ageCalc(birthdate)<18){
-                    System.out.println("Under age");
-                    do {
+
+            birthdate = General.birthDateInput("Birthdate (dd/mm/yyyy)   :", "Invalid birthdate format", ic);
+            if (General.ageCalc(birthdate) < 18) {
+                System.out.println("Member is under age");
+                do {
                     loop = 0;
                     charSelection = Character.toUpperCase(General.CharInput("add another member(Y/N): ", "Invalid selection input"));
-                    if(charSelection != 'N' && charSelection != 'Y'){
+                    if (charSelection != 'N' && charSelection != 'Y') {
                         System.out.println("Invalid selection");
                         loop = 1;
                     }
                 } while (loop == 1);
-                    continue;
-                }
-                
+                continue;
+            }
 
             phoneNum = General.phoneInput("Phone Number : ");
 
@@ -110,7 +108,7 @@ public class memberDriver {
             do {
                 charSelection = Character.toUpperCase(General.CharInput("Confirm (Y/N) X-Cancel : ", ("Invalid input")));
 
-                switch(charSelection){
+                switch (charSelection) {
                     case 'N':
                         do {
                             loop = 0;
@@ -126,10 +124,17 @@ public class memberDriver {
                                     name = General.stringInput("Name :", "Invalid Name format");
                                     break;
                                 case 2:
-                                    ic = General.icInput();
-                                    birthdate = General.birthDateInput("Birthdate (dd/mm/yyyy)   :", "Invalid birthdate format",ic);
-                                    break;
-                                case 3:
+                                    do {
+                                        loop = 0;
+                                        ic = General.icInput();
+                                        birthdate = General.birthDateInput("Birthdate (dd/mm/yyyy)   :", "Invalid birthdate format", ic);
+                                        if (General.ageCalc(birthdate) < 18) {
+                                            System.out.println("The birthDate entered is invalid");
+                                            loop = 1;
+                                        }
+                                        }while(loop == 1);
+                                        break;
+                                      case 3:
                                     phoneNum = General.phoneInput("Phone Number : ");
                                     break;
                                 case 4:
@@ -141,12 +146,14 @@ public class memberDriver {
                                     loop = 1;
                                     break;
                             }
-                        } while (loop == 1);
-                        System.out.printf("Name : %s \nIC : %s \nBirthdate : %s \nPhoneNum : %s \nAddress : %s\n", id, name, ic, birthdate, phoneNum, address);
                         
-                        break;
-                        
-                    case 'Y':
+                            }
+                            while (loop == 1);
+                            System.out.printf("Name : %s \nIC : %s \nBirthdate : %s \nPhoneNum : %s \nAddress : %s\n", id, name, ic, birthdate, phoneNum, address);
+
+                            break;
+
+                          case 'Y':
                         System.out.println("Member sucessfully added");
                         Member.setNumOfCustomer(Member.getNumOfCustomer() + 1);
                         members.add(new Member(id, name, ic, birthdate, phoneNum, address));
@@ -160,27 +167,29 @@ public class memberDriver {
                         break;    
                 }
                         
-            } while (charSelection == 'N');
+            
+                }
+                while (charSelection == 'N');
 
-            if (charSelection == 'Y') {
-                do {
-                    loop = 0;
-                    charSelection = Character.toUpperCase(General.CharInput("add another member(Y/N): ", "Invalid selection input"));
-                    if(charSelection != 'N' && charSelection != 'Y'){
-                        System.out.println("Invalid selection");
-                        loop = 1;
-                    }
-                } while (loop == 1);
-            }
-        } while (charSelection == 'Y');
-    }
-       
-    public static void display(ArrayList<Member> members){
+                if (charSelection == 'Y') {
+                    do {
+                        loop = 0;
+                        charSelection = Character.toUpperCase(General.CharInput("add another member(Y/N): ", "Invalid selection input"));
+                        if (charSelection != 'N' && charSelection != 'Y') {
+                            System.out.println("Invalid selection");
+                            loop = 1;
+                        }
+                    } while (loop == 1);
+                }
+            } while (charSelection == 'Y');
+        }
+
+    public static void display(ArrayList<Member> members) {
         for (int i = 0; i < members.size(); i++) {
             System.out.println(members.get(i).toString());
         }
     }
-    
+
     public static ArrayList<Member> readFile(String fileName, ArrayList<Member> members) {
         try {
             FileReader reader = new FileReader("src\\" + fileName);
@@ -197,11 +206,10 @@ public class memberDriver {
                 String birthdate = buffer[3];
                 String phoneNum = buffer[4];
                 String address = buffer[5];
-                if (memberId.substring(1, 5) == General.getCurrentDateTime("yymm")) {
+                if (memberId.substring(1, 5).equals(General.getCurrentDateTime("yymm"))) {
                     Member.setNumOfCustomer(Member.getNumOfCustomer() + 1);
                 }
                 members.add(new Member(memberId, name, ic, birthdate, phoneNum, address));
-
             }
             reader.close();
 

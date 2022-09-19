@@ -118,14 +118,14 @@ public class General {
         return true;
     }
 
-    public static String icInput() {
+    public static String icInput(String promptMsg) {
         Scanner sc = new Scanner(System.in);
         String ic;
         int loop = 0;
 
         do {
             loop = 0;
-            System.out.print("ic: ");
+            System.out.print(promptMsg);
             ic = sc.next();
 
         } while (icValidation(ic) == false || loop == 1);
