@@ -17,7 +17,7 @@ public class StockDetailsDriver {
     
     
     //reads file and returns StockDetails array list.
-    public static ArrayList<StockDetails> readFile(String fileName, ArrayList<StockDetails> stockDetails) {
+    public static ArrayList<StockDetails> readFile(String fileName, ArrayList<StockDetails> stockDetails) {  
         try {
             FileReader reader = new FileReader("src\\stockDetails.txt");
             BufferedReader bufferedReader = new BufferedReader(reader);

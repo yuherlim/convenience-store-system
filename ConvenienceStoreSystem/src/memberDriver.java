@@ -14,17 +14,17 @@ import java.util.Scanner;
  * @author ong58
  */
 public class memberDriver {
+    static ArrayList<Member> members = new ArrayList<Member>();
 
     public static void main(String[] args) {
-        ArrayList<Member> members = new ArrayList<Member>();
+        
         members = readFile("member", members);
-        menu();
-        add(members);
+        menu(members);
         display(members);
 
     }
 
-    public static void menu() {
+    public static void menu(ArrayList<Member> members) {
         Scanner sc = new Scanner(System.in);
         int selection;
         do {
@@ -42,7 +42,7 @@ public class memberDriver {
 
             switch (selection) {
                 case 1:
-                    //Add Member
+                    add(members);
                     break;
                 case 2:
                     //Edit Member
@@ -106,6 +106,7 @@ public class memberDriver {
             System.out.printf("Name : %s \nIC : %s \nBirthdate : %s \nPhoneNum : %s \nAddress : %s\n", id, name, ic, birthdate, phoneNum, address);
 
             do {
+                loop = 0;
                 charSelection = Character.toUpperCase(General.CharInput("Confirm (Y/N) X-Cancel : ", ("Invalid input")));
 
                 switch (charSelection) {
@@ -150,7 +151,7 @@ public class memberDriver {
                             }
                             while (loop == 1);
                             System.out.printf("Name : %s \nIC : %s \nBirthdate : %s \nPhoneNum : %s \nAddress : %s\n", id, name, ic, birthdate, phoneNum, address);
-
+                            loop = 1;
                             break;
 
                           case 'Y':
@@ -164,12 +165,13 @@ public class memberDriver {
 
                     default:
                         System.out.println("Invalid selection");
+                        loop = 1;
                         break;    
                 }
                         
             
                 }
-                while (charSelection == 'N');
+                while (loop == 1 );
 
                 if (charSelection == 'Y') {
                     do {
