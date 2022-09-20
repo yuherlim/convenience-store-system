@@ -13,6 +13,7 @@ public class SupplierInvoice {
     private String supplierName;
     private ArrayList<StockDetails> stockDetails;
     private double amount;
+    private String tag = "Valid";
     private static int numOfInv;
     public static String fileName = "invoice.txt";
 
@@ -77,6 +78,14 @@ public class SupplierInvoice {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public static int getNumOfInv() {

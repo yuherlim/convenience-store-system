@@ -157,10 +157,20 @@ public class SupplierInvoiceDriver {
 
     }
     
-    //only search by invoice number
-    public void searchInvoice(String invNo, ArrayList<SupplierInvoice> invoice, SupplierInvoice si) {
+    //only search by invoice number? maybe:)
+    public void searchInvoice(ArrayList<SupplierInvoice> invoice, SupplierInvoice si) {
+        Scanner sc = new Scanner(System.in);
+        char cont;
+        
+            System.out.println("------------------");
+            System.out.println("| Search Invoice |");
+            System.out.println("------------------");
+            
+            System.out.println("Enter Invoice No. to search: ");
+        
+        
         for(int i = 0; i < invoice.size(); i++){
-            if(invNo.equalsIgnoreCase(invoice.get(i).getInvNo())){
+            if(invNo.equals(invoice.get(i).getInvNo())){
                 si.toString();
             }
         }
