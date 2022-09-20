@@ -54,31 +54,29 @@ public class CreditNoteDriver {
     }
 
     public static ArrayList<CreditNote> readFile(String fileName, ArrayList<CreditNote> creditNote, ArrayList<StockDetails> stockDetails) {
-        try {
-            try ( FileReader reader = new FileReader("src\\" + fileName)) {
-                BufferedReader bufferedReader = new BufferedReader(reader);
+        try ( FileReader reader = new FileReader("src\\" + fileName)) {
+            BufferedReader bufferedReader = new BufferedReader(reader);
 
-                String line;
+            String line;
 
-                while ((line = bufferedReader.readLine()) != null) {
-                    System.out.println(line);
-                    String[] buffer = line.split("\\%");
-                    String[] string1 = buffer[0].split("\\|");
+            while ((line = bufferedReader.readLine()) != null) {
+                System.out.println(line);
+                String[] buffer = line.split("\\%");
+                String[] string1 = buffer[0].split("\\|");
 
-                    String cnNo = string1[0];
-                    String cnDate = string1[1];
-                    String staffName = string1[2];
-                    String supplierName = string1[3];
+                String cnNo = string1[0];
+                String cnDate = string1[1];
+                String staffName = string1[2];
+                String supplierName = string1[3];
 
-                    //read from stockDetails.txt and create a copy of stock details records.
-                    ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetailsDriver.readFile("stock details.txt", stockDetails).clone();
-                    stockDetails.clear();
+                //read from stockDetails.txt and create a copy of stock details records.
+                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetailsDriver.readFile("stock details.txt", stockDetails).clone();
+                stockDetails.clear();
 
-                    //Convert string to double for total amount
-                    double doubleArr = Double.parseDouble(buffer[1]);
+                //Convert string to double for total amount
+                double doubleArr = Double.parseDouble(buffer[1]);
 
-                    //creditNote.add(new CreditNote(cnNo, cnDate, staffName, supplierName, stockDetails, doubleArr));
-                }
+                //creditNote.add(new CreditNote(cnNo, cnDate, staffName, supplierName, stockDetails, doubleArr));
             }
 
         } catch (IOException e) {
@@ -86,9 +84,9 @@ public class CreditNoteDriver {
 
         return creditNote;
     }
-    
+
     //Method to add a new creditNote / stock return
-    public static void addInvoice(ArrayList<CreditNote> creditNote, CreditNote cn, ArrayList<StockDetails> stockDetails, StockDetails sd) {
+    public static void addCreditNote(ArrayList<CreditNote> creditNote, CreditNote cn, ArrayList<StockDetails> stockDetails, StockDetails sd) {
         Scanner sc = new Scanner(System.in);
         char cont;
         String staffName;
@@ -122,7 +120,7 @@ public class CreditNoteDriver {
                 supplierName = sc.nextLine();
                 if (Supplier.seacrhSupplier(supplierName) == false) {
                     System.out.println("Invalid supplier name! Please try again..");
-                } else{
+                } else {
                     cn.setSupplierName(supplierName);
                 }
             } while (Supplier.seacrhSupplier(supplierName) == false);
@@ -160,14 +158,11 @@ public class CreditNoteDriver {
     }
 
     public void searchCreditNote() {
-        
+
     }
 
     public static void cancelCreditNote() {
 
     }
-    
-    
+
 }
-
-
