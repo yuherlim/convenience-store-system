@@ -342,6 +342,9 @@ public class MemberDriver {
 
     public static void edit() {
         ArrayList<Member> members = new ArrayList<Member>();
+        ArrayList<Member> memberSearch = new ArrayList<>();
+        ArrayList<Integer> index = new ArrayList<>();
+
         Scanner sc = new Scanner(System.in);
         String id;
         String name;
@@ -349,8 +352,8 @@ public class MemberDriver {
         String birthdate;
         String phoneNum;
         String address;
-        String mode;
-        String input;
+        String mode = " ";
+        String input = " ";
         char charSelection;
         int intSelection;
         int selection;
@@ -421,6 +424,10 @@ public class MemberDriver {
 
                 } while (loop == 1);
 
+                memberSearch = searchObj(input, mode, members);
+
+                index = searchIndex(input, mode, members);
+
                 charSelection = Character.toUpperCase(General.CharInput("Confirm (Y/N) X-Cancel : ", ("Invalid input")));
 
                 switch (charSelection) {
@@ -486,7 +493,7 @@ public class MemberDriver {
 
     public static void display(ArrayList<Member> members) {
         for (int i = 0; i < members.size(); i++) {
-            System.out.printf("| %-8s | %-30s | %-12s | %-11s | %-60s |",members.get(i).getId(),members.get(i).getName(),members.get(i).getIc(),members.get(i).getPhoneNum(),members.get(i).getAddress());
+            System.out.printf("| %04d | %-8s | %-30s | %-12s | %-11s | %-60s |", i, members.get(i).getId(), members.get(i).getName(), members.get(i).getIc(), members.get(i).getPhoneNum(), members.get(i).getAddress());
         }
     }
 
