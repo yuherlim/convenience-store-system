@@ -26,16 +26,55 @@ public class General {
             loop = 0;
             System.out.print(promptMsg);
             input = sc.nextLine();
+            if (input.length() == 0) {
+                System.out.println(errorMsg);
+                loop = 1;
+                continue;
+            }
             for (int i = 0; i < input.length(); i++) {
                 if (Character.isLetter(input.charAt(i)) == false && input.charAt(i) != ' ') {
                     System.out.println(errorMsg);
                     loop = 1;
+                    break;
                 }
             }
         } while (loop == 1);
         return input;
     }
-    
+
+    public static String stringNullCheckingInput(String promptMsg, String errorMsg) {
+        String input;
+        int loop;
+        Scanner sc = new Scanner(System.in);
+        do {
+            loop = 0;
+            System.out.print(promptMsg);
+            input = sc.nextLine();
+            if (input.length() == 0) {
+                loop = 1;
+                continue;
+            }
+        } while (loop == 1);
+        return input;
+
+    }
+
+    public static char yesNoInput(String promptMsg, String errorMsg) {
+        char input;
+        int loop;
+        do {
+            input = Character.toUpperCase(charInput(promptMsg, errorMsg));
+            System.out.println(errorMsg);
+            loop = 0;
+            if (input != 'Y' && input != 'N') {
+                System.out.println("Please enter Y or N.");
+                loop = 1;
+            }
+
+        } while (loop == 1);
+        return input;
+    }
+
     public static int intInput(String promptMsg, String errorMsg) {
         int input = 0;
         int loop;
@@ -47,7 +86,7 @@ public class General {
                 input = sc.nextInt();
                 sc.nextLine();
             } catch (Exception e) {
-                sc.next();
+                sc.nextLine();
                 System.out.println(errorMsg);
                 loop = 1;
             }
@@ -66,7 +105,7 @@ public class General {
                 input = sc.nextDouble();
                 sc.nextLine();
             } catch (Exception e) {
-                sc.next();
+                sc.nextLine();
                 System.out.println(errorMsg);
                 loop = 1;
             }
@@ -82,7 +121,7 @@ public class General {
             loop = 0;
             System.out.print(promptMsg);
             input = sc.next();
-            if ((Character.isLetter(input.charAt(0)) != true) && (input.charAt(0) != ' ' && input.charAt(1) == '\n')) {
+            if (Character.isLetter(input.charAt(0)) != true && input.length()!=1) {
                 System.out.println(errorMsg);
                 loop = 1;
             }
