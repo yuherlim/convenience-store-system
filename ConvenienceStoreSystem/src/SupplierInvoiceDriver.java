@@ -6,28 +6,52 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SupplierInvoiceDriver {
-
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int selection;
         
         SupplierInvoice si = new SupplierInvoice();
         StockDetails sd = new StockDetails();
         ArrayList<SupplierInvoice> invoice = new ArrayList<>();
         ArrayList<StockDetails> stockDetails = new ArrayList<>();
+        
+        do{
+        //Suplier Invoice Menu
+        System.out.println("==================");
+        System.out.println(" Supllier Invoice");
+        System.out.println("==================");
+        System.out.println("1 - Add new Invoice");
+        System.out.println("2 - Edit Invoice");
+        System.out.println("3 - Search Invoice");
+        System.out.println("4 - Cancel Invoice" + '\n');
+        System.out.println("0 - Back to Main Menu" + '\n');
+        
+        System.out.print("Enter your selection (0-4): ");
+        selection = sc.nextInt();
+        
+        switch(selection){
+            case 1 -> {
+                SupplierInvoiceDriver.addInvoice(invoice, si, stockDetails, sd);
+            }
+            case 2 -> {
+                        //SupplierInvoiceDriver.editInvoice(invoice, si, stockDetails, sd);
+            }
+            case 3 -> {
+                        //SupplierInvoiceDriver.searchInvoice(invoice, si, stockDetails, sd);
+            }
+            case 4 -> {
+                        //SupplierInvoiceDriver.cancelInvoice(invoice, si, stockDetails, sd);
+            }
+            case 0 -> {
+                        //ConvenienceStore.main();
+            }
+            default -> System.out.println("Invalid input! Please try again..." + '\n');
+        }
+        }while(selection < 0 || selection > 4);
 
-        SupplierInvoiceDriver.addInvoice(invoice, si, stockDetails, sd);
-
-//        //Read and Print File
-//        invoice = readFile("invoice.txt", invoice, stockDetails);
-//
-//        for (SupplierInvoice si : invoice) {
-//            System.out.println(si);
-//            for (StockDetails stockDets : si.getStockDetails()) {
-//                System.out.println(stockDets);
-//            }
-//            System.out.println();
     }
 
-public static ArrayList<SupplierInvoice> readFile(String fileName, ArrayList<SupplierInvoice> invoice, ArrayList<StockDetails> stockDetails) {
+    public static ArrayList<SupplierInvoice> readFile(String fileName, ArrayList<SupplierInvoice> invoice, ArrayList<StockDetails> stockDetails) {
         try ( FileReader reader = new FileReader("src\\" + fileName)) {
             BufferedReader bufferedReader = new BufferedReader(reader);
 
