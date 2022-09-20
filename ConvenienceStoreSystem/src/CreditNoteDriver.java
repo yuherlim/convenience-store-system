@@ -33,7 +33,7 @@ public class CreditNoteDriver {
 
             switch (selection) {
                 case 1 -> {
-                    SupplierInvoiceDriver.addCreditNote(creditNote, cn, stockDetails, sd);
+                    CreditNoteDriver.addCreditNote(creditNote, cn, stockDetails, sd);
                 }
                 case 2 -> {
                     //SupplierInvoiceDriver.editCreditNote(creditNote, cn, stockDetails, sd);
