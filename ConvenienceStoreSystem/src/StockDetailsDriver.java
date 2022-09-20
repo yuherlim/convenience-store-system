@@ -27,17 +27,18 @@ public class StockDetailsDriver {
             while ((line = bufferedReader.readLine()) != null) {
 //                System.out.println(line);
                 String[] buffer = line.split("\\%");
-                //first string is product name, second string is either invoice number or credit note number
+                //first string is product code, second string is either invoice number or credit note number
                 String[] string1 = buffer[0].split("\\|");
                 String string2 = buffer[1];
                 String string3 = buffer[2];   
                 
-                //Convert string to integer for transaction details quantity.
+                //Convert string to integer for stock details quantity.
                 int qty = Integer.parseInt(string2);
                 
-                //Convert string to double for transaction details selling price
+                //Convert string to double for stock details cost price
                 double costPrice = Double.parseDouble(string3);
                 
+                //Check whether the current stock detail object has a invoice no or a credit no
                 if (string1[1].substring(0,1).equals("I"))
                     stockDetails.add(new StockDetails(string1[0], qty, costPrice, "", string1[1]));
                 else

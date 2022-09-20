@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -15,34 +16,61 @@ import java.util.ArrayList;
  */
 public class Test { 
     public static void main(String[] args) {
-        System.out.println("Test output.");
-        ArrayList<Product> products = new ArrayList<Product>();
-        //Used when reading record details for the products.
-        ArrayList<TransactionDetails> transactionDetails = new ArrayList<>();
-        ArrayList<StockDetails> stockDetails = new ArrayList<>();
-        //Read the current product list
-        products = ProductDriver.readFile(Product.fileName, products, transactionDetails, stockDetails);
+        Scanner sc = new Scanner(System.in);
+//        char inputtest = General.charInput("Please enter a character : ", "Invalid character.");
         
-        ArrayList<StockDetails> test = new ArrayList<>();
-        test = readFile(StockDetails.fileName, test);
+//        char inputtest = General.yesNoInput("Please enter a character : ", "Invalid character.");
+//        System.out.println(Character.isLetter(' '));
         
-        for(Product p: products) {
-            System.out.println("Product: ");
-            System.out.println(p);
-            for(TransactionDetails td: p.getTransactionDetails()) {
-                System.out.println("Transaction Details: ");
-                System.out.println(td);
-            }
-            for(StockDetails sd: p.getStockDetails()) {
-                System.out.println("Stock Details: ");
-                System.out.println(sd);
-            }
-        }
-            
-        System.out.println("----------------------------------------------");
+//        String stringtest = General.stringInput("Please enter a string: ", "Not a string.");
+//        System.out.println(stringtest);
         
-        for(StockDetails t: test) 
-            System.out.println(t);
+//        double doubletest = General.doubleInput("Please enter a double: ", "Not a double");
+//        
+//        System.out.println(doubletest);
+        
+        int inttest = General.intInput("Please enter a int", "Not an int");
+        
+        System.out.println(inttest);
+           
+
+//          char input1 = sc.next().charAt(0);
+//          
+//          char input2 = sc.next().charAt(0);
+//          
+//          System.out.println(input1 + input2);
+        
+//        char input = General.yesNoInput("Please enter y/n : ", "Invalid input, please enter a character.");
+//        System.out.println(input);
+        
+//        System.out.println("Test output.");
+//        ArrayList<Product> products = new ArrayList<Product>();
+//        //Used when reading record details for the products.
+//        ArrayList<TransactionDetails> transactionDetails = new ArrayList<>();
+//        ArrayList<StockDetails> stockDetails = new ArrayList<>();
+//        //Read the current product list
+//        products = ProductDriver.readFile(Product.fileName, products);
+//        
+//        ArrayList<StockDetails> test = new ArrayList<>();
+//        test = readFile(StockDetails.fileName, test);
+//        
+//        for(Product p: products) {
+//            System.out.println("Product: ");
+//            System.out.println(p);
+//            for(TransactionDetails td: p.getTransactionDetails()) {
+//                System.out.println("Transaction Details: ");
+//                System.out.println(td);
+//            }
+//            for(StockDetails sd: p.getStockDetails()) {
+//                System.out.println("Stock Details: ");
+//                System.out.println(sd);
+//            }
+//        }
+//            
+//        System.out.println("----------------------------------------------");
+//        
+//        for(StockDetails t: test) 
+//            System.out.println(t);
             
     }
     
