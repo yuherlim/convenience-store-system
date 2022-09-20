@@ -44,6 +44,7 @@ public class General {
             System.out.print(promptMsg);
             try {
                 input = sc.nextInt();
+                sc.nextLine();      //get rid of the newline
             } catch (Exception e) {
                 System.out.println(errorMsg);
                 loop = 1;
@@ -63,6 +64,7 @@ public class General {
             System.out.print(promptMsg);
             try {
                 input = sc.nextDouble();
+                sc.nextLine();      //get rid of the newline
             } catch (Exception e) {
                 System.out.println(errorMsg);
                 loop = 1;
