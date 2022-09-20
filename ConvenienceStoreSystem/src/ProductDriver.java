@@ -3,7 +3,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -21,11 +20,12 @@ public class ProductDriver {
 
         ArrayList<Product> products = new ArrayList<>();
         
-        Product p1 = new Product();
+//        Product p1 = new Product();
         
 //        ProductDriver.addProduct(products, p1);
+        ProductDriver.addProduct(products);
         
-        products = readFile(Product.fileName, products);
+//        products = readFile(Product.fileName, products);
         
 //        for (Product p: products) {
 //            System.out.println("Product:");
@@ -133,7 +133,7 @@ public class ProductDriver {
     }
     
     //Method to add a new product
-    public static void addProduct(ArrayList<Product> products, Product p1) {
+    public static void addProduct(ArrayList<Product> products) {
         
         //Read the current product list
         products = readFile(Product.fileName, products);
@@ -146,13 +146,60 @@ public class ProductDriver {
 //        //Read the current stock details list and store a copy of it in currentStockDetails
 //        ArrayList<StockDetails> currentStockDetails = (ArrayList<StockDetails>) StockDetailsDriver.readFile(StockDetails.fileName, stockDetails).clone();
         
+        //Loop for user input and adding products.
         char cont = 'Y';
         do {
-            Scanner sc = new Scanner(System.in);
             //User input
 
-            System.out.print("Enter product name: ");
-            General.stringInput("Enter product name: ", "Invalid product name, try again");
+            //Set current product ID: get product code of last element, take the back part, convert to integer, increment it, convert back to string to store. 
+            String currentProductCode = "P" + String.format("%04d", Integer.parseInt(products.get(products.size() - 1).getCode().substring(1, 5)) + 1);
+            
+            System.out.println("Product code: " + currentProductCode);
+            
+            //Ask for product name
+            String name = General.stringInput("Enter product name: ", "Invalid product name, please try again").toUpperCase();
+            
+            //Ask for product current cost price
+            //Input validation for current cost price.
+            double currentCostPrice;
+            boolean validCostPrice = false;
+            do {
+                currentCostPrice = General.doubleInput("Enter current cost price: ", "Invalid cost price, please try again.");
+                if (currentCostPrice > 0)
+                    validCostPrice = true;
+                else 
+                    System.out.println("Product current cost price cannot be a negative number. Please try again.");
+            } while(validCostPrice == false);
+            
+            //Ask for product current selling price
+            //input validation for current selling price
+            double currentSellingPrice;
+            boolean validSellingPrice = false;
+            do {
+                currentSellingPrice = General.doubleInput("Enter current selling price: ", "Invalid selling price, please try again.");
+                if (currentSellingPrice > currentCostPrice)
+                    validSellingPrice = true;
+                else 
+                    System.out.println("Product current selling price cannot be smaller than the cost price. Please try again.");
+            } while(validSellingPrice == false);
+            
+            //set default stockQty for newly created product as 0
+            int stockQty = 0;
+            
+            //Ask for minimum stock reorder quantity
+            int minReorderQty;
+            boolean validMinReorderQty = false;
+            do {
+                minReorderQty = General.intInput("Enter minimum reorder quantity: ", "Invalid input, please ensure you have entered an integer.");
+                if (minReorderQty < 0)
+                    System.out.println("Invalid, you have entered a negative number, please try again.");
+                else
+                    validMinReorderQty = true;
+            } while(validMinReorderQty == false);
+            
+            //Ask for the category of this product.
+            String category = General.stringInput("Enter category of product: ", "Invalid category name, please try again.");
+            
             
 //            //Array list to store the stock available to create product from.
 //            ArrayList<String> productName = new ArrayList<>();
@@ -218,65 +265,59 @@ public class ProductDriver {
 
 //            System.out.printf("Current average stock cost price: RM %.2f\n", p1.getAverageCostPrice());
             
-            //input validation for current selling price
-            boolean validSellingPrice = false;
-            do {
-                System.out.print("Enter product current selling price: ");
-                double currentSellingPrice = sc.nextDouble();
-                if (currentSellingPrice > p1.getCurrentCostPrice()) {
-                    p1.setCurrentSellingPrice(currentSellingPrice);
-                    validSellingPrice = true;
-                } else 
-                    System.out.println("Product current selling price cannot be smaller than the average cost price. Try again.");
-            } while(validSellingPrice == false);
+            
 
             //set current product's quantity
-            int prodQty = 0;
-            for(int i = 0; i < currentStockDetails.size(); i++) {
-                if (currentStockDetails.get(i).getProductCode().equals(p1.getCode())) {
-                    if (currentStockDetails.get(i).getInvNo().charAt(0) == 'I')
-                        prodQty += currentStockDetails.get(i).getQty();
-                    else
-                        prodQty -= currentStockDetails.get(i).getQty();
-                }
-            }
-            p1.setStockQty(prodQty);
+//            int prodQty = 0;
+//            for(int i = 0; i < currentStockDetails.size(); i++) {
+//                if (currentStockDetails.get(i).getProductCode().equals(p1.getCode())) {
+//                    if (currentStockDetails.get(i).getInvNo().charAt(0) == 'I')
+//                        prodQty += currentStockDetails.get(i).getQty();
+//                    else
+//                        prodQty -= currentStockDetails.get(i).getQty();
+//                }
+//            }
+//            p1.setStockQty(prodQty);
             
-            //Show current product's quantity
-            System.out.printf("Current product's stock quantity: %d\n", p1.getStockQty());
-            System.out.print("Enter product minimum reorder quantity: ");
-            p1.setMinReorderQty(sc.nextInt());
+//            //Show current product's quantity
+//            System.out.printf("Current product's stock quantity: %d\n", p1.getStockQty());
+//            System.out.print("Enter product minimum reorder quantity: ");
+//            p1.setMinReorderQty(sc.nextInt());
+//
+//            sc.nextLine();      //Clear newline
+//
+//            System.out.print("Enter product category: ");
+//            p1.setCategory(sc.nextLine().toUpperCase());
 
-            sc.nextLine();      //Clear newline
-
-            System.out.print("Enter product category: ");
-            p1.setCategory(sc.nextLine().toUpperCase());
-
-            //Set current product ID: get product code of last element, take the back part, convert to integer, increment it, convert back to string to store. 
-            String currentProductCode = "P" + String.format("%04d", Integer.parseInt(products.get(products.size() - 1).getCode().substring(1, 5)) + 1);
-            p1.setCode(currentProductCode);
+//            //Set current product ID: get product code of last element, take the back part, convert to integer, increment it, convert back to string to store. 
+//            String currentProductCode = "P" + String.format("%04d", Integer.parseInt(products.get(products.size() - 1).getCode().substring(1, 5)) + 1);
+//            p1.setCode(currentProductCode);
 
             
-            //read from stockDetails.txt and create a copy of stock details records.
-            ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetailsDriver.readFile(StockDetails.fileName, currentStockDetails).clone();
-            currentStockDetails.clear();
-            //Add elements of stock details that is associated with this product code.
-            for (StockDetails sd: allSD) {
-                if (sd.getProductCode().equals(p1.getCode())) 
-                    currentStockDetails.add(sd);
-            }
+//            //read from stockDetails.txt and create a copy of stock details records.
+//            ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetailsDriver.readFile(StockDetails.fileName, currentStockDetails).clone();
+//            currentStockDetails.clear();
+//            //Add elements of stock details that is associated with this product code.
+//            for (StockDetails sd: allSD) {
+//                if (sd.getProductCode().equals(p1.getCode())) 
+//                    currentStockDetails.add(sd);
+//            }
             
             
-            //set stockDetails associated with this product.
-            p1.setStockDetails(currentStockDetails);
+//            //set stockDetails associated with this product.
+//            p1.setStockDetails(currentStockDetails);
             
-            //set transactionDetails array list to null cause there is no transaction yet with this new product.
-            p1.setTransactionDetails(null);
+//            //set transactionDetails array list to null cause there is no transaction yet with this new product.
+//            p1.setTransactionDetails(null);
             
+            //Create product object to be added to array list. 
+            //StockDetails and TransactionDetails array list is set to null because newly created product does not have any stock or is in any transaction yet.
+            Product p1 = new Product(currentProductCode, name, currentSellingPrice, currentCostPrice, stockQty, minReorderQty, category, null, null);
             //confirmation of adding of product.
             char confirmation = 'N';
             System.out.print("Confirm add product? (Y/N) : ");
-            confirmation = Character.toUpperCase(sc.next().charAt(0));
+            confirmation = General.charInput("Confirm add product? (Y)es/(N)o : ", "Invalid input, please enter a character.");
+//            confirmation = Character.toUpperCase(sc.next().charAt(0));
             if (confirmation == 'Y') {
                 products.add(p1);
                 System.out.println("Product added successfully.");
@@ -285,7 +326,7 @@ public class ProductDriver {
             }
 
             System.out.println("Continue adding new product? (Y/N)");
-            cont = Character.toUpperCase(sc.next().charAt(0));
+//            cont = Character.toUpperCase(sc.next().charAt(0));
         } while(cont == 'Y'); 
         //Write to file after finish adding products
         Product.add(Product.fileName, products);

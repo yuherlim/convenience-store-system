@@ -76,12 +76,26 @@ public class General {
             loop = 0;
             System.out.print(promptMsg);
             input = sc.next();
-            if ((Character.isLetter(input.charAt(0)) != true) || (input.charAt(0) != ' ')) {
+            if ((Character.isLetter(input.charAt(0)) != true) && (input.charAt(0) != ' ' && input.charAt(1) == '\n')) {
                 System.out.println(errorMsg);
                 loop = 1;
             }
         } while (loop == 1);
         return input.charAt(0);
+    }
+    
+    public static char yesNoInput(String promptMsg, String errorMsg) {
+        char input = Character.toUpperCase(charInput(promptMsg, errorMsg));
+        int loop;
+        do {
+            loop = 0;
+            if (input != 'Y' && input != 'N') {
+                System.out.println("Please enter Y or N.");
+                loop = 1;
+            }
+               
+        } while (loop == 1);
+        return input;
     }
 
     public static String phoneInput() {
