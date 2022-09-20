@@ -21,7 +21,7 @@ public class CreditNote {
         this.amount = 0d;
     }
     
-    public CreditNote(String cnNo, String cnDate, Staff staffName, Supplier supplierName, StockDetails[] stockDetails, double amount) {
+    public CreditNote(String cnNo, String cnDate, String staffName, String supplierName, StockDetails[] stockDetails, double amount) {
         this.cnNo = cnNo;
         this.cnDate = cnDate;
         this.staffName = staffName;
@@ -47,19 +47,19 @@ public class CreditNote {
         this.cnDate = cnDate;
     }
 
-    public Staff getStaffName() {
+    public String getStaffName() {
         return staffName;
     }
 
-    public void setStaffName(Staff staffName) {
+    public void setStaffName(String staffName) {
         this.staffName = staffName;
     }
     
-    public Supplier getSupplierName() {
+    public String getSupplierName() {
         return supplierName;
     }
 
-    public void setSupplierName(Supplier supplierName) {
+    public void setSupplierName(String supplierName) {
         this.supplierName = supplierName;
     }
 
@@ -82,22 +82,6 @@ public class CreditNote {
     public static String getFileName() {
         return fileName;
     }
-    
-//    public static void add(String fileName, ArrayList<SupplierInvoice> invoice) {
-//        SupplierInvoice.writeFile(fileName, invoice);
-//    }
-//
-//    public void search() {
-//        System.out.println("add function body");
-//    }
-//
-//    public void modify() {
-//        System.out.println("add function body");
-//    }
-//
-//    public void display() {
-//        System.out.println("add function body");
-//    }
 
     public static void writeFile(String fileName, ArrayList<CreditNote> creditNote) {
         String line;
