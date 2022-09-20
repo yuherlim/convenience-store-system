@@ -20,10 +20,10 @@ public class MemberDriver {
     public static void main(String[] args) {
         ArrayList<Member> members = new ArrayList<Member>();
         readFile("member", members);
-        
+
         Member.displayMember(members);
+        General.clearScreen();
         menu();
-   
 
     }
 
@@ -76,6 +76,7 @@ public class MemberDriver {
         String birthdate;
         String phoneNum;
         String address;
+        String status;
         char charSelection;
         int intSelection;
         int loop;
@@ -106,7 +107,9 @@ public class MemberDriver {
             phoneNum = General.phoneInput("Phone Number : ");
 
             System.out.print("Address : ");
-            address = sc.nextLine();
+            address = General.stringNullCheckingInput("Address : ", "Invalid Address");
+
+            status = "Active";
 
             System.out.printf("Name : %s \nIC : %s \nBirthdate : %s \nPhoneNum : %s \nAddress : %s\n", id, name, ic, birthdate, phoneNum, address);
 
@@ -161,7 +164,7 @@ public class MemberDriver {
                     case 'Y':
                         System.out.println("Member sucessfully added");
                         Member.setNumOfCustomer(Member.getNumOfCustomer() + 1);
-                        members.add(new Member(id, name, ic, birthdate, phoneNum, address));
+                        members.add(new Member(id, name, ic, birthdate, phoneNum, address, status));
                         break;
 
                     case 'X':
@@ -186,7 +189,7 @@ public class MemberDriver {
                 } while (loop == 1);
             }
         } while (charSelection == 'Y');
-        
+
         Member.add(members);
     }
 
@@ -277,16 +280,14 @@ public class MemberDriver {
 //                memberSearch = Member.searchObj(input, mode, members);
 //
 //                index = Member.searchIndex(input, mode, members);
-//                
-//                if(index.size() == 0){
+//
+//                if (index.size() == 0) {
 //                    System.out.println("Member not found");
 //                    //ASk user whether to continue
-//                }else if(index.size() == 1){
-//                     System.out.printf("ID : %s \nName : %s \nIC : %s \nBirthdate : %s \nPhoneNum : %s \nAddress : %s\n", memberSearch.get(0).getId(), memberSearch.get(0).getName(), memberSearch.get(0).getIc(), memberSearch.get(0).getBirthdate(),memberSearch.get(0).getPhoneNum() , memberSearch.get(0).getAddress());
-//                    
-//                
+//                } else if (index.size() == 1) {
+//                    System.out.printf("ID : %s \nName : %s \nIC : %s \nBirthdate : %s \nPhoneNum : %s \nAddress : %s\n", memberSearch.get(0).getId(), memberSearch.get(0).getName(), memberSearch.get(0).getIc(), memberSearch.get(0).getBirthdate(), memberSearch.get(0).getPhoneNum(), memberSearch.get(0).getAddress());
+//
 //                }
-//                
 //
 //                charSelection = Character.toUpperCase(General.charInput("Confirm (Y/N) X-Cancel : ", ("Invalid input")));
 //
@@ -349,7 +350,7 @@ public class MemberDriver {
 //            } while (loop == 1);
 //
 //        } while (charSelection == 'Y');
-//        
+//
 //        Member.edit(members);
 //    }
 
@@ -370,10 +371,11 @@ public class MemberDriver {
                 String birthdate = buffer[3];
                 String phoneNum = buffer[4];
                 String address = buffer[5];
+                String status = buffer[6];
                 if (memberId.substring(1, 5).equals(General.getCurrentDateTime("yymm"))) {
                     Member.setNumOfCustomer(Member.getNumOfCustomer() + 1);
                 }
-                members.add(new Member(memberId, name, ic, birthdate, phoneNum, address));
+                members.add(new Member(memberId, name, ic, birthdate, phoneNum, address, status));
             }
             reader.close();
 
@@ -382,5 +384,4 @@ public class MemberDriver {
         }
     }
 
-    
 }
