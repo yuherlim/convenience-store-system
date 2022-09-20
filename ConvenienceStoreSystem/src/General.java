@@ -103,7 +103,7 @@ public class General {
         int loop;
         Scanner sc = new Scanner(System.in);
         do {
-            
+
             loop = 0;
             System.out.print(promptMsg);
             try {
@@ -115,7 +115,7 @@ public class General {
                 loop = 1;
                 sc.nextLine();      //get rid of the newline if string is inputted.
             }
-            
+
         } while (loop == 1);
         return input;
     }
@@ -128,7 +128,7 @@ public class General {
             loop = 0;
             System.out.print(promptMsg);
             input = sc.next();
-            if (Character.isLetter(input.charAt(0)) != true && input.length()!=1) {
+            if (Character.isLetter(input.charAt(0)) != true && input.length() != 1) {
 
                 System.out.println(errorMsg);
                 loop = 1;
@@ -136,7 +136,7 @@ public class General {
         } while (loop == 1);
         return input.charAt(0);
     }
-    
+
     public static String phoneInput(String promptMsg) {
         Scanner sc = new Scanner(System.in);
         String phoneNum;
@@ -322,7 +322,7 @@ public class General {
         }
         return (int) difference_In_Years;
     }
-    
+
     public static void clearScreen() {
         try {
             Robot robot = new Robot();
@@ -334,6 +334,11 @@ public class General {
         } catch (AWTException ex) {
         }
     }
-    
+
+    public static void systemPause() {
+        System.out.print("Press <Enter> to continue...");
+        scanner.nextLine();
+
+    }
 
 }
