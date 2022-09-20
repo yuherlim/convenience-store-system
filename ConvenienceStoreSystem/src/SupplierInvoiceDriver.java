@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class SupplierInvoiceDriver {
+public class SupplierInvoiceDriver extends General {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -32,7 +32,7 @@ public class SupplierInvoiceDriver {
 
             switch (selection) {
                 case 1 -> {
-                    SupplierInvoiceDriver.addInvoice(invoice, si, stockDetails, sd);
+                    SupplierInvoiceDriver.addInvoice();
                 }
                 case 2 -> {
                     //SupplierInvoiceDriver.editInvoice(invoice, si, stockDetails, sd);
@@ -53,8 +53,9 @@ public class SupplierInvoiceDriver {
 
     }
 
-    public static ArrayList<SupplierInvoice> readFile(String fileName, ArrayList<SupplierInvoice> invoice, ArrayList<StockDetails> stockDetails) {
-        try (FileReader reader = new FileReader("src\\" + fileName)) {
+    public static ArrayList<SupplierInvoice> readFile(String fileName, ArrayList<SupplierInvoice> supplierInvoice, ArrayList<StockDetails> stockDetails) {
+
+        try ( FileReader reader = new FileReader("src\\" + fileName)) {
             BufferedReader bufferedReader = new BufferedReader(reader);
 
             String line;
@@ -72,111 +73,165 @@ public class SupplierInvoiceDriver {
                 //Convert string to double for total amount
                 double doubleArr = Double.parseDouble(buffer[1]);
 
-                //read from stockDetails.txt and create a copy of stock details records.
-                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetailsDriver.readFile("stock details.txt", stockDetails).clone();
-                stockDetails.clear();
+//                //read from stockDetails.txt and create a copy of stock details records.
+//                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetailsDriver.readFile(StockDetails.fileName, stockDetails).clone();
+//                stockDetails.clear();
+                supplierInvoice.add(new SupplierInvoice(invNo, invDate, staffName, supplierName, stockDetails, doubleArr));
 
-//                invoice.add(new SupplierInvoice(invNo, invDate, staffName, supplierName, stockDetails, doubleArr));
             }
 
         } catch (IOException e) {
         }
 
-        return invoice;
+        return supplierInvoice;
     }
 
     //Method to add a new invoice / stock in
-    public static void addInvoice(ArrayList<SupplierInvoice> invoice, SupplierInvoice si, ArrayList<StockDetails> stockDetails, StockDetails sd) {
+    public static void addInvoice() {
         Scanner sc = new Scanner(System.in);
         char cont;
         String staffName;
         String supplierName;
 
         do {
-            System.out.println("-------------------");
-            System.out.println("| Add New Invoice |");
-            System.out.println("-------------------");
+            //Create object
+            SupplierInvoice si = new SupplierInvoice();
+            StockDetails sd = new StockDetails();
 
-            si.setInvNo(String.format("INV-%04d", SupplierInvoice.getNumOfInv() + 1));
-            System.out.println("Invoice No.: " + si.getInvNo());
+            //Create empty arraylist to store value
+            ArrayList<SupplierInvoice> supplierInvoice = new ArrayList<>();
+            ArrayList<StockDetails> stockDetails = new ArrayList<>();
+            ArrayList<Double> subTotal = new ArrayList<>();
 
-            System.out.print("Enter invoice date: ");
-            si.setInvDate(sc.nextLine());
+            //Call readfile to read the invoice.txt
+            SupplierInvoiceDriver.readFile(SupplierInvoice.fileName, supplierInvoice, stockDetails);
 
-            //need compare to Staff class
-            do {
-                System.out.print("Enter staff name: ");
-                staffName = sc.nextLine();
-                if (Staff.seacrhStaff(staffName) == false) {
-                    System.out.println("Invalid staff name! Please try again..");
-                } else {
-                    si.setStaffName(staffName);
-                }
-            } while (Staff.seacrhStaff(staffName) == false);
-
-            //need compare to Supplier class
-            do {
-                System.out.print("Enter Suplier name: ");
-                supplierName = sc.nextLine();
-                if (Supplier.seacrhSupplier(supplierName) == false) {
-                    System.out.println("Invalid supplier name! Please try again..");
-                } else{
-                    si.setSupplierName(supplierName);
-                }
-            } while (Supplier.seacrhSupplier(supplierName) == false);
+            //Set the num of invoice as arraylist size
+            SupplierInvoice.setNumOfInv(supplierInvoice.size());
 
             do {
-                System.out.print("Enter the product code: ");
-                sd.setProductCode(sc.nextLine());
+                System.out.println("-------------------");
+                System.out.println("| Add New Invoice |");
+                System.out.println("-------------------");
 
-                System.out.print("Enter the quantity: ");
-                sd.setQty(sc.nextInt());
+                //Set the invNo. = (num of inv) + 1
+                si.setInvNo(String.format("INV-%04d", SupplierInvoice.getNumOfInv() + 1));
+                System.out.println("Invoice No.: " + si.getInvNo());
 
-                System.out.print("Enter the cost price: ");
-                sd.setCostPrice(sc.nextDouble());
+                //get and validate date input
+                si.setInvDate(dateInput("Enter invoice date: ", "Invalid date! Please try again.."));
 
-                System.out.print("Continue? (Y/N) > ");
+                //need compare to Staff class
+                String nameGetted;
+                do {
+                    System.out.print("Enter staff name: ");
+                    staffName = sc.nextLine();
+                    nameGetted = Staff.seacrhStaffByName(staffName, "Name").getName();
+                    if (!nameGetted.equals("")) {
+                        si.setStaffName(staffName);
+                    } else {
+                        System.out.println("Invalid staff name! Please try again..");
+                    }
+                } while (!nameGetted.equals(""));
+
+                //need compare to Supplier class
+                do {
+                    System.out.print("Enter Suplier name: ");
+                    supplierName = sc.nextLine();
+                    if (Supplier.seacrhSupplier(supplierName) == false) {
+                        System.out.println("Invalid supplier name! Please try again..");
+                    } else {
+                        si.setSupplierName(supplierName);
+                    }
+                } while (Supplier.seacrhSupplier(supplierName) == false);
+
+                do {
+                    System.out.print("Enter the product code: ");
+                    sd.setProductCode(sc.nextLine());
+
+                    System.out.print("Enter the quantity: ");
+                    sd.setQty(sc.nextInt());
+
+                    System.out.print("Enter the cost price: ");
+                    sd.setCostPrice(sc.nextDouble());
+
+                    //get invoice no. from supplier invoice class and store in stock details for reference
+                    sd.setInvNo(si.getInvNo());
+
+                    stockDetails.add(sd);
+
+                    System.out.print("Continue add item? (Y/N) > ");
+                    cont = sc.next().charAt(0);
+                } while (cont == 'Y' || cont == 'y');
+
+                supplierInvoice.add(si);
+                
+                //calculate the subtotal of each product add in
+                SupplierInvoiceDriver.calcSubTotal(stockDetails);
+                
+                //display the whole invoice details
+                SupplierInvoiceDriver.printInvoice(si, stockDetails, subTotal);
+
+                System.out.println("Continue add another invoice? (Y/N) > ");
                 cont = sc.next().charAt(0);
             } while (cont == 'Y' || cont == 'y');
 
-            //get invoice no. from supplier invoice class and store in stock details for reference 
-            sd.setInvNo(si.getInvNo());
+            SupplierInvoice.writeFile(SupplierInvoice.fileName, supplierInvoice);
 
-            System.out.print("Enter total amount of invoice: ");
-            si.setAmount(sc.nextDouble());
-
-            invoice.add(si);
-            stockDetails.add(sd);
-
-            System.out.println("Continue add another invoice? (Y/N) > ");
-            cont = sc.next().charAt(0);
         } while (cont == 'Y' || cont == 'y');
     }
 
     public static void editInvoice() {
 
     }
-    
+
     //only search by invoice number? maybe:)
-    public void searchInvoice(ArrayList<SupplierInvoice> invoice, SupplierInvoice si) {
+    public static void searchInvoice(ArrayList<SupplierInvoice> invoice, SupplierInvoice si) {
         Scanner sc = new Scanner(System.in);
         char cont;
-        
-            System.out.println("------------------");
-            System.out.println("| Search Invoice |");
-            System.out.println("------------------");
-            
-            System.out.println("Enter Invoice No. to search: ");
-        
-        
-        for(int i = 0; i < invoice.size(); i++){
-            if(invNo.equals(invoice.get(i).getInvNo())){
+
+        System.out.println("------------------");
+        System.out.println("| Search Invoice |");
+        System.out.println("------------------");
+
+        System.out.println("Enter Invoice No. to search: ");
+
+        for (int i = 0; i < invoice.size(); i++) {
+            if (invNo.equals(invoice.get(i).getInvNo())) {
                 si.toString();
             }
         }
     }
 
     public static void cancelInvoice() {
+
+    }
+
+    public static void printInvoice(SupplierInvoice si, ArrayList<StockDetails> stockDetails, ArrayList<Double> subTotal) {
         
+        double totalAmount = 0d;
+        
+        System.out.printf("Invoice No.: %s                             Invoice Date: %s \n", si.getInvNo(), si.getInvDate());
+        System.out.printf("Supplier: %s                                Staff Incharge: %s \n", si.getSupplierName(), si.getStaffName());
+        System.out.println("---------------------------------------------------------------------");
+        System.out.println("Item               Cost Price          Qty                 Total(RM)");
+        System.out.println("---------------------------------------------------------------------");
+        for (int i = 0; i < stockDetails.size(); i++) {
+         System.out.printf("%s                    %.2f             %d                    %.2f \n", 
+                 stockDetails.get(i).getProductCode(), stockDetails.get(i).getCostPrice(), stockDetails.get(i).getQty(), subTotal.get(i));
+         totalAmount+=subTotal.get(i);
+        }
+        System.out.println("---------------------------------------------------------------------");
+        System.out.printf("Total Amount(RM)                                             %.2f \n", totalAmount);
+    }
+    
+    public static ArrayList<Double> calcSubTotal(ArrayList<StockDetails> stockDetails){
+        ArrayList<Double> subTotal = new ArrayList<>();
+        
+        for(int i = 0; i < stockDetails.size(); i++){
+            subTotal.add(i,stockDetails.get(i).getCostPrice() * stockDetails.get(i).getQty());
+        }
+        
+        return subTotal;
     }
 }

@@ -2,13 +2,12 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
-//import java.time.LocalDate; // import the LocalDate class
-import java.util.Arrays;
+//import java.util.Arrays;
 
 public class SupplierInvoice {
 
     private String invNo;
-    private String invDate; // Create a date object; //= LocalDate.now();
+    private String invDate;
     private String staffName;
     private String supplierName;
     private ArrayList<StockDetails> stockDetails;
@@ -19,16 +18,17 @@ public class SupplierInvoice {
 
     public SupplierInvoice() {
         this.invNo = "";
-        this.invDate = "";
+        this.staffName = "";
+        this.supplierName = "";
         this.amount = 0d;
     }
 
-    public SupplierInvoice(String invNo, String invDate, String staffName, String supplierName, StockDetails[] stockDetails, double amount) {
+    public SupplierInvoice(String invNo, String invDate, String staffName, String supplierName, ArrayList<StockDetails> stockDetails, double amount) {
         this.invNo = invNo;
         this.invDate = invDate;
         this.staffName = staffName;
         this.supplierName = supplierName;
-        this.stockDetails = new ArrayList<>(Arrays.asList(stockDetails));
+        this.stockDetails = stockDetails;
         this.amount = amount;
     }
 
