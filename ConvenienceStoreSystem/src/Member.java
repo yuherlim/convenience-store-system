@@ -9,6 +9,7 @@
  */
 public class Member extends Person {
     private String id;
+    private String status;
     private static int NumOfCustomer;
     
     //Constructor
