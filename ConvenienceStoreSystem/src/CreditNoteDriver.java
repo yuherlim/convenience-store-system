@@ -36,13 +36,13 @@ public class CreditNoteDriver {
                     CreditNoteDriver.addCreditNote(creditNote, cn, stockDetails, sd);
                 }
                 case 2 -> {
-                    //SupplierInvoiceDriver.editCreditNote(creditNote, cn, stockDetails, sd);
+                    //CreditNoteDriver.editCreditNote(creditNote, cn, stockDetails, sd);
                 }
                 case 3 -> {
-                    //SupplierInvoiceDriver.searchCreditNote(creditNote, cn, stockDetails, sd);
+                    //CreditNoteDriver.searchCreditNote(creditNote, cn, stockDetails, sd);
                 }
                 case 4 -> {
-                    //SupplierInvoiceDriver.cancelCreditNote(creditNote, cn, stockDetails, sd);
+                    //CreditNoteDriver.cancelCreditNote(creditNote, cn, stockDetails, sd);
                 }
                 case 0 -> {
                     //ConvenienceStore.main();
@@ -135,7 +135,7 @@ public class CreditNoteDriver {
                 System.out.print("Enter the cost price: ");
                 sd.setCostPrice(sc.nextDouble());
 
-                System.out.print("Continue? (Y/N) > ");
+                System.out.print("Continue add item? (Y/N) > ");
                 cont = sc.next().charAt(0);
             } while (cont == 'Y' || cont == 'y');
 
@@ -154,7 +154,7 @@ public class CreditNoteDriver {
     }
 
     public static void editCreditNote() {
-
+        
     }
 
     public void searchCreditNote() {

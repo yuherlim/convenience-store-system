@@ -76,7 +76,7 @@ public class SupplierInvoiceDriver {
                 ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetailsDriver.readFile("stock details.txt", stockDetails).clone();
                 stockDetails.clear();
 
-                //invoice.add(new SupplierInvoice(invNo, invDate, staffName, supplierName, stockDetails, doubleArr));
+//                invoice.add(new SupplierInvoice(invNo, invDate, staffName, supplierName, stockDetails, doubleArr));
             }
 
         } catch (IOException e) {
@@ -156,12 +156,17 @@ public class SupplierInvoiceDriver {
     public static void editInvoice() {
 
     }
-
-    public boolean searchInvoice(String invNo) {
-        
+    
+    //only search by invoice number
+    public void searchInvoice(String invNo, ArrayList<SupplierInvoice> invoice, SupplierInvoice si) {
+        for(int i = 0; i < invoice.size(); i++){
+            if(invNo.equalsIgnoreCase(invoice.get(i).getInvNo())){
+                si.toString();
+            }
+        }
     }
 
     public static void cancelInvoice() {
-
+        
     }
 }

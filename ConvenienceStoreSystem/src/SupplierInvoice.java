@@ -38,6 +38,7 @@ public class SupplierInvoice {
     public void setInvNo(String invNo) {
         this.invNo = invNo;
     }
+
     public String getInvDate() {
         return invDate;
     }
@@ -88,9 +89,8 @@ public class SupplierInvoice {
 
     public static void writeFile(String fileName, ArrayList<SupplierInvoice> invoice) {
         String line;
-        try {
-                //Create FileWriter set to write mode
-            try (FileWriter writer = new FileWriter("src\\" + fileName, false)) {
+            //Create FileWriter set to write mode
+            try ( FileWriter writer = new FileWriter("src\\" + fileName, false)) {
 
                 for (int i = 0; i < invoice.size(); i++) {
                     //Create a new record to be written
@@ -98,22 +98,18 @@ public class SupplierInvoice {
                     //Writes the record to the file.
                     writer.write(line);
                 }
-                // Closes the writer
-            }
 
         } catch (IOException e) {
             e.getStackTrace();
-        }
     }
-    
+}
 
     @Override
     public String toString() {
-        return '\n' + "Invoice No.: " + invNo + '\n' + 
-                "Invoice Date: " + invDate + '\n' + 
-                "Person Incharge: " + staffName + '\n' + 
-                "Supplier: " + supplierName + '\n' + 
-                "Total Amount: " + amount + '\n';
+        return '\n' + "Invoice No.: " + invNo + '\n'
+                + "Invoice Date: " + invDate + '\n'
+                + "Person Incharge: " + staffName + '\n'
+                + "Supplier: " + supplierName + '\n'
+                + "Total Amount: " + amount + '\n';
     }
-
 }
