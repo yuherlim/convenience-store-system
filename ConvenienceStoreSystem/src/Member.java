@@ -89,8 +89,8 @@ public class Member extends Person {
         writeFile("member", members);
 
     }
-    
-        public static void searchMember() {
+
+    public static void searchMember() {
         ArrayList<Integer> index = new ArrayList<>();
         ArrayList<Member> members = new ArrayList<>();
         String input = " ";
@@ -100,7 +100,7 @@ public class Member extends Person {
         int selection;
         char charSelection;
 
-        readFile("member", members);
+        MemberDriver.readFile("member", members);
 
         do {
             do {
@@ -170,7 +170,7 @@ public class Member extends Person {
 
             do {
                 loop = 0;
-                charSelection = Character.toUpperCase(General.CharInput("Search another member(Y/N): ", "Invalid selection input"));
+                charSelection = Character.toUpperCase(General.charInput("Search another member(Y/N): ", "Invalid selection input"));
                 if (charSelection != 'N' && charSelection != 'Y') {
                     System.out.println("Invalid selection");
                     loop = 1;
@@ -253,8 +253,8 @@ public class Member extends Person {
         writeFile("member", members);
 
     }
-    
-     public static void display(ArrayList<Member> members) {
+
+    public static void display(ArrayList<Member> members) {
         for (int i = 0; i < members.size(); i++) {
             System.out.printf("| %04d | %-8s | %-30s | %-12s | %-11s | %-60s |", i, members.get(i).getId(), members.get(i).getName(), members.get(i).getIc(), members.get(i).getPhoneNum(), members.get(i).getAddress());
         }
@@ -278,6 +278,25 @@ public class Member extends Person {
         } catch (Exception e) {
             e.getStackTrace();
         }
+    }
+
+    public static boolean memberIdValidation(String id) {
+        if (id.length() == 8) {
+            if (id.charAt(0) != 'M') {
+                return false;
+            }
+            if (Integer.parseInt(id.substring(3, 5)) > 12) {
+                return false;
+            }
+            for (int i = 1; i < id.length(); i++) {
+                if (Character.isDigit(id.charAt(i)) != true) {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+        return true;
     }
 
 }

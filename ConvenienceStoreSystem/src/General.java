@@ -74,7 +74,7 @@ public class General {
         return input;
     }
 
-    public static char CharInput(String promptMsg, String errorMsg) {
+    public static char charInput(String promptMsg, String errorMsg) {
         String input;
         int loop;
         Scanner sc = new Scanner(System.in);
@@ -90,7 +90,7 @@ public class General {
         return input.charAt(0);
     }
 
-    public static String phoneInput(String promptMsg ) {
+    public static String phoneInput(String promptMsg) {
         Scanner sc = new Scanner(System.in);
         String phoneNum;
         int loop = 0;
@@ -137,7 +137,7 @@ public class General {
             System.out.println("Invalid length of ic");
             return false;
         } else {
-           
+
             if (Integer.parseInt(ic.substring(0, 2)) <= 20) {
                 if (dateChecking(ic.substring(4, 6) + "/" + ic.substring(2, 4) + "/20" + ic.substring(0, 2)) == false) {
                     System.out.println("Invalid ic birthdate format");
@@ -245,41 +245,33 @@ public class General {
                 return "Invalid mode selection";
         }
     }
-    
-    public static int ageCalc(String birthDate){
-        SimpleDateFormat sdf  = new SimpleDateFormat("dd/MM/yyyy");
+
+    public static int ageCalc(String birthDate) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         long difference_In_Years = 0;
-          try {
-  
+        try {
+
             // parse method is used to parse
             // the text from a string to
             // produce the date
             Date d1 = sdf.parse(birthDate);
             Date d2 = sdf.parse(getCurrentDateTime("date"));
-            
+
             // Calucalte time difference
             // in milliseconds
             long difference_In_Time
-                = d2.getTime() - d1.getTime();
-  
+                    = d2.getTime() - d1.getTime();
+
             // Calucalte time difference in seconds,
             // minutes, hours, years, and days
-            
-               difference_In_Years = TimeUnit
-                      .MILLISECONDS
-                      .toDays(difference_In_Time)
-                  / 365l;
-  
-        }
-        catch (ParseException e) {
+            difference_In_Years = TimeUnit.MILLISECONDS
+                    .toDays(difference_In_Time)
+                    / 365l;
+
+        } catch (ParseException e) {
             e.printStackTrace();
         }
-          return (int)difference_In_Years;
+        return (int) difference_In_Years;
     }
-  
-    
-    
- 
-    
-    
+
 }

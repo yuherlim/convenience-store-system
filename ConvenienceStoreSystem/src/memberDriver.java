@@ -92,7 +92,7 @@ public class MemberDriver {
                 System.out.println("Member is under age");
                 do {
                     loop = 0;
-                    charSelection = Character.toUpperCase(General.CharInput("add another member(Y/N): ", "Invalid selection input"));
+                    charSelection = Character.toUpperCase(General.charInput("add another member(Y/N): ", "Invalid selection input"));
                     if (charSelection != 'N' && charSelection != 'Y') {
                         System.out.println("Invalid selection");
                         loop = 1;
@@ -110,7 +110,7 @@ public class MemberDriver {
 
             do {
                 loop = 0;
-                charSelection = Character.toUpperCase(General.CharInput("Confirm (Y/N) X-Cancel : ", ("Invalid input")));
+                charSelection = Character.toUpperCase(General.charInput("Confirm (Y/N) X-Cancel : ", ("Invalid input")));
 
                 switch (charSelection) {
                     case 'N':
@@ -176,7 +176,7 @@ public class MemberDriver {
             if (charSelection == 'Y') {
                 do {
                     loop = 0;
-                    charSelection = Character.toUpperCase(General.CharInput("add another member(Y/N): ", "Invalid selection input"));
+                    charSelection = Character.toUpperCase(General.charInput("add another member(Y/N): ", "Invalid selection input"));
                     if (charSelection != 'N' && charSelection != 'Y') {
                         System.out.println("Invalid selection");
                         loop = 1;
@@ -231,7 +231,7 @@ public class MemberDriver {
                             do {
                                 loop = 0;
                                 input = General.stringInput("Member id : ", "Invalid Member id");
-                                if (memberIdValidation(input) == false) {
+                                if (Member.memberIdValidation(input) == false) {
                                     System.out.println("Invalid member id");
                                     loop = 1;
                                 }
@@ -272,11 +272,21 @@ public class MemberDriver {
 
                 } while (loop == 1);
 
-                memberSearch = searchObj(input, mode, members);
+                memberSearch = Member.searchObj(input, mode, members);
 
-                index = searchIndex(input, mode, members);
+                index = Member.searchIndex(input, mode, members);
+                
+                if(index.size() == 0){
+                    System.out.println("Member not found");
+                    //ASk user whether to continue
+                }else if(index.size() == 1){
+                     System.out.printf("ID : %s \nName : %s \nIC : %s \nBirthdate : %s \nPhoneNum : %s \nAddress : %s\n", memberSearch.get(0).getId(), memberSearch.get(0).getName(), memberSearch.get(0).getIc(), memberSearch.get(0).getBirthdate(),memberSearch.get(0).getPhoneNum() , memberSearch.get(0).getAddress());
+                    
+                
+                }
+                
 
-                charSelection = Character.toUpperCase(General.CharInput("Confirm (Y/N) X-Cancel : ", ("Invalid input")));
+                charSelection = Character.toUpperCase(General.charInput("Confirm (Y/N) X-Cancel : ", ("Invalid input")));
 
                 switch (charSelection) {
                     case 'N':
@@ -376,22 +386,5 @@ public class MemberDriver {
         }
     }
 
-    public static boolean memberIdValidation(String id) {
-        if (id.length() == 8) {
-            if (id.charAt(0) != 'M') {
-                return false;
-            }
-            if (Integer.parseInt(id.substring(3, 5)) > 12) {
-                return false;
-            }
-            for (int i = 1; i < id.length(); i++) {
-                if (Character.isDigit(id.charAt(i)) != true) {
-                    return false;
-                }
-            }
-        } else {
-            return false;
-        }
-        return true;
-    }
+    
 }
