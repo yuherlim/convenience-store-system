@@ -23,8 +23,7 @@ public class Login {
             //staff id enter
             boolean staffIdExist = false;
             do {
-                System.out.print("Staff ID: ");
-                String staffIdEnter = scanner.nextLine().toUpperCase();
+                String staffIdEnter = Staff.staffIDInput("Staff ID: ", "Invalid Staff ID.");
 
                 try ( FileReader reader = new FileReader("src\\staff.txt")) {
                     BufferedReader bufferedReader = new BufferedReader(reader);
@@ -49,37 +48,41 @@ public class Login {
                 if (!staffIdExist) {
                     System.out.println("  >Staff ID not exist.");
                 }
-
             } while (!staffIdExist);
 
-            if ("Active".equals(staffLogin.getAccountStatus())) {
-                //password enter 3 time at most
-                for (int i = 2; i >= 0; i--) {
-                    System.out.print("Password: ");
-                    String passwordEnter = scanner.nextLine();
+            switch (staffLogin.getAccountStatus()) {
+                case "Active" -> {
+                    //password enter 3 time at most
+                    for (int i = 2; i >= 0; i--) {
+                        System.out.print("Password: ");
+                        String passwordEnter = scanner.nextLine();
 
-                    if (passwordEnter.equals(staffLogin.getPassword())) {
-                        System.out.println("*** Hi, " + staffLogin.getName() + ". ***");
-                        loop++;
-                        break;
-                    } else {
-                        switch (i) {
-                            case 2 ->
-                                System.out.println("  >Wrong password. " + i + " tries left.");
-                            case 1 ->
-                                System.out.println("  >Wrong password. " + i + " try left.");
-                            default -> {
-                                System.out.println("  >Wrong password. Contact Human Resource or Manager to change password.");
-                                System.out.print("Press any key to continue...");
-                                scanner.nextLine();
+                        if (passwordEnter.equals(staffLogin.getPassword())) {
+                            System.out.println("*** Hi, " + staffLogin.getName() + ". ***");
+                            loop++;
+                            break;
+                        } else {
+                            switch (i) {
+                                case 2 ->
+                                    System.out.println("  >Wrong password. " + i + " tries left.");
+                                case 1 ->
+                                    System.out.println("  >Wrong password. " + i + " try left.");
+                                default -> {
+                                    System.out.println("  >Wrong password. Contact Human Resource or Manager to change password.");
+                                    System.out.print("Press any key to continue...");
+                                    scanner.nextLine();
+                                }
                             }
                         }
                     }
                 }
-            } else if ("Inactive".equals(staffLogin.getAccountStatus())) {
-                loop++;
-            } else {
-                System.out.println("");
+                case "Inactive" -> {
+                    staffLogin.setPassword(Staff.createPassword());
+                    loop++;
+                    //active + write password(edit password + account status)
+                }
+                default ->
+                    System.out.println("Staff not in company.");
             }
         } while (loop == 0);
     }
