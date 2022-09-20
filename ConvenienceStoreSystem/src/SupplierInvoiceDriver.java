@@ -54,7 +54,7 @@ public class SupplierInvoiceDriver {
     }
 
     public static ArrayList<SupplierInvoice> readFile(String fileName, ArrayList<SupplierInvoice> invoice, ArrayList<StockDetails> stockDetails) {
-        try ( FileReader reader = new FileReader("src\\" + fileName)) {
+        try (FileReader reader = new FileReader("src\\" + fileName)) {
             BufferedReader bufferedReader = new BufferedReader(reader);
 
             String line;
@@ -157,7 +157,7 @@ public class SupplierInvoiceDriver {
 
     }
 
-    public void searchInvoice() {
+    public boolean searchInvoice(String invNo) {
         
     }
 

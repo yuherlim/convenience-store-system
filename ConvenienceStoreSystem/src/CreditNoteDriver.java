@@ -100,9 +100,9 @@ public class CreditNoteDriver {
             System.out.println("-----------------------");
 
             cn.setCnNo(String.format("CRN-%04d", creditNote.size() + 1));
-            System.out.println("Invoice No.: " + cn.getCnNo());
+            System.out.println("Credit Note No.: " + cn.getCnNo());
 
-            System.out.print("Enter invoice date: ");
+            System.out.print("Enter credit note date: ");
             cn.setCnDate(sc.nextLine());
 
             //need compare to Staff class
@@ -144,7 +144,7 @@ public class CreditNoteDriver {
             //get invoice no. from supplier invoice class and store in stock details for reference 
             sd.setInvNo(cn.getCnNo());
 
-            System.out.print("Enter total amount of invoice: ");
+            System.out.print("Enter total amount of credit note: ");
             cn.setAmount(sc.nextDouble());
 
             creditNote.add(cn);
@@ -155,18 +155,19 @@ public class CreditNoteDriver {
         } while (cont == 'Y' || cont == 'y');
     }
 
-    public static void editInvoice() {
+    public static void editCreditNote() {
 
     }
 
-    public void searchInvoice() {
+    public void searchCreditNote() {
         
     }
 
-    public static void cancelInvoice() {
+    public static void cancelCreditNote() {
 
     }
-
+    
+    
 }
 
 
