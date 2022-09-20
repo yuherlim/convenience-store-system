@@ -21,7 +21,7 @@ public class Test {
         ArrayList<TransactionDetails> transactionDetails = new ArrayList<>();
         ArrayList<StockDetails> stockDetails = new ArrayList<>();
         //Read the current product list
-        products = ProductDriver.readFile(Product.fileName, products, transactionDetails, stockDetails);
+        products = ProductDriver.readFile(Product.fileName, products);
         
         ArrayList<StockDetails> test = new ArrayList<>();
         test = readFile(StockDetails.fileName, test);

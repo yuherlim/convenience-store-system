@@ -16,7 +16,7 @@ public class Product {
     private String code;
     private String name;
     private double currentSellingPrice;
-    private double averageCostPrice;
+    private double currentCostPrice;
     private int stockQty;
     private int minReorderQty;
     private String category;
@@ -36,12 +36,12 @@ public class Product {
 //        nextCode++;
     }
 
-    public Product(String code, String name, double currentSellingPrice, double averageCostPrice, int stockQty, int minReorderQty, String category, ArrayList<TransactionDetails> transactionDetails, ArrayList<StockDetails> stockDetails) {
+    public Product(String code, String name, double currentSellingPrice, double currentCostPrice, int stockQty, int minReorderQty, String category, ArrayList<TransactionDetails> transactionDetails, ArrayList<StockDetails> stockDetails) {
 //        code = "P" + nextCode;
         this.code = code;
         this.name = name;
         this.currentSellingPrice = currentSellingPrice;
-        this.averageCostPrice = averageCostPrice;
+        this.currentCostPrice = currentCostPrice;
         this.stockQty = stockQty;
         this.minReorderQty = minReorderQty;
         this.category = category;
@@ -75,12 +75,12 @@ public class Product {
         this.currentSellingPrice = currentSellingPrice;
     }
 
-    public double getAverageCostPrice() {
-        return averageCostPrice;
+    public double getCurrentCostPrice() {
+        return currentCostPrice;
     }
 
-    public void setAverageCostPrice(double averageCostPrice) {
-        this.averageCostPrice = averageCostPrice;
+    public void setCurrentCostPrice(double currentCostPrice) {
+        this.currentCostPrice = currentCostPrice;
     }
 
     public int getStockQty() {
@@ -147,7 +147,7 @@ public class Product {
   
             for (int i = 0; i < products.size(); i++) {
                 //Create a new record to be written
-                line = String.format("%s|%s%%%.2f|%.2f%%%d|%d%%%s\n", products.get(i).getCode(), products.get(i).getName(), products.get(i).getCurrentSellingPrice(), products.get(i).getAverageCostPrice(), products.get(i).getStockQty(), products.get(i).getMinReorderQty(), products.get(i).getCategory());
+                line = String.format("%s|%s%%%.2f|%.2f%%%d|%d%%%s\n", products.get(i).getCode(), products.get(i).getName(), products.get(i).getCurrentSellingPrice(), products.get(i).getCurrentCostPrice(), products.get(i).getStockQty(), products.get(i).getMinReorderQty(), products.get(i).getCategory());
                 //Writes the record to the file.
                 writer.write(line);
             }
@@ -163,6 +163,6 @@ public class Product {
     
     @Override
     public String toString() {
-        return "Product code: " + code + ", Product name: " + name + ", Current selling price: " + currentSellingPrice + ", Average cost price: " + averageCostPrice + ", Stock quantity: " + stockQty + ", Product minimum reorder quantity: " + minReorderQty +  ", Category: " + category;        
+        return "Product code: " + code + ", Product name: " + name + ", Current selling price: " + currentSellingPrice + ", Current cost price: " + currentCostPrice + ", Stock quantity: " + stockQty + ", Product minimum reorder quantity: " + minReorderQty +  ", Category: " + category;        
     }
 }
