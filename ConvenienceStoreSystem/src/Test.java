@@ -38,7 +38,9 @@ public class Test {
 //        
 //        System.out.println(inttest);
         
+        String prodCode = ProductDriver.codeInput();
         
+        System.out.println(prodCode);
         
 //        int inttest = General.intInput("Please enter a int", "Not an int");
 //        

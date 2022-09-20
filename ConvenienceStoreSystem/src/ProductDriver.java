@@ -444,14 +444,94 @@ public class ProductDriver {
         
     }
     
-    //method to search for products.
+    //method to search for products and print the search results.
     public static void searchProduct(ArrayList<Product> products) {
         printHeader("searchProduct");
         
-        //Read the current product list
+        //Read product details and store it into an array list
         products = readFile(Product.fileName, products);
         
+        //search menu
+        int printCount;
+        int selection;
+        do {
+            selection = searchMenu();
+            switch(selection) {
+                case 1:
+                    //Ask for product code and search for the product details with the product code.
+                    String code = codeInput();
+                    printCount = 0;
+                    System.out.println("Search results: ");
+                    printHeader("searchTableHeader");
+                    for (int i = 0; i < products.size(); i++) {
+                        if (products.get(i).getCode().equals(code)) {
+                            System.out.println(products.get(i));
+                            printCount++;
+                            break;
+                        } 
+                    }
+                    if (printCount == 0) {
+                        System.out.println("Product code entered does not exist.");
+                    }
+                    System.out.println("");
+                    break;
+                case 2:
+                    //Ask for product name and search for the product details with the product name.
+                    String name = General.stringInput("Enter product name: ", "Invalid product name, please try again").toUpperCase();
+                    printCount = 0;
+                    System.out.println("Search results: ");
+                    printHeader("searchTableHeader");
+                    for (int i = 0; i < products.size(); i++) {
+                        if (products.get(i).getName().equals(name)) {
+                            System.out.println(products.get(i));
+                            printCount++;
+                            break;
+                        } 
+                    }
+                    if (printCount == 0) {
+                        System.out.println("Product name entered does not exist.");
+                    }
+                    System.out.println("");
+                    break;
+                case 3:
+                    //Ask for product category and search for the product details with the product category.
+                    String category = General.stringInput("Enter category of product: ", "Invalid category name, please try again.").toUpperCase();
+                    printCount = 0;
+                    System.out.println("Search results: ");
+                    printHeader("searchTableHeader");
+                    for (int i = 0; i < products.size(); i++) {
+                        if (products.get(i).getCategory().equals(category)) {
+                            System.out.println(products.get(i));
+                            printCount++;
+                        }
+                    }
+                    if (printCount == 0) {
+                        System.out.println("Product category entered does not exist.");
+                    }
+                    System.out.println("");
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Please ensure your selection is (0-3).");
+            }
+            
+        } while(selection != 0);
+    }
+    
+    //method overloading - this searchProduct accepts a second argument for searchType
+    public static ArrayList<Product> searchProduct(ArrayList<Product> products, String searchType) {
         
+        ArrayList<Product> searchResultsProducts = new ArrayList<>();
+        
+        switch(searchType) {
+            case "productCode":
+                
+            default:
+                System.out.println("Invalid searchType.");
+        }
+        
+        return searchResultsProducts;
     }
     
     //method to modify product details.
@@ -461,13 +541,41 @@ public class ProductDriver {
         //Read the current product list
         products = readFile(Product.fileName, products);
         
-        //search menu
-        int selection;
-        do {
-            selection = searchMenu();
-            
-        } while(selection != 0);
         
+        
+    }
+    
+    //Validation for product code input.
+    public static String codeInput() {
+        String productCode;
+        boolean validProductCode;
+        do {
+            validProductCode = true;
+            
+            productCode = General.stringNullCheckingInput("Enter product code: ", "Empty input detected. Please ensure that you have inputted something.").toUpperCase();
+            
+            if (productCode.charAt(0) != 'P') {
+                validProductCode = false;
+            } else if (productCode.length() != 5) {
+                validProductCode = false;
+            } else {
+                for (int i = 1; i < productCode.length(); i++) {
+                    if (!Character.isDigit(productCode.charAt(i))) {
+                        validProductCode = false;
+                        break;
+                    }
+                }
+            }
+            
+            if (validProductCode == false) {
+                System.out.println("Invalid product code inputted. Please try again.");
+                System.out.println("");
+            }
+            
+        } while(validProductCode == false);
+        
+
+        return productCode;
     }
     
     public static void printHeader(String headerType) {
@@ -490,6 +598,11 @@ public class ProductDriver {
                 System.out.println("--------------------");
                 System.out.println("");
                 break;
+            case "searchTableHeader":
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------");
+                System.out.println("| Code  | Name                 | Category             | Selling price (RM) | Cost Price (RM) | Quantity | Reorder Quantity | ");
+                System.out.println("----------------------------------------------------------------------------------------------------------------------------");
+                break;
             default:
                 System.out.println("Header type does not exist.");
         }
@@ -503,7 +616,7 @@ public class ProductDriver {
         System.out.println("3. Category");
         System.out.println("");
         System.out.println("0. Return to product menu");
-        System.out.println("Enter selection (0-3) : ");
+        System.out.println("");
         
         return General.intInput("Enter selection (0-3) : ", "Invalid input, please enter an integer.");
     }

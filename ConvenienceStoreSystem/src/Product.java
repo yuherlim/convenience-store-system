@@ -204,7 +204,8 @@ public class Product {
     
     @Override
     public String toString() {
-        return "Product code: " + code + ", Product name: " + name + ", Current selling price: " + currentSellingPrice + ", Current cost price: " + currentCostPrice + ", Stock quantity: " + stockQty + ", Product minimum reorder quantity: " + minReorderQty +  ", Category: " + category;        
+//        return "Product code: " + code + ", Product name: " + name + ", Current selling price: " + currentSellingPrice + ", Current cost price: " + currentCostPrice + ", Stock quantity: " + stockQty + ", Product minimum reorder quantity: " + minReorderQty +  ", Category: " + category;        
+        return String.format("| %-5s | %-20s | %-20s | %18.2f | %15.2f | %8d | %16d |", code, name, category, currentSellingPrice, currentCostPrice, stockQty, minReorderQty);
     }
 
     @Override
