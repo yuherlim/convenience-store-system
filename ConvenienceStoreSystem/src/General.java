@@ -96,7 +96,7 @@ public class General {
             input = Character.toUpperCase(charInput(promptMsg, errorMsg));
             loop = 0;
             if (input != 'Y' && input != 'N') {
-                System.out.println("Please enter Y or N.");
+                System.out.println("Invalid input, please enter Y or N.");
                 loop = 1;
             }
                

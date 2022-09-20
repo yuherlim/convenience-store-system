@@ -313,10 +313,11 @@ public class ProductDriver {
             //Create product object to be added to array list. 
             //StockDetails and TransactionDetails array list is set to null because newly created product does not have any stock or is in any transaction yet.
             Product p1 = new Product(currentProductCode, name, currentSellingPrice, currentCostPrice, stockQty, minReorderQty, category, null, null);
+            
             //confirmation of adding of product.
             char confirmation = 'N';
             System.out.print("Confirm add product? (Y/N) : ");
-            confirmation = General.charInput("Confirm add product? (Y)es/(N)o : ", "Invalid input, please enter a character.");
+            confirmation = General.yesNoInput("Confirm add product? (Y)es/(N)o : ", "Invalid input, please enter Y or N.");
 //            confirmation = Character.toUpperCase(sc.next().charAt(0));
             if (confirmation == 'Y') {
                 products.add(p1);
