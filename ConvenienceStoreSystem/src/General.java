@@ -47,6 +47,7 @@ public class General {
             } catch (Exception e) {
                 System.out.println(errorMsg);
                 loop = 1;
+                sc.nextLine();      //get rid of the newline if string is inputted.
             }
         } while (loop == 1);
         return input;
@@ -57,6 +58,7 @@ public class General {
         int loop;
         Scanner sc = new Scanner(System.in);
         do {
+            
             loop = 0;
             System.out.print(promptMsg);
             try {
@@ -64,7 +66,9 @@ public class General {
             } catch (Exception e) {
                 System.out.println(errorMsg);
                 loop = 1;
+                sc.nextLine();      //get rid of the newline if string is inputted.
             }
+            
         } while (loop == 1);
         return input;
     }

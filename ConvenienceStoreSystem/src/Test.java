@@ -22,8 +22,16 @@ public class Test {
 //        char inputtest = General.yesNoInput("Please enter a character : ", "Invalid character.");
 //        System.out.println(Character.isLetter(' '));
         
-        String stringtest = General.stringInput("Please enter a string: ", "Not a string.");
-        System.out.println(stringtest);
+//        String stringtest = General.stringInput("Please enter a string: ", "Not a string.");
+//        System.out.println(stringtest);
+        
+//        double doubletest = General.doubleInput("Please enter a double: ", "Not a double");
+//        
+//        System.out.println(doubletest);
+        
+        int inttest = General.intInput("Please enter a int", "Not an int");
+        
+        System.out.println(inttest);
            
 
 //          char input1 = sc.next().charAt(0);
