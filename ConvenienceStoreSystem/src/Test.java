@@ -19,15 +19,18 @@ public class Test {
         Scanner sc = new Scanner(System.in);
 //        char inputtest = General.charInput("Please enter a character : ", "Invalid character.");
         
+//        char inputtest = General.yesNoInput("Please enter a character : ", "Invalid character.");
 //        System.out.println(Character.isLetter(' '));
         
-//        System.out.println(inputtest);
+        String stringtest = General.stringInput("Please enter a string: ", "Not a string.");
+        System.out.println(stringtest);
+           
 
-          char input1 = sc.next().charAt(0);
-          
-          char input2 = sc.next().charAt(0);
-          
-          System.out.println(input1 + input2);
+//          char input1 = sc.next().charAt(0);
+//          
+//          char input2 = sc.next().charAt(0);
+//          
+//          System.out.println(input1 + input2);
         
 //        char input = General.yesNoInput("Please enter y/n : ", "Invalid input, please enter a character.");
 //        System.out.println(input);

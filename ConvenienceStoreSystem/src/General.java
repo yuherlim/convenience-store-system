@@ -28,6 +28,7 @@ public class General {
                 if (Character.isLetter(input.charAt(i)) == false && input.charAt(i) != ' ') {
                     System.out.println(errorMsg);
                     loop = 1;
+                    break;
                 }
             }
         } while (loop == 1);
@@ -85,9 +86,10 @@ public class General {
     }
     
     public static char yesNoInput(String promptMsg, String errorMsg) {
-        char input = Character.toUpperCase(charInput(promptMsg, errorMsg));
+        char input;
         int loop;
         do {
+            input = Character.toUpperCase(charInput(promptMsg, errorMsg));
             loop = 0;
             if (input != 'Y' && input != 'N') {
                 System.out.println("Please enter Y or N.");
