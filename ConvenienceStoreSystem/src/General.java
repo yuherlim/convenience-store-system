@@ -7,6 +7,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -134,21 +137,6 @@ public class General {
         return input.charAt(0);
     }
     
-    public static char yesNoInput(String promptMsg, String errorMsg) {
-        char input;
-        int loop;
-        do {
-            input = Character.toUpperCase(charInput(promptMsg, errorMsg));
-            loop = 0;
-            if (input != 'Y' && input != 'N') {
-                System.out.println("Please enter Y or N.");
-                loop = 1;
-            }
-               
-        } while (loop == 1);
-        return input;
-    }
-
     public static String phoneInput(String promptMsg) {
         Scanner sc = new Scanner(System.in);
         String phoneNum;
@@ -334,5 +322,18 @@ public class General {
         }
         return (int) difference_In_Years;
     }
+    
+    public static void clearScreen() {
+        try {
+            Robot robot = new Robot();
+            robot.setAutoDelay(10);
+            robot.keyPress(KeyEvent.VK_CONTROL);
+            robot.keyPress(KeyEvent.VK_L);
+            robot.keyRelease(KeyEvent.VK_CONTROL);
+            robot.keyRelease(KeyEvent.VK_L);
+        } catch (AWTException ex) {
+        }
+    }
+    
 
 }
