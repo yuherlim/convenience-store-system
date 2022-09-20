@@ -18,10 +18,12 @@ public class Member extends Person {
     private static int NumOfCustomer;
 
     //Constructor
-    public Member(String id, String name, String ic, String birthdate, String phoneNum, String address) {
+    public Member(String id, String name, String ic, String birthdate, String phoneNum, String address,String status) {
         super(name, ic, birthdate, phoneNum, address);
         this.id = id;
+        this.status = status;
     }
+
     //Setter and getter
 
     public String getId() {
@@ -48,6 +50,10 @@ public class Member extends Person {
         return address;
     }
 
+    public String getStatus() {
+        return status;
+    }
+    
     public static int getNumOfCustomer() {
         return NumOfCustomer;
     }
@@ -76,6 +82,10 @@ public class Member extends Person {
         this.address = address;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
     public static void setNumOfCustomer(int NumOfCustomer) {
         Member.NumOfCustomer = NumOfCustomer;
     }
@@ -269,7 +279,7 @@ public class Member extends Person {
 
             for (int i = 0; i < members.size(); i++) {
                 //Create a new record to be written
-                line = String.format("%s|%s|%s|%s|%s|%s\n", members.get(i).getId(), members.get(i).getName(), members.get(i).getName(), members.get(i).getIc(), members.get(i).getBirthdate(), members.get(i).getAddress());
+                line = String.format("%s|%s|%s|%s|%s|%s\n", members.get(i).getId(), members.get(i).getName(), members.get(i).getName(), members.get(i).getIc(), members.get(i).getBirthdate(), members.get(i).getAddress(),members.get(i).getStatus());
                 //Writes the record to the file.
                 writer.write(line);
             }

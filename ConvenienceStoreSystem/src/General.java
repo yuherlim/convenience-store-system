@@ -7,6 +7,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -132,7 +135,7 @@ public class General {
         } while (loop == 1);
         return input;
     }
-
+    
     public static String phoneInput(String promptMsg) {
         Scanner sc = new Scanner(System.in);
         String phoneNum;
@@ -318,5 +321,18 @@ public class General {
         }
         return (int) difference_In_Years;
     }
+    
+    public static void clearScreen() {
+        try {
+            Robot robot = new Robot();
+            robot.setAutoDelay(10);
+            robot.keyPress(KeyEvent.VK_CONTROL);
+            robot.keyPress(KeyEvent.VK_L);
+            robot.keyRelease(KeyEvent.VK_CONTROL);
+            robot.keyRelease(KeyEvent.VK_L);
+        } catch (AWTException ex) {
+        }
+    }
+    
 
 }
