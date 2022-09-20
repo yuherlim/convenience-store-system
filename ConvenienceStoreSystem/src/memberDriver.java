@@ -351,12 +351,6 @@ public class MemberDriver {
         Member.edit(members);
     }
 
-    public static void display(ArrayList<Member> members) {
-        for (int i = 0; i < members.size(); i++) {
-            System.out.printf("| %04d | %-8s | %-30s | %-12s | %-11s | %-60s |", i, members.get(i).getId(), members.get(i).getName(), members.get(i).getIc(), members.get(i).getPhoneNum(), members.get(i).getAddress());
-        }
-    }
-
     public static void readFile(String fileName, ArrayList<Member> members) {
         try {
             FileReader reader = new FileReader("src\\" + fileName);

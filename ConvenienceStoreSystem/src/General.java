@@ -35,7 +35,7 @@ public class General {
         } while (loop == 1);
         return input;
     }
-
+    
     public static int intInput(String promptMsg, String errorMsg) {
         int input = 0;
         int loop;
