@@ -89,6 +89,7 @@ public class General {
                 sc.nextLine();
                 System.out.println(errorMsg);
                 loop = 1;
+                sc.nextLine();      //get rid of the newline if string is inputted.
             }
         } while (loop == 1);
         return input;
@@ -99,6 +100,7 @@ public class General {
         int loop;
         Scanner sc = new Scanner(System.in);
         do {
+            
             loop = 0;
             System.out.print(promptMsg);
             try {
@@ -108,7 +110,9 @@ public class General {
                 sc.nextLine();
                 System.out.println(errorMsg);
                 loop = 1;
+                sc.nextLine();      //get rid of the newline if string is inputted.
             }
+            
         } while (loop == 1);
         return input;
     }
@@ -122,11 +126,27 @@ public class General {
             System.out.print(promptMsg);
             input = sc.next();
             if (Character.isLetter(input.charAt(0)) != true && input.length()!=1) {
+
                 System.out.println(errorMsg);
                 loop = 1;
             }
         } while (loop == 1);
         return input.charAt(0);
+    }
+    
+    public static char yesNoInput(String promptMsg, String errorMsg) {
+        char input;
+        int loop;
+        do {
+            input = Character.toUpperCase(charInput(promptMsg, errorMsg));
+            loop = 0;
+            if (input != 'Y' && input != 'N') {
+                System.out.println("Please enter Y or N.");
+                loop = 1;
+            }
+               
+        } while (loop == 1);
+        return input;
     }
 
     public static String phoneInput(String promptMsg) {
@@ -262,6 +282,7 @@ public class General {
     public static String getCurrentDateTime(String mode) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
+
         switch (mode) {
             case "dateTime":
                 return dtf.format(now);
@@ -282,6 +303,7 @@ public class General {
             default:
                 System.out.println("Invalid mode selection");
                 return "Invalid mode selection";
+
         }
     }
 
