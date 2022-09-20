@@ -6,48 +6,50 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SupplierInvoiceDriver {
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int selection;
-        
+
         SupplierInvoice si = new SupplierInvoice();
         StockDetails sd = new StockDetails();
         ArrayList<SupplierInvoice> invoice = new ArrayList<>();
         ArrayList<StockDetails> stockDetails = new ArrayList<>();
-        
-        do{
-        //Suplier Invoice Menu
-        System.out.println("==================");
-        System.out.println(" Supllier Invoice");
-        System.out.println("==================");
-        System.out.println("1 - Add new Invoice");
-        System.out.println("2 - Edit Invoice");
-        System.out.println("3 - Search Invoice");
-        System.out.println("4 - Cancel Invoice" + '\n');
-        System.out.println("0 - Back to Main Menu" + '\n');
-        
-        System.out.print("Enter your selection (0-4): ");
-        selection = sc.nextInt();
-        
-        switch(selection){
-            case 1 -> {
-                SupplierInvoiceDriver.addInvoice(invoice, si, stockDetails, sd);
+
+        do {
+            //Suplier Invoice Menu
+            System.out.println("==================");
+            System.out.println(" Supllier Invoice ");
+            System.out.println("==================");
+            System.out.println("1 - Add new Invoice");
+            System.out.println("2 - Edit Invoice");
+            System.out.println("3 - Search Invoice");
+            System.out.println("4 - Cancel Invoice" + '\n');
+            System.out.println("0 - Back to Main Menu" + '\n');
+
+            System.out.print("Enter your selection (0-4): ");
+            selection = sc.nextInt();
+
+            switch (selection) {
+                case 1 -> {
+                    SupplierInvoiceDriver.addInvoice(invoice, si, stockDetails, sd);
+                }
+                case 2 -> {
+                    //SupplierInvoiceDriver.editInvoice(invoice, si, stockDetails, sd);
+                }
+                case 3 -> {
+                    //SupplierInvoiceDriver.searchInvoice(invoice, si, stockDetails, sd);
+                }
+                case 4 -> {
+                    //SupplierInvoiceDriver.cancelInvoice(invoice, si, stockDetails, sd);
+                }
+                case 0 -> {
+                    //ConvenienceStore.main();
+                }
+                default ->
+                    System.out.println("Invalid input! Please try again..." + '\n');
             }
-            case 2 -> {
-                        //SupplierInvoiceDriver.editInvoice(invoice, si, stockDetails, sd);
-            }
-            case 3 -> {
-                        //SupplierInvoiceDriver.searchInvoice(invoice, si, stockDetails, sd);
-            }
-            case 4 -> {
-                        //SupplierInvoiceDriver.cancelInvoice(invoice, si, stockDetails, sd);
-            }
-            case 0 -> {
-                        //ConvenienceStore.main();
-            }
-            default -> System.out.println("Invalid input! Please try again..." + '\n');
-        }
-        }while(selection < 0 || selection > 4);
+        } while (selection < 0 || selection > 4);
 
     }
 
@@ -107,6 +109,8 @@ public class SupplierInvoiceDriver {
                 staffName = sc.nextLine();
                 if (Staff.seacrhStaff(staffName) == false) {
                     System.out.println("Invalid staff name! Please try again..");
+                } else {
+                    si.setStaffName(staffName);
                 }
             } while (Staff.seacrhStaff(staffName) == false);
 
@@ -116,6 +120,8 @@ public class SupplierInvoiceDriver {
                 supplierName = sc.nextLine();
                 if (Supplier.seacrhSupplier(supplierName) == false) {
                     System.out.println("Invalid supplier name! Please try again..");
+                } else{
+                    si.setSupplierName(supplierName);
                 }
             } while (Supplier.seacrhSupplier(supplierName) == false);
 
@@ -145,5 +151,17 @@ public class SupplierInvoiceDriver {
             System.out.println("Continue add another invoice? (Y/N) > ");
             cont = sc.next().charAt(0);
         } while (cont == 'Y' || cont == 'y');
+    }
+
+    public static void editInvoice() {
+
+    }
+
+    public void searchInvoice() {
+        
+    }
+
+    public static void cancelInvoice() {
+
     }
 }

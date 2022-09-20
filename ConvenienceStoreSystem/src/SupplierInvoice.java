@@ -35,7 +35,6 @@ public class SupplierInvoice {
         return invNo;
     }
 
-    //still figure auto-increment for invNo
     public void setInvNo(String invNo) {
         this.invNo = invNo;
     }
