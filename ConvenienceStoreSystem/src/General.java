@@ -68,7 +68,7 @@ public class General {
         return input;
     }
 
-    public static char CharInput(String promptMsg, String errorMsg) {
+    public static char charInput(String promptMsg, String errorMsg) {
         String input;
         int loop;
         Scanner sc = new Scanner(System.in);
@@ -192,21 +192,21 @@ public class General {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         System.out.println(dtf.format(now));
-        if (mode == "dateTime") {
+        if ("dateTime".equals(mode)) {
             return dtf.format(now);
-        } else if (mode == "time") {
+        } else if ("time".equals(mode)) {
             return dtf.format(now).substring(11);
-        } else if (mode == "date") {
+        } else if ("date".equals(mode)) {
             return dtf.format(now).substring(0, 10);
-        } else if (mode == "yy") {
+        } else if ("yy".equals(mode)) {
             return dtf.format(now).substring(2, 4);
-        } else if (mode == "yyyy") {
+        } else if ("yyyy".equals(mode)) {
             return dtf.format(now).substring(0, 4);
-        } else if (mode == "mm") {
+        } else if ("mm".equals(mode)) {
             return dtf.format(now).substring(5, 7);
-        } else if (mode == "dd") {
+        } else if ("dd".equals(mode)) {
             return dtf.format(now).substring(8, 10);
-        } else if (mode == "yymm") {
+        } else if ("yymm".equals(mode)) {
             return dtf.format(now).substring(2, 4) + dtf.format(now).substring(5, 7);
         } else {
             System.out.println("Invalid mode selection");
