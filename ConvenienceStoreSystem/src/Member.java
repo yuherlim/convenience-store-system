@@ -1,6 +1,7 @@
 
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -77,11 +78,6 @@ public class Member extends Person {
 
     public static void setNumOfCustomer(int NumOfCustomer) {
         Member.NumOfCustomer = NumOfCustomer;
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() + ",id=" + id;
     }
 
     public static void add(ArrayList<Member> members) {
@@ -256,7 +252,7 @@ public class Member extends Person {
 
     public static void displayMember(ArrayList<Member> members) {
         for (int i = 0; i < members.size(); i++) {
-            System.out.printf("| %04d | %-8s | %-30s | %-12s | %-11s | %-60s |", i, members.get(i).getId(), members.get(i).getName(), members.get(i).getIc(), members.get(i).getPhoneNum(), members.get(i).getAddress());
+            System.out.printf("| %04d | %-8s | %-30s | %-12s | %-11s | %-60s | \n", i, members.get(i).getId(), members.get(i).getName(), members.get(i).getIc(), members.get(i).getPhoneNum(), members.get(i).getAddress());
         }
     }
     
@@ -302,6 +298,11 @@ public class Member extends Person {
             return false;
         }
         return true;
+    }
+  
+      @Override
+    public String toString() {
+        return super.toString() + ",id=" + id;
     }
 
 }
