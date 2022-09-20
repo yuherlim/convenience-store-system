@@ -9,8 +9,8 @@ import java.util.Arrays;
 public class CreditNote {
     private String cnNo;
     private String cnDate;       //LocalDate date= LocalDate.now();
-    private Staff staffName;
-    private Supplier supplierName;
+    private String staffName;
+    private String supplierName;
     private ArrayList<StockDetails> stockDetails;
     private double amount;
     private static String fileName = "creditNote.txt";
