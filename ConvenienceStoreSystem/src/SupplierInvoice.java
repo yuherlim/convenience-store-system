@@ -23,13 +23,14 @@ public class SupplierInvoice {
         this.amount = 0d;
     }
 
-    public SupplierInvoice(String invNo, String invDate, String staffName, String supplierName, ArrayList<StockDetails> stockDetails, double amount) {
+    public SupplierInvoice(String invNo, String invDate, String staffName, String supplierName, ArrayList<StockDetails> stockDetails, double amount, String tag) {
         this.invNo = invNo;
         this.invDate = invDate;
         this.staffName = staffName;
         this.supplierName = supplierName;
         this.stockDetails = stockDetails;
         this.amount = amount;
+        this.tag = tag;
     }
 
     public String getInvNo() {
