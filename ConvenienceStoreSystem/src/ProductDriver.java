@@ -23,10 +23,12 @@ public class ProductDriver {
 //        Product p1 = new Product();
         
 //        ProductDriver.addProduct(products, p1);
+
+        
         ProductDriver.addProduct(products);
         
 //        products = readFile(Product.fileName, products);
-        
+//        
 //        for (Product p: products) {
 //            System.out.println("Product:");
 //            System.out.println(p);
@@ -132,6 +134,44 @@ public class ProductDriver {
         }
     }
     
+//    //method that adds new category into a specified txt file.
+//    public static void addCategory(String fileName) {
+//        ArrayList<String> categoryList = new ArrayList<>();
+//        //read and store all the existing categories into categoryList
+//        try {
+//            FileReader reader = new FileReader("src\\" + fileName);
+//            BufferedReader bufferedReader = new BufferedReader(reader);
+// 
+//            String line;
+// 
+//            while ((line = bufferedReader.readLine()) != null) {
+//                categoryList.add(line);
+//            }
+//            reader.close();
+// 
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        
+//        boolean loop;
+//        do {
+//            loop = true;
+//            System.out.println("Existing categories: ");
+//            for (String category: categoryList) {
+//                System.out.println(category);
+//            }
+//
+//            System.out.println("");
+//            String category = General.stringInput("Please enter new category name : ", "Invalid category name, please try again.").toUpperCase();
+//
+//            if (Product.addCategory(fileName, categoryList, category)) {
+//                System.out.println("New category : " + category + " successfully added.");
+//                loop = false;
+//            } else 
+//                System.out.println("New category not added.\n");
+//        } while(loop == true);
+//    }
+    
     //Method to add a new product
     public static void addProduct(ArrayList<Product> products) {
         
@@ -157,13 +197,28 @@ public class ProductDriver {
             System.out.println("Product code: " + currentProductCode);
             
             //Ask for product name
-            String name = General.stringInput("Enter product name: ", "Invalid product name, please try again").toUpperCase();
+            //Validate product name to prevent duplicate products to be created.
+            String name;
+            boolean validName;
+            do {
+                validName = true;
+                name = General.stringInput("Enter product name: ", "Invalid product name, please try again").toUpperCase();
+                for (int i = 0; i < products.size(); i++) {
+                    if (products.get(i).getName().equals(name)) {
+                        System.out.println("This product name has already existed, please try another product name.");
+                        validName = false;
+                        break;
+                    } 
+                }
+                
+            } while (validName == false);
             
             //Ask for product current cost price
             //Input validation for current cost price.
             double currentCostPrice;
-            boolean validCostPrice = false;
+            boolean validCostPrice;
             do {
+                validCostPrice = false;
                 currentCostPrice = General.doubleInput("Enter current cost price: ", "Invalid cost price, please try again.");
                 if (currentCostPrice > 0)
                     validCostPrice = true;
@@ -174,8 +229,9 @@ public class ProductDriver {
             //Ask for product current selling price
             //input validation for current selling price
             double currentSellingPrice;
-            boolean validSellingPrice = false;
+            boolean validSellingPrice;
             do {
+                validSellingPrice = false;
                 currentSellingPrice = General.doubleInput("Enter current selling price: ", "Invalid selling price, please try again.");
                 if (currentSellingPrice > currentCostPrice)
                     validSellingPrice = true;
@@ -188,8 +244,9 @@ public class ProductDriver {
             
             //Ask for minimum stock reorder quantity
             int minReorderQty;
-            boolean validMinReorderQty = false;
+            boolean validMinReorderQty;
             do {
+                validMinReorderQty = false;
                 minReorderQty = General.intInput("Enter minimum reorder quantity: ", "Invalid input, please ensure you have entered an integer.");
                 if (minReorderQty < 0)
                     System.out.println("Invalid, you have entered a negative number, please try again.");
@@ -197,8 +254,56 @@ public class ProductDriver {
                     validMinReorderQty = true;
             } while(validMinReorderQty == false);
             
+//            String category = General.stringInput("Enter category of product: ", "Invalid category name, please try again.").toUpperCase();
+            
+            ArrayList<String> categoryList = new ArrayList<>();
+            
+            //read and store all the existing categories into categoryList
+            try {
+                FileReader reader = new FileReader("src\\" + "productCategory.txt");
+                BufferedReader bufferedReader = new BufferedReader(reader);
+
+                String line;
+
+                while ((line = bufferedReader.readLine()) != null) {
+                    categoryList.add(line);
+                }
+                reader.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            
             //Ask for the category of this product.
-            String category = General.stringInput("Enter category of product: ", "Invalid category name, please try again.");
+            //Validate the category of this product if it does not exist ask if they want to create it.
+            String category;
+            boolean validCategory;
+            do {
+                validCategory = false;
+                System.out.println("Existing categories: ");
+                for (String ct: categoryList) {
+                    System.out.println(ct);
+                }
+
+                System.out.println("");
+                category = General.stringInput("Enter category of product: ", "Invalid category name, please try again.").toUpperCase();
+
+                for (String ct: categoryList) {
+                    if (ct.equals(category)) {
+                        validCategory = true;
+                        break;
+                    }
+                }
+                
+                if (validCategory == false) 
+                    if (General.yesNoInput("This product category does not exist, do you want to add it? (Y)es/(N)o : ", "Invalid input, please enter Y or N.") == 'Y') {
+                        Product.addCategory("productCategory.txt", category);
+                        validCategory = true;
+                    }
+            } while(validCategory == false);
+                
+                
+            
             
             
 //            //Array list to store the stock available to create product from.
@@ -316,20 +421,20 @@ public class ProductDriver {
             
             //confirmation of adding of product.
             char confirmation = 'N';
-            System.out.print("Confirm add product? (Y/N) : ");
             confirmation = General.yesNoInput("Confirm add product? (Y)es/(N)o : ", "Invalid input, please enter Y or N.");
 //            confirmation = Character.toUpperCase(sc.next().charAt(0));
             if (confirmation == 'Y') {
                 products.add(p1);
                 System.out.println("Product added successfully.");
+                //Write to file after finish adding product details.
+                Product.add(Product.fileName, products);
             } else {
                 System.out.println("Product is not added.");
             }
 
-            System.out.println("Continue adding new product? (Y/N)");
-//            cont = Character.toUpperCase(sc.next().charAt(0));
+            //Check whether user wants to continue adding new products
+            cont = General.yesNoInput("Continue adding new product? (Y/N) : ", "Invalid input, please enter Y or N.");
         } while(cont == 'Y'); 
-        //Write to file after finish adding products
-        Product.add(Product.fileName, products);
+        
     }
 }
