@@ -25,7 +25,11 @@ public class ProductDriver {
 //        ProductDriver.addProduct(products, p1);
 
         
-        ProductDriver.addProduct(products);
+//        ProductDriver.addProduct(products);
+
+//        ProductDriver.modifyProduct(products);
+
+        ProductDriver.searchProduct(products);
         
 //        products = readFile(Product.fileName, products);
 //        
@@ -174,6 +178,8 @@ public class ProductDriver {
     
     //Method to add a new product
     public static void addProduct(ArrayList<Product> products) {
+        
+        printHeader("addProduct");
         
         //Read the current product list
         products = readFile(Product.fileName, products);
@@ -437,4 +443,86 @@ public class ProductDriver {
         } while(cont == 'Y'); 
         
     }
+    
+    //method to search for products.
+    public static void searchProduct(ArrayList<Product> products) {
+        printHeader("searchProduct");
+        
+        //Read the current product list
+        products = readFile(Product.fileName, products);
+        
+        
+    }
+    
+    //method to modify product details.
+    public static void modifyProduct(ArrayList<Product> products) {
+        printHeader("modifyProduct");
+        
+        //Read the current product list
+        products = readFile(Product.fileName, products);
+        
+        //search menu
+        int selection;
+        do {
+            selection = searchMenu();
+            
+        } while(selection != 0);
+        
+    }
+    
+    public static void printHeader(String headerType) {
+        switch(headerType) {
+            case "addProduct":
+                System.out.println("---------------------");
+                System.out.println(" | Add New Product | ");
+                System.out.println("---------------------");
+                System.out.println("");
+                break;
+            case "modifyProduct":
+                System.out.println("--------------------");
+                System.out.println(" | Modify product | ");
+                System.out.println("--------------------");
+                System.out.println("");
+                break;
+            case "searchProduct":
+                System.out.println("--------------------");
+                System.out.println(" | Search product | ");
+                System.out.println("--------------------");
+                System.out.println("");
+                break;
+            default:
+                System.out.println("Header type does not exist.");
+        }
+    }
+    
+    public static int searchMenu() {
+        System.out.println("Which field do you want to search by?");
+        System.out.println("Available choices: ");
+        System.out.println("1. Product Code");
+        System.out.println("2. Product Name");
+        System.out.println("3. Category");
+        System.out.println("");
+        System.out.println("0. Return to product menu");
+        System.out.println("Enter selection (0-3) : ");
+        
+        return General.intInput("Enter selection (0-3) : ", "Invalid input, please enter an integer.");
+    }
+    
+    public static void printSelectionMenu(String selectionMenuType)  {
+        switch(selectionMenuType) {
+            case "searchSelectionMenu":
+                System.out.println("Which field do you want to search by?");
+                System.out.println("Available choices: ");
+                System.out.println("1. Product Code");
+                System.out.println("2. Product Name");
+                System.out.println("3. Category");
+                System.out.println("");
+                System.out.println("0. Return to product menu");
+                System.out.println("Enter selection (0-3) : ");
+                break;
+            default:
+                System.out.println("Selection menu type does not exist.");
+        }
+    }
 }
+
