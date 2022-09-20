@@ -1,5 +1,8 @@
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -137,6 +140,43 @@ public class Product {
     
     public void display() {
         System.out.println("add function body");
+    }
+    
+    //Add a new product category in the specified txt file if it has not existed before.
+    public static void addCategory(String fileName, String category) {
+//        boolean exist = false;
+        
+        try {
+            //Create FileWriter set to append mode (second parameter true) 
+            FileWriter writer = new FileWriter("src\\" + fileName, true);
+  
+//            for (int i = 0; i < categoryList.size(); i++) {
+//                //Check whether the category existed before or not.
+//                if (categoryList.get(i).equals(category)) {
+//                    System.out.println("This category already exists.");
+//                    exist = true;
+//                    break;
+//                }
+//            }
+//            //Writes the record to the file if the category has not existed before.
+//            char confirmation;
+//            if (!exist) {
+//                confirmation = General.yesNoInput("Confirm add category? (Y)es/(N)o : ", "Invalid input, please enter Y or N.");
+//                if (confirmation == 'Y')
+//                    writer.write(category + "\n");
+//                else 
+//                    exist = true;
+//            }
+            //Write the new category into the specified fileName.
+            writer.write(category + "\n");    
+            // Closes the writer
+            writer.close();
+        }
+  
+        catch (Exception e) {
+            e.getStackTrace();
+        }
+//        return (!exist);
     }
     
     public static void writeFile(String fileName, ArrayList<Product> products) {

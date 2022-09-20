@@ -62,22 +62,6 @@ public class General {
 
     }
 
-    public static char yesNoInput(String promptMsg, String errorMsg) {
-        char input;
-        int loop;
-        do {
-            input = Character.toUpperCase(charInput(promptMsg, errorMsg));
-            System.out.println(errorMsg);
-            loop = 0;
-            if (input != 'Y' && input != 'N') {
-                System.out.println("Please enter Y or N.");
-                loop = 1;
-            }
-
-        } while (loop == 1);
-        return input;
-    }
-
     public static int intInput(String promptMsg, String errorMsg) {
         int input = 0;
         int loop;
@@ -87,7 +71,7 @@ public class General {
             System.out.print(promptMsg);
             try {
                 input = sc.nextInt();
-                sc.nextLine();
+                sc.nextLine();      //get rid of the newline
             } catch (Exception e) {
                 sc.nextLine();
                 System.out.println(errorMsg);
@@ -108,7 +92,7 @@ public class General {
             System.out.print(promptMsg);
             try {
                 input = sc.nextDouble();
-                sc.nextLine();
+                sc.nextLine();      //get rid of the newline
             } catch (Exception e) {
                 sc.nextLine();
                 System.out.println(errorMsg);
@@ -135,6 +119,21 @@ public class General {
             }
         } while (loop == 1);
         return input.charAt(0);
+    }
+    
+    public static char yesNoInput(String promptMsg, String errorMsg) {
+        char input;
+        int loop;
+        do {
+            input = Character.toUpperCase(charInput(promptMsg, errorMsg));
+            loop = 0;
+            if (input != 'Y' && input != 'N') {
+                System.out.println("Invalid input, please enter Y or N.");
+                loop = 1;
+            }
+               
+        } while (loop == 1);
+        return input;
     }
     
     public static String phoneInput(String promptMsg) {
