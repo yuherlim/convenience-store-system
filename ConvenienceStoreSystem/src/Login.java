@@ -1,3 +1,4 @@
+
 /**
  *
  * @author JiaQing
@@ -68,8 +69,6 @@ public class Login {
                                     System.out.println("  >Wrong password. " + i + " try left.");
                                 default -> {
                                     System.out.println("  >Wrong password. Contact Human Resource or Manager to change password.");
-                                    System.out.print("Press any key to continue...");
-                                    scanner.nextLine();
                                 }
                             }
                         }
@@ -84,6 +83,8 @@ public class Login {
                 default ->
                     System.out.println("Staff not in company.");
             }
+            General.systemPause();
+            General.clearScreen();
         } while (loop == 0);
     }
 }
