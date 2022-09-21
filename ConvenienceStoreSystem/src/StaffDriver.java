@@ -10,10 +10,10 @@ import java.util.Scanner;
 
 public class StaffDriver {
 
-    public static void main(String[] args) {
+    public static void main(String[] args, Staff staffLogin) {
         int selection;      //Normal Worker OR Program Admin
-        Staff staffLogin = new Staff("ST-000", "Lim Jia Qing", "990809015027", "08/09/1999",
-                "0176922172", "Setapak, Kuala Lumpur", "Normal Worker", "abc123", 0.0, "Active");
+        //staffLogin = new Staff("ST-000", "Lim Jia Qing", "990809015027", "08/09/1999",
+        //        "0176922172", "Setapak, Kuala Lumpur", "Normal Worker", "abc123", 0.0, "Active");
         //Staff submenu
         do {
             do {
@@ -27,7 +27,7 @@ public class StaffDriver {
                 System.out.println("3 - Search Staff");
                 System.out.println("4 - Modify Staff" + '\n');
                 System.out.println("0 - Main Menu");
-                selection = General.intInput("  Selection: ", "  Please only select 0~4.");
+                selection = General.intInput("Selection: ", "  Please only select 0~4.");
             } while (selection < 0 || selection > 4);
 
             General.clearScreen();
@@ -70,7 +70,7 @@ public class StaffDriver {
             addStaff.setIc(scanner.nextLine());
         } while (!General.icValidation(addStaff.getIc()));
 
-        addStaff.setBirthdate(General.dateInput("Birthdate(DD/MM/YYYY): ", "Wrong date format. Enter again."));
+        addStaff.setBirthdate(General.dateInput("Birthdate(DD/MM/YYYY): ", "  Wrong date format. Enter again."));
 
         addStaff.setPhoneNum(General.phoneInput("Phone Number(without '-'): "));
 
@@ -100,7 +100,7 @@ public class StaffDriver {
         } while (selection < 1 || selection > 4);
         System.out.println("Position: " + addStaff.getPosition());
 
-        addStaff.setSalary(General.doubleInput("Salary: RM ", "Only numbers requried."));
+        addStaff.setSalary(General.doubleInput("Salary: RM ", "  Only numbers requried."));
 
         addStaff.setStaffID(String.format("ST-%03d", Staff.getNumOfStaff() + 1));
         addStaff.setAccountStatus("Inactive");
@@ -115,6 +115,7 @@ public class StaffDriver {
         do {
             System.out.print("Comfirm to add new staff <" + addStaff.getStaffID() + ">?(Y)es/(N)o: ");
             yOrN = Character.toUpperCase(scanner.next().charAt(0));
+            scanner.nextLine();
             switch (yOrN) {
                 case 'Y' -> {
                     //append file
@@ -126,7 +127,7 @@ public class StaffDriver {
                 case 'N' ->
                     System.out.println("    == Staff Add Cancelled ==");
                 default ->
-                    System.out.println("Only enter Y or N.");
+                    System.out.println("  Only enter Y or N.");
             }
         } while (yOrN != 'Y' && yOrN != 'N');
         General.systemPause();
@@ -164,7 +165,7 @@ public class StaffDriver {
                 }
                 reader.close();
             } catch (IOException e) {
-                System.out.println("staff.txt open failed.");
+                System.out.println("  staff.txt open failed.");
             }
         } else {
             System.out.println("Staff ID  Name                            IC            Age  Phone Num    Position        Account Status  Salary");
@@ -187,7 +188,7 @@ public class StaffDriver {
                 }
                 reader.close();
             } catch (IOException e) {
-                System.out.println("staff.txt open failed.");
+                System.out.println("  staff.txt open failed.");
             }
         }
         General.systemPause();
@@ -219,7 +220,7 @@ public class StaffDriver {
 
             switch (selection) {
                 case 1 -> {
-                    String staffIDSearch = Staff.staffIDInput("Staff ID : ", "Invalid Staff ID.");
+                    String staffIDSearch = Staff.staffIDInput("Staff ID : ", "  Invalid Staff ID.");
                     //read file
                     searchStaff = Staff.searchAllStaff(staffIDSearch, "Staff ID");
 
@@ -233,11 +234,11 @@ public class StaffDriver {
                         }
                         break;
                     } else {
-                        System.out.println("Staff not exist.");
+                        System.out.println("  Staff not exist.");
                     }
                 }
                 case 2 -> {
-                    String nameSearch = General.stringNullCheckingInput("Name : ", "Name cannot be empty.");
+                    String nameSearch = General.stringNullCheckingInput("Name : ", "  Name cannot be empty.");
                     //read file
                     searchStaff = Staff.searchAllStaff(nameSearch, "Name");
 
@@ -251,7 +252,7 @@ public class StaffDriver {
                         }
                         break;
                     } else {
-                        System.out.println("Staff not exist.");
+                        System.out.println("  Staff not exist.");
                     }
                 }
                 case 3 -> {
@@ -269,7 +270,7 @@ public class StaffDriver {
                         }
                         break;
                     } else {
-                        System.out.println("Staff not exist.");
+                        System.out.println("  Staff not exist.");
                     }
                 }
                 case 0 ->
@@ -307,9 +308,9 @@ public class StaffDriver {
             System.out.println("");
             System.out.println("0 - Back to Staff Menu");
             do {
-                selection = General.intInput("  Selection: ", "Enter Integer only.");
+                selection = General.intInput("Selection: ", "  Enter Integer only.");
                 System.out.println("");
-                
+
                 switch (selection) {
                     case 1 -> {
                         isOther = false;
@@ -319,21 +320,21 @@ public class StaffDriver {
                     case 2 -> {
                         isOther = true;
                         System.out.println("Enter Staff ID to be edited.");
-                        String staffIDSearch = Staff.staffIDInput("Staff ID : ", "Invalid Staff ID.");
+                        String staffIDSearch = Staff.staffIDInput("Staff ID : ", "  Invalid Staff ID.");
                         //read file
                         editedStaff = Staff.searchAllStaff(staffIDSearch, "Staff ID");
 
                         if (!editedStaff.getStaffID().equals("")) {
                             editedStaff = Staff.staffEditDetail(editedStaff, isAdmin, isOther);
                         } else {
-                            System.out.println("Staff not exist.");
+                            System.out.println("  Staff not exist.");
                         }
                     }
                     case 0 -> {
                         System.out.println("Back to Staff Menu...");
                     }
                     default -> {
-                        System.out.println("Enter 0-2 only.");
+                        System.out.println("  Enter 0-2 only.");
                     }
                 }
             } while (selection != 0);
