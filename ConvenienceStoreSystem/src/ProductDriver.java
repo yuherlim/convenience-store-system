@@ -473,6 +473,7 @@ public class ProductDriver {
                     if (printCount == 0) {
                         System.out.println("Product code entered does not exist.");
                     }
+                    System.out.printf("< %d record(s) >\n", printCount);
                     System.out.println("");
                     break;
                 case 2:
@@ -491,6 +492,7 @@ public class ProductDriver {
                     if (printCount == 0) {
                         System.out.println("Product name entered does not exist.");
                     }
+                    System.out.printf("< %d record(s) >\n", printCount);
                     System.out.println("");
                     break;
                 case 3:
@@ -508,9 +510,11 @@ public class ProductDriver {
                     if (printCount == 0) {
                         System.out.println("Product category entered does not exist.");
                     }
+                    System.out.printf("< %d record(s) >\n", printCount);
                     System.out.println("");
                     break;
                 case 0:
+                    System.out.println("Returning to product menu...");
                     break;
                 default:
                     System.out.println("Please ensure your selection is (0-3).");
@@ -519,14 +523,41 @@ public class ProductDriver {
         } while(selection != 0);
     }
     
-    //method overloading - this searchProduct accepts a second argument for searchType
-    public static ArrayList<Product> searchProduct(ArrayList<Product> products, String searchType) {
+    //method overloading - this searchProduct accepts a second argument for searchType, and returns the array list containing the products searched.
+    public static Product searchProduct(String searchType, String searchString) {
         
-        ArrayList<Product> searchResultsProducts = new ArrayList<>();
+        //Read product details and store it into an array list
+        ArrayList<Product> products = new ArrayList<>();
+        
+        products = readFile(Product.fileName, products);
+        
+        Product searchResultsProducts = new Product();
+        
+        //to keep track of the searchCount;
+        int searchCount = 0;
         
         switch(searchType) {
             case "productCode":
-                
+                for (int i = 0; i < products.size(); i++) {
+                    if (products.get(i).getCode().equals(searchString)) {
+                        searchResultsProducts = new Product(products.get(i));
+                        searchCount++;
+                        break;
+                    } 
+                }
+                if (searchCount == 0)
+                    return null;
+                break;
+            case "productName":
+                for (int i = 0; i < products.size(); i++) {
+                    if (products.get(i).getName().equals(searchString)) {
+                        searchResultsProducts = new Product(products.get(i));
+                        searchCount++;
+                        break;
+                    } 
+                }
+                if (searchCount == 0)
+                    return null;
             default:
                 System.out.println("Invalid searchType.");
         }
@@ -541,7 +572,92 @@ public class ProductDriver {
         //Read the current product list
         products = readFile(Product.fileName, products);
         
+        Product productSearchResult = new Product();
         
+        //modify menu 1: search for product record to edit.
+        int selection;
+        do {
+            selection = modifyMenu("search");
+            switch(selection) {
+                case 1:
+                    //Ask for product code and search for the product details with the product code.
+                    String code = codeInput();
+                    productSearchResult = searchProduct("productCode", code);
+                    printHeader("searchResultsHeader");
+                    System.out.println(productSearchResult);
+                    break;
+                case 2:
+                    //Ask for product name and search for the product details with the product name.
+                    String name = General.stringInput("Enter product name: ", "Invalid product name, please try again").toUpperCase();
+                    productSearchResult = searchProduct("productName", name);
+                    printHeader("searchResultsHeader");
+                    System.out.println(productSearchResult);
+                    break;
+                case 0:
+                    System.out.println("Returning to product menu...");
+                    break;
+                default:
+                    System.out.println("Please ensure your selection is (0-2).");
+            }
+            
+            //modify menu 2: ask for what field to edit
+            selection = modifyMenu("modifyField");
+            switch(selection) {
+                case 1:
+                    //Ask for new product name.
+                    //Validate product name to prevent duplicate products to be created.
+                    String name;
+                    boolean validName;
+                    do {
+                        validName = true;
+                        name = General.stringInput("Enter product name: ", "Invalid product name, please try again").toUpperCase();
+                        for (int i = 0; i < products.size(); i++) {
+                            if (products.get(i).getName().equals(name)) {
+                                System.out.println("This product name has already existed, please try another product name.");
+                                validName = false;
+                                break;
+                            } 
+                        }
+
+                    } while (validName == false);
+                    productSearchResult.setName(name);
+                    break;
+                case 2:
+                    //Ask for new product selling price.
+                    //input validation for current selling price
+                    double currentSellingPrice;
+                    boolean validSellingPrice;
+                    do {
+                        validSellingPrice = false;
+                        currentSellingPrice = General.doubleInput("Enter current selling price: ", "Invalid selling price, please try again.");
+                        if (currentSellingPrice > productSearchResult.getCurrentCostPrice())
+                            validSellingPrice = true;
+                        else 
+                            System.out.println("Product current selling price cannot be smaller than the cost price. Please try again.");
+                    } while(validSellingPrice == false);
+                    productSearchResult.setCurrentSellingPrice(currentSellingPrice);
+                    break;
+                case 3:
+                    
+                    break;
+                case 4:
+                    break;
+                default: 
+                    System.out.println("Please ensure your selection is (0-4).");
+                    
+                for (int i = 0; i < products.size(); i++) {
+                    if (products.get(i).equals(productSearchResult)) {
+                        products.set(i, productSearchResult);
+                    }
+                }
+                Product.modify(Product.fileName, products);
+                System.out.println("Product successfully modified.");
+                
+            }
+            
+            
+            
+        } while(selection != 0);
         
     }
     
@@ -576,6 +692,131 @@ public class ProductDriver {
         
 
         return productCode;
+    }
+    
+    //Validation for product name
+    public static String nameInput() {
+        //read current product list in to array list
+        ArrayList<Product> products = new ArrayList<>();
+        products = readFile(Product.fileName, products);
+        //Validate product name to prevent duplicate products to be created.
+        String name;
+        boolean validName;
+        do {
+            validName = true;
+            name = General.stringInput("Enter product name: ", "Invalid product name, please try again").toUpperCase();
+            for (int i = 0; i < products.size(); i++) {
+                if (products.get(i).getName().equals(name)) {
+                    System.out.println("This product name has already existed, please try another product name.");
+                    validName = false;
+                    break;
+                } 
+            }
+
+        } while (validName == false);
+        
+        return name;
+    }
+    
+    //Validation for category input.
+    public static String categoryInput() {
+        ArrayList<String> categoryList = new ArrayList<>();
+            
+        //read and store all the existing categories into categoryList
+        try {
+            FileReader reader = new FileReader("src\\" + "productCategory.txt");
+            BufferedReader bufferedReader = new BufferedReader(reader);
+
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null) {
+                categoryList.add(line);
+            }
+            reader.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //Ask for the category of this product.
+        //Validate the category of this product if it does not exist ask if they want to create it.
+        String category;
+        boolean validCategory;
+        do {
+            validCategory = false;
+            System.out.println("Existing categories: ");
+            for (String ct: categoryList) {
+                System.out.println(ct);
+            }
+
+            System.out.println("");
+            category = General.stringInput("Enter category of product: ", "Invalid category name, please try again.").toUpperCase();
+
+            for (String ct: categoryList) {
+                if (ct.equals(category)) {
+                    validCategory = true;
+                    break;
+                }
+            }
+
+            if (validCategory == false) 
+                if (General.yesNoInput("This product category does not exist, do you want to add it? (Y)es/(N)o : ", "Invalid input, please enter Y or N.") == 'Y') {
+                    Product.addCategory("productCategory.txt", category);
+                    validCategory = true;
+                }
+        } while(validCategory == false);
+        return category;
+    }
+    
+    //validation for minimum reorder quantity
+    public static int minReorderQtyInput() {
+        //Ask for minimum stock reorder quantity
+        int minReorderQty;
+        boolean validMinReorderQty;
+        do {
+            validMinReorderQty = false;
+            minReorderQty = General.intInput("Enter minimum reorder quantity: ", "Invalid input, please ensure you have entered an integer.");
+            if (minReorderQty < 0)
+                System.out.println("Invalid, you have entered a negative number, please try again.");
+            else
+                validMinReorderQty = true;
+        } while(validMinReorderQty == false);
+        
+        return minReorderQty;
+    }
+    
+    //Validation for current price input
+    public static double currentCostPriceInput() {
+        //Ask for product current cost price
+        //Input validation for current cost price.
+        double currentCostPrice;
+        boolean validCostPrice;
+        do {
+            validCostPrice = false;
+            currentCostPrice = General.doubleInput("Enter current cost price: ", "Invalid cost price, please try again.");
+            if (currentCostPrice > 0)
+                validCostPrice = true;
+            else 
+                System.out.println("Product current cost price cannot be a negative number. Please try again.");
+        } while(validCostPrice == false);
+        return currentCostPrice;
+    }
+    
+    //Validation for selling price input
+    public static double currentSellingPriceInput(double currentCostPrice) {
+        //Ask for product current selling price
+        //input validation for current selling price
+        double currentSellingPrice;
+        boolean validSellingPrice;
+        do {
+            validSellingPrice = false;
+            currentSellingPrice = General.doubleInput("Enter current selling price: ", "Invalid selling price, please try again.");
+            if (currentSellingPrice > currentCostPrice)
+                validSellingPrice = true;
+            else 
+                System.out.println("Product current selling price cannot be smaller than the cost price. Please try again.");
+        } while(validSellingPrice == false);
+        return currentSellingPrice;
     }
     
     public static void printHeader(String headerType) {
@@ -619,6 +860,41 @@ public class ProductDriver {
         System.out.println("");
         
         return General.intInput("Enter selection (0-3) : ", "Invalid input, please enter an integer.");
+    }
+    
+    //Displays the menus used in modifyProduct method
+    public static int modifyMenu(String menuType) {
+        int selection = 0;
+        switch(menuType) {
+            case "search":
+                System.out.println("Which field do you want to search by?");
+                System.out.println("Available choices: ");
+                System.out.println("1. Product Code");
+                System.out.println("2. Product Name");
+                System.out.println("");
+                System.out.println("0. Return to product menu");
+                System.out.println("");
+
+                selection = General.intInput("Enter selection (0-2) : ", "Invalid input, please enter an integer.");
+                break;
+            case "modifyField":
+                System.out.println("Which field do you want to modify?");
+                System.out.println("Available choices: ");
+                System.out.println("1. Product Name");
+                System.out.println("2. Product Selling Price");
+                System.out.println("3. Product Category");
+                System.out.println("4. Product Reorder Quantity");
+                System.out.println("");
+                System.out.println("0. Return to product menu");
+                System.out.println("");
+
+                selection = General.intInput("Enter selection (0-4) : ", "Invalid input, please enter an integer.");
+                break;
+            default:
+                System.out.println("Menu type does not exist.");
+        }
+        
+        return selection;
     }
     
     public static void printSelectionMenu(String selectionMenuType)  {

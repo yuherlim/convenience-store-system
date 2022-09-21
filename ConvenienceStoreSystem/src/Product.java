@@ -39,6 +39,18 @@ public class Product {
 //        code = "P" + String.format("%04d", nextCode);
 //        nextCode++;
     }
+    
+    public Product(Product p) {
+        this.code = p.code;
+        this.name = p.name;
+        this.currentSellingPrice = p.currentSellingPrice;
+        this.currentCostPrice = p.currentCostPrice;
+        this.stockQty = p.stockQty;
+        this.minReorderQty = p.minReorderQty;
+        this.category = p.category;
+        this.transactionDetails = p.transactionDetails;
+        this.stockDetails = p.stockDetails;
+    }
 
     public Product(String code, String name, double currentSellingPrice, double currentCostPrice, int stockQty, int minReorderQty, String category, ArrayList<TransactionDetails> transactionDetails, ArrayList<StockDetails> stockDetails) {
 //        code = "P" + nextCode;
@@ -135,8 +147,8 @@ public class Product {
         System.out.println("add function body");
     }
     
-    public void modify() {
-        System.out.println("add function body");
+    public static void modify(String fileName, ArrayList<Product> products) {
+        Product.writeFile(fileName, products);
     }
     
     public void display() {
@@ -220,10 +232,7 @@ public class Product {
             return false;
         }
         final Product other = (Product) obj;
-        if (!Objects.equals(this.code, other.code)) {
-            return false;
-        }
-        return Objects.equals(this.name, other.name);
+        return Objects.equals(this.code, other.code);
     }
     
 }
