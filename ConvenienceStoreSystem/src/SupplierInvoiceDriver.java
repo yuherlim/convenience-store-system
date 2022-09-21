@@ -11,11 +11,6 @@ public class SupplierInvoiceDriver extends General {
         Scanner sc = new Scanner(System.in);
         int selection;
 
-        SupplierInvoice si = new SupplierInvoice();
-        StockDetails sd = new StockDetails();
-        ArrayList<SupplierInvoice> invoice = new ArrayList<>();
-        ArrayList<StockDetails> stockDetails = new ArrayList<>();
-
         do {
             //Suplier Invoice Menu
             System.out.println("==================");
@@ -136,15 +131,15 @@ public class SupplierInvoiceDriver extends General {
                 } while (!nameGetted.equals(""));
 
                 //need compare to Supplier class
-                do {
+//                do {
                     System.out.print("Enter Suplier name: ");
                     supplierName = sc.nextLine();
-                    if (Supplier.seacrhSupplier(supplierName) == false) {
-                        System.out.println("Invalid supplier name! Please try again..");
-                    } else {
-                        si.setSupplierName(supplierName);
-                    }
-                } while (Supplier.seacrhSupplier(supplierName) == false);
+//                    if (Supplier.seacrhSupplier(supplierName) == false) {
+//                        System.out.println("Invalid supplier name! Please try again..");
+//                    } else {
+//                        si.setSupplierName(supplierName);
+//                    }
+//                } while (Supplier.seacrhSupplier(supplierName) == false);
 
                 do {
                     System.out.print("Enter the product code: ");
@@ -159,6 +154,7 @@ public class SupplierInvoiceDriver extends General {
                     //get invoice no. from supplier invoice class and store in stock details for reference
                     sd.setInvNo(si.getInvNo());
 
+                    //add stock details to stockDetails arrayList
                     stockDetails.add(sd);
 
                     System.out.print("Continue add item? (Y/N) > ");
@@ -166,6 +162,7 @@ public class SupplierInvoiceDriver extends General {
 
                 } while (cont == 'Y' || cont == 'y');
 
+                //add supplier invoice details to supplierInvoice arrayList
                 supplierInvoice.add(si);
 
                 //calculate the subtotal of each product add in
@@ -216,7 +213,7 @@ public class SupplierInvoiceDriver extends General {
 
                 for (int i = 0; i < supplierInvoice.size(); i++) {
                     if (invNo.equals(supplierInvoice.get(i).getInvNo())) {
-                        SupplierInvoiceDriver.printInvoice(si, stockDetails, subTotal);
+                        SupplierInvoiceDriver.printInvoice(supplierInvoice, i, stockDetails, subTotal);
                     }
                 }
 
@@ -237,7 +234,9 @@ public class SupplierInvoiceDriver extends General {
     public static void cancelInvoice() {
         Scanner sc = new Scanner(System.in);
         String invNo;
-        char cont;
+        char cont = 'Y';
+        char confirm;
+        int index = 0;
 
         do {
             //Create object
@@ -249,11 +248,11 @@ public class SupplierInvoiceDriver extends General {
             ArrayList<StockDetails> stockDetails = new ArrayList<>();
             ArrayList<Double> subTotal = new ArrayList<>();
 
-            //Call readfile to read the invoice.txt
+            //Call readfile to read the invoice.txt and store to arrayList
             SupplierInvoiceDriver.readFile(SupplierInvoice.fileName, supplierInvoice, stockDetails);
 
-            //Set the num of invoice as arraylist size
-            SupplierInvoice.setNumOfInv(supplierInvoice.size());
+            //Call readfile to read the stock.txt and store to arrayList
+            StockDetailsDriver.readFile(StockDetails.fileName, stockDetails);
 
             do {
                 System.out.println("------------------");
@@ -269,16 +268,45 @@ public class SupplierInvoiceDriver extends General {
                             System.out.println("Invalid Invoice Number. Please try again...");
                         } else {
                             SupplierInvoiceDriver.printInvoice(si, stockDetails, subTotal);
+                            index = i;
                         }
                     }
-                } while (!invNo.equals(supplierInvoice.get(i).getInvNo()));
+                } while (!invNo.equals(supplierInvoice.get(index).getInvNo()));
 
-                System.out.println("Confirm to cancel this invoice? (Y/N) > ");
-                cont = sc.next().charAt(0);
+                confirm = yesNoInput("Confirm to cancel this invoice? (Y/N) > ", "Invalid input! Please try again...");
 
-            } while (cont == 'Y' || cont == 'y');
+                if (confirm == 'Y') {
+                    supplierInvoice.set(index, si);
+                    System.out.println("Invoice deleted successfully.");
+                } else if (confirm == 'N') {
+                    System.out.println("Process terminated..");
+                    cont = yesNoInput("Continue to cancel another invoice? (Y/N) > ", "Invalid input! Please try again...");
+                }
 
-        } while (cont == 'Y' || cont == 'y');
+            } while (cont == 'Y');
+
+        } while (cont == 'Y');
+    }
+
+    public static void printInvoice(ArrayList<SupplierInvoice> supplierInvoice, int index, ArrayList<StockDetails> stockDetails, ArrayList<Double> subTotal) {
+
+        double totalAmount = 0d;
+        calcSubTotal(supplierInvoice, index, stockDetails);
+
+        System.out.printf("Invoice No.: %s                             Invoice Date: %s \n", supplierInvoice.get(index).getInvNo(), supplierInvoice.get(index).getInvDate());
+        System.out.printf("Supplier: %s                                Staff Incharge: %s \n", supplierInvoice.get(index).getSupplierName(), supplierInvoice.get(index).getStaffName());
+        System.out.println("---------------------------------------------------------------------");
+        System.out.println("Item               Cost Price          Qty                 Total(RM)");
+        System.out.println("---------------------------------------------------------------------");
+        for (int i = 0; i < stockDetails.size(); i++) {
+            if (supplierInvoice.get(index).getInvNo().equals(stockDetails.get(i).getInvNo())) {
+                System.out.printf("%s                    %.2f             %d                    %.2f \n",
+                        stockDetails.get(i).getProductCode(), stockDetails.get(i).getCostPrice(), stockDetails.get(i).getQty(), subTotal.get(i));
+                totalAmount += subTotal.get(i);
+            }
+        }
+        System.out.println("---------------------------------------------------------------------");
+        System.out.printf("Total Amount(RM)                                             %.2f \n", totalAmount);
     }
 
     public static void printInvoice(SupplierInvoice si, ArrayList<StockDetails> stockDetails, ArrayList<Double> subTotal) {
@@ -304,6 +332,18 @@ public class SupplierInvoiceDriver extends General {
 
         for (int i = 0; i < stockDetails.size(); i++) {
             subTotal.add(i, stockDetails.get(i).getCostPrice() * stockDetails.get(i).getQty());
+        }
+
+        return subTotal;
+    }
+
+    public static ArrayList<Double> calcSubTotal(ArrayList<SupplierInvoice> supplierInvoice, int index, ArrayList<StockDetails> stockDetails) {
+        ArrayList<Double> subTotal = new ArrayList<>();
+
+        for (int i = 0; i < stockDetails.size(); i++) {
+            if (supplierInvoice.get(index).getInvNo().equals(stockDetails.get(i).getInvNo())) {
+                subTotal.add(i, stockDetails.get(i).getCostPrice() * stockDetails.get(i).getQty());
+            }
         }
 
         return subTotal;
