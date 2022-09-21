@@ -56,7 +56,7 @@ public class SupplierInvoiceDriver extends General {
             String line;
 
             while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
+//                System.out.println(line);
                 String[] buffer = line.split("\\%");
                 String[] string1 = buffer[0].split("\\|");
 
