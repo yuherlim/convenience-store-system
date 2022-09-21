@@ -333,11 +333,10 @@ public class General {
         } catch (AWTException ex) {
         }
     }
-
+    
     public static void systemPause() {
+        Scanner sc = new Scanner(System.in);
         System.out.print("Press <Enter> to continue...");
-        scanner.nextLine();
-
+        sc.nextLine();
     }
-
 }
