@@ -61,9 +61,6 @@ public class Member extends Person {
 
     public static void searchMember() {
         ArrayList<Member> members = new ArrayList<>();
-        int intInput;
-        int loop;
-        int selection;
         char charSelection;
         String[] inputMode;
         MemberDriver.readFile("member", members);
@@ -121,11 +118,11 @@ public class Member extends Person {
                     } while (loop == 1);
                     break;
                 case 3:
-                    inputMode[1] = "name";
+                    inputMode[1] = "Name";
                     inputMode[0] = General.stringInput("Member name : ", "Invalid Member name");
                     break;
                 case 4:
-                    inputMode[1] = "birth month";
+                    inputMode[1] = "Birth month";
                     do {
                         loop = 0;
                         intInput = General.intInput("Member birth month (1-12) : ", "Invalid Member month");
@@ -134,11 +131,12 @@ public class Member extends Person {
                             loop = 1;
                         }
                     } while (loop == 1);
-                    inputMode[0] = String.valueOf(intInput);
+                    inputMode[0] = String.format("%02d", intInput);
                     break;
                 case 5:
-                    inputMode[1] = "active";
+                    inputMode[1] = "Active";
                     inputMode[0] = " ";
+                    break;
                 default:
                     System.out.println("Invalid selection");
                     loop = 1;
@@ -169,7 +167,7 @@ public class Member extends Person {
                 loop = 0;
                 Member.displayMember(memberSearch);
                 intSelection = General.intInput("Selection : ", "Invalid selection input");
-                if (intSelection < 0 && intSelection > index.size()) {
+                if (intSelection <= 0 || intSelection > index.size()) {
                     System.out.println("Invalid selection");
                     loop = 1;
                 } else {
@@ -185,7 +183,13 @@ public class Member extends Person {
     public static ArrayList<Member> searchObj(String input, String mode, ArrayList<Member> members) {
         ArrayList<Member> member = new ArrayList<>();
 
-        if ("IC".equals(mode)) {
+        if ("IcChecking".equals(mode)) {
+            for (int i = 0; i < members.size(); i++) {
+                if (members.get(i).getIc().equals(input)) {
+                    member.add(members.get(i));
+                }
+            }
+        } else if ("IC".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
                 if (members.get(i).getStatus().equals("Active")) {
                     if (members.get(i).getIc().equals(input)) {
@@ -201,7 +205,7 @@ public class Member extends Person {
                     }
                 }
             }
-        } else if ("name".equals(mode)) {
+        } else if ("Name".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
                 if (members.get(i).getStatus().equals("Active")) {
                     if (members.get(i).getName().equals(input)) {
@@ -209,7 +213,7 @@ public class Member extends Person {
                     }
                 }
             }
-        } else if ("birth month".equals(mode)) {
+        } else if ("Birth month".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
                 if (members.get(i).getStatus().equals("Active")) {
                     if (members.get(i).getBirthdate().substring(3, 5).equals(input)) {
@@ -217,7 +221,7 @@ public class Member extends Person {
                     }
                 }
             }
-        } else if ("active".equals(mode)) {
+        } else if ("Active".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
                 if (members.get(i).getStatus().equals("Active")) {
                     member.add(members.get(i));
@@ -229,13 +233,13 @@ public class Member extends Person {
                     member.add(members.get(i));
                 }
             }
-        } else if ("all".equals(mode)) {
+        } else if ("All".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
                 member.add(members.get(i));
 
             }
 
-        } else if ("young adult".equals(mode)) {
+        } else if ("Young adult".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
                 if (members.get(i).getStatus().equals("Active")) {
                     if (General.ageCalc(members.get(i).getBirthdate()) <= 30) {
@@ -243,7 +247,7 @@ public class Member extends Person {
                     }
                 }
             }
-        } else if ("middle aged adult".equals(mode)) {
+        } else if ("Middle aged adult".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
                 if (members.get(i).getStatus().equals("Active")) {
                     if (General.ageCalc(members.get(i).getBirthdate()) > 30) {
@@ -269,7 +273,13 @@ public class Member extends Person {
 
     public static ArrayList<Integer> searchIndex(String input, String mode, ArrayList<Member> members) {
         ArrayList<Integer> index = new ArrayList<>();
-        if ("IC".equals(mode)) {
+        if ("IcChecking".equals(mode)) {
+            for (int i = 0; i < members.size(); i++) {
+                if (members.get(i).getIc().equals(input)) {
+                    index.add(i);
+                }
+            }
+        }else if ("IC".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
                 if (members.get(i).getStatus().equals("Active")) {
                     if (members.get(i).getIc().equals(input)) {
@@ -285,7 +295,7 @@ public class Member extends Person {
                     }
                 }
             }
-        } else if ("name".equals(mode)) {
+        } else if ("Name".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
                 if (members.get(i).getStatus().equals("Active")) {
                     if (members.get(i).getName().equals(input)) {
@@ -293,7 +303,7 @@ public class Member extends Person {
                     }
                 }
             }
-        } else if ("birth month".equals(mode)) {
+        } else if ("Birth month".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
                 if (members.get(i).getStatus().equals("Active")) {
                     if (members.get(i).getBirthdate().substring(3, 5).equals(input)) {
@@ -301,7 +311,7 @@ public class Member extends Person {
                     }
                 }
             }
-        } else if ("active".equals(mode)) {
+        } else if ("Active".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
                 if (members.get(i).getStatus().equals("Active")) {
                     index.add(i);
@@ -313,13 +323,13 @@ public class Member extends Person {
                     index.add(i);
                 }
             }
-        } else if ("all".equals(mode)) {
+        } else if ("All".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
                 index.add(i);
 
             }
 
-        } else if ("young adult".equals(mode)) {
+        } else if ("Young adult".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
                 if (members.get(i).getStatus().equals("Active")) {
                     if (General.ageCalc(members.get(i).getBirthdate()) <= 30) {
@@ -327,7 +337,7 @@ public class Member extends Person {
                     }
                 }
             }
-        } else if ("middle aged adult".equals(mode)) {
+        } else if ("Middle aged adult".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
                 if (members.get(i).getStatus().equals("Active")) {
                     if (General.ageCalc(members.get(i).getBirthdate()) > 30) {
@@ -351,7 +361,6 @@ public class Member extends Person {
     }
 
     public static void edit(ArrayList<Member> members) {
-
         writeFile("member", members);
 
     }
@@ -363,7 +372,6 @@ public class Member extends Person {
 
     public static void display() {
         ArrayList<Member> members = new ArrayList<>();
-        int loop;
         int selection;
         Scanner sc = new Scanner(System.in);
 
@@ -384,27 +392,25 @@ public class Member extends Person {
 
             switch (selection) {
                 case 1:
-
-                    displayMember(searchObj("", "active", members));
-
+                    displayMember(searchObj("", "Active", members));
                     break;
                 case 2:
-                    displayMember(searchObj("", "inactive", members));
+                    displayMember(searchObj("", "Inactive", members));
                     break;
                 case 3:
-                    displayMember(searchObj(General.getCurrentDateTime("mm"), "birth month", members));
+                    displayMember(searchObj(General.getCurrentDateTime("mm"), "Birth month", members));
                     break;
                 case 4:
-                    displayMember(searchObj("", "young adult", members));
+                    displayMember(searchObj("", "Young adult", members));
                     break;
                 case 5:
-                    displayMember(searchObj("", "middle aged adult", members));
+                    displayMember(searchObj("", "Middle aged adult", members));
                     break;
                 case 6:
-                    displayMember(searchObj("", "old adult", members));
+                    displayMember(searchObj("", "Old adult", members));
                     break;
                 case 7:
-                    displayMember(searchObj("", "all", members));
+                    displayMember(searchObj("", "All", members));
                     break;
                 case 0:
                     break;
@@ -418,17 +424,17 @@ public class Member extends Person {
 
     public static void displayMember(ArrayList<Member> members) {
         for (int i = 0; i < members.size(); i++) {
-            System.out.printf("| %04d | %-8s | %-30s | %-12s | %-11s | %-60s | \n", (i + 1), members.get(i).getId(), members.get(i).getName(), members.get(i).getIc(), members.get(i).getPhoneNum(), members.get(i).getAddress());
+            System.out.printf("| %04d | %-8s | %-30s | %-12s | %-10s | %-11s | %-60s | \n", (i + 1), members.get(i).getId(), members.get(i).getName(), members.get(i).getIc(), members.get(i).getBirthdate(), members.get(i).getPhoneNum(), members.get(i).getAddress());
         }
     }
 
     public static void displayMember(Member members) {
-        System.out.printf("| %-8s | %-30s | %-12s | %-11s | %-60s | \n", members.getId(), members.getName(), members.getIc(), members.getPhoneNum(), members.getAddress());
+        System.out.printf("| %-8s | %-30s | %-12s | %-10s | %-11s | %-60s | \n", members.getId(), members.getName(), members.getIc(), members.getBirthdate(), members.getPhoneNum(), members.getAddress());
 
     }
 
     public static void displayDetails(Member members) {
-        members.toString();
+        System.out.println(members.toString());
 
     }
 
@@ -440,7 +446,7 @@ public class Member extends Person {
 
             for (int i = 0; i < members.size(); i++) {
                 //Create a new record to be written
-                line = String.format("%s|%s|%s|%s|%s|%s|%s\n", members.get(i).getId(), members.get(i).getName(), members.get(i).getIc(), members.get(i).getBirthdate(), members.get(i).getPhoneNum(),members.get(i).getAddress(), members.get(i).getStatus());
+                line = String.format("%s|%s|%s|%s|%s|%s|%s\n", members.get(i).getId(), members.get(i).getName(), members.get(i).getIc(), members.get(i).getBirthdate(), members.get(i).getPhoneNum(), members.get(i).getAddress(), members.get(i).getStatus());
                 //Writes the record to the file.
                 writer.write(line);
             }
