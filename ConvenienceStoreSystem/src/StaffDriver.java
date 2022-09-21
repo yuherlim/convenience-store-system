@@ -12,22 +12,21 @@ public class StaffDriver {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int selection;
+        int selection;      //Normal Worker OR Program Admin
         Staff staffLogin = new Staff("ST-000", "Lim Jia Qing", "990809015027", "08/09/1999",
-                "0176922172", "Setapak, Kuala Lumpur", "Program Admin", "abc123", 0.0, "Active");
-
+                "0176922172", "Setapak, Kuala Lumpur", "Normal Worker", "abc123", 0.0, "Active");
         //Staff submenu
         do {
             do {
                 System.out.println("---------");
                 System.out.println("| Staff |");
                 System.out.println("---------");
-                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');        //add login name and position
                 Staff.updateNumberOfStaff();
                 System.out.println("1 - Add Staff");
                 System.out.println("2 - Display Staff");
                 System.out.println("3 - Search Staff");
-                System.out.println("4 - Edit Staff" + '\n');
+                System.out.println("4 - Modify Staff" + '\n');
                 System.out.println("0 - Main Menu");
                 selection = General.intInput("  Selection: ", "  Please only select 0~4.");
             } while (selection < 0 || selection > 4);
@@ -41,8 +40,8 @@ public class StaffDriver {
                     StaffDriver.displayStaff(staffLogin);
                 case 3 ->
                     StaffDriver.searchStaff(staffLogin);
-                case 4 -> {
-                }
+                case 4 ->
+                    StaffDriver.editStaff(staffLogin);
                 case 0 -> {
                     System.out.print("Return to Main Menu. Press any key to continue...");
                     scanner.nextLine();
@@ -61,7 +60,7 @@ public class StaffDriver {
         System.out.println("-------------");
         System.out.println("| Add Staff |");
         System.out.println("-------------");
-        System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());
+        System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');
 
         System.out.print("Name(same as IC): ");
         addStaff.setName(scanner.nextLine());
@@ -85,8 +84,7 @@ public class StaffDriver {
         System.out.println("  4 - Program Admin");
         int selection;
         do {
-            System.out.print("Select Position: ");
-            selection = scanner.nextInt();
+            selection = General.intInput("Select Position: ", "  Selection only Interger.");
             switch (selection) {
                 case 1 ->
                     addStaff.setPosition("Normal Worker");
@@ -110,7 +108,8 @@ public class StaffDriver {
         System.out.println(" New Staff Information");
         System.out.println("***********************");
         System.out.println(addStaff.toString());
-        System.out.println(addStaff.toStringAdmin("Salary"));
+        System.out.println(addStaff.toStringAdmin("salary"));
+        System.out.println(addStaff.toStringAdmin("password"));
         System.out.println("***********************");
         char yOrN;
         do {
@@ -144,7 +143,7 @@ public class StaffDriver {
         System.out.println("-----------------");
         System.out.println("| Display Staff |");
         System.out.println("-----------------");
-        System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());
+        System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');
 
         if (staffLogin.getPosition().equals("Normal Worker")) {
             System.out.println("Staff ID  Name                            IC            Age  Phone Num    Position        Account Status");
@@ -204,14 +203,14 @@ public class StaffDriver {
         Scanner scanner = new Scanner(System.in);
         Staff searchStaff;
         int selection;
-        boolean staffExist = false, isAdmin = !staffLogin.getPosition().equals("Normal Worker");
+        boolean isAdmin = !staffLogin.getPosition().equals("Normal Worker");
 
         do {
             do {
                 System.out.println("----------------");
                 System.out.println("| Search Staff |");
                 System.out.println("----------------");
-                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');
 
                 System.out.println("Search staff by: -");
                 System.out.println("1 - Staff ID");
@@ -286,5 +285,68 @@ public class StaffDriver {
             scanner.nextLine();
             General.clearScreen();
         } while (selection != 0);
+    }
+
+    //edit info
+    //admin : 
+    //        access : all (search by - name, staff id, ic)
+    //        edit   : password, salary, position, address, phone number, status, name, ic + birthdate
+    //none admin:
+    //        access : own
+    //        edit   : password, address, phone number
+    public static void editStaff(Staff staffLogin) {
+        boolean isAdmin = !staffLogin.getPosition().equals("Normal Worker");
+        boolean isOther = isAdmin;
+        int selection;
+        Staff editedStaff = staffLogin;
+
+        System.out.println("----------------");
+        System.out.println("| Modify Staff |");
+        System.out.println("----------------");
+        System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');
+
+        if (isAdmin) {
+            System.out.println("Modify Information of: -");
+            System.out.println("1 - Own");
+            System.out.println("2 - Other Staff");
+            System.out.println("");
+            System.out.println("0 - Back to Staff Menu");
+            do {
+                selection = General.intInput("  Selection: ", "Enter Integer only.");
+
+                switch (selection) {
+                    case 1 -> {
+                        isOther = false;
+                        editedStaff = staffLogin;
+                        editedStaff = Staff.staffEditDetail(editedStaff, isAdmin, isOther);
+                    }
+                    case 2 -> {
+                        isOther = true;
+                        System.out.println("Enter Staff ID to be edited.");
+                        String staffIDSearch = Staff.staffIDInput("Staff ID : ", "Invalid Staff ID.");
+                        //read file
+                        editedStaff = Staff.searchAllStaff(staffIDSearch, "Staff ID");
+
+                        if (!editedStaff.getStaffID().equals("")) {
+                            editedStaff = Staff.staffEditDetail(editedStaff, isAdmin, isOther);
+                        } else {
+                            System.out.println("Staff not exist.");
+                        }
+                    }
+                    case 0 -> {
+                        System.out.println("Back to Staff Menu...");
+                    }
+                    default -> {
+                        System.out.println("Enter 0-2 only.");
+                    }
+                }
+            } while (selection != 0);
+        } else {
+            editedStaff = staffLogin;
+            editedStaff = Staff.staffEditDetail(editedStaff, isAdmin, isOther);
+        }
+        //write editedStaff into file
+        Staff.editStaffFile(editedStaff);
+        System.out.println("Staff " + editedStaff.getStaffID() + " edited successful.");
     }
 }

@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -37,6 +38,18 @@ public class Product {
         this.category = "";
 //        code = "P" + String.format("%04d", nextCode);
 //        nextCode++;
+    }
+    
+    public Product(Product p) {
+        this.code = p.code;
+        this.name = p.name;
+        this.currentSellingPrice = p.currentSellingPrice;
+        this.currentCostPrice = p.currentCostPrice;
+        this.stockQty = p.stockQty;
+        this.minReorderQty = p.minReorderQty;
+        this.category = p.category;
+        this.transactionDetails = p.transactionDetails;
+        this.stockDetails = p.stockDetails;
     }
 
     public Product(String code, String name, double currentSellingPrice, double currentCostPrice, int stockQty, int minReorderQty, String category, ArrayList<TransactionDetails> transactionDetails, ArrayList<StockDetails> stockDetails) {
@@ -134,8 +147,8 @@ public class Product {
         System.out.println("add function body");
     }
     
-    public void modify() {
-        System.out.println("add function body");
+    public static void modify(String fileName, ArrayList<Product> products) {
+        Product.writeFile(fileName, products);
     }
     
     public void display() {
@@ -203,6 +216,23 @@ public class Product {
     
     @Override
     public String toString() {
-        return "Product code: " + code + ", Product name: " + name + ", Current selling price: " + currentSellingPrice + ", Current cost price: " + currentCostPrice + ", Stock quantity: " + stockQty + ", Product minimum reorder quantity: " + minReorderQty +  ", Category: " + category;        
+//        return "Product code: " + code + ", Product name: " + name + ", Current selling price: " + currentSellingPrice + ", Current cost price: " + currentCostPrice + ", Stock quantity: " + stockQty + ", Product minimum reorder quantity: " + minReorderQty +  ", Category: " + category;        
+        return String.format("| %-5s | %-20s | %-20s | %18.2f | %15.2f | %8d | %16d |", code, name, category, currentSellingPrice, currentCostPrice, stockQty, minReorderQty);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Product other = (Product) obj;
+        return Objects.equals(this.code, other.code);
+    }
+    
 }

@@ -3,6 +3,7 @@
  * @author JiaQing
  */
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.FileWriter;
@@ -208,19 +209,7 @@ public class Staff extends Person {
                         staffDetail[3], staffDetail[4], staffDetail[5], staffDetail[6],
                         staffDetail[7], Double.parseDouble(staffDetail[8]), staffDetail[9]);
                 switch (condition) {
-                    case "Name" -> {
-                        if (staffResult.getName().equals(searcher)) {
-                            staffExist = true;
-                            break OUTER;
-                        }
-                    }
-                    case "Staff ID" -> {
-                        if (staffResult.getStaffID().equals(searcher)) {
-                            staffExist = true;
-                            break OUTER;
-                        }
-                    }
-                    case "IC" -> {
+                    case "Name", "Staff ID", "IC" -> {
                         if (staffResult.getStaffID().equals(searcher)) {
                             staffExist = true;
                             break OUTER;
@@ -239,5 +228,207 @@ public class Staff extends Person {
         }
 
         return staffResult;
+    }
+
+    //create edit staff menu depend on (admin :true , non-admin :false)
+    //password, salary, position, address, phone number, status, name, ic + birthdate
+    public static int infoEditMenu(boolean isAdmin) {
+        int selection, loop = 0;
+
+        System.out.println("Modify field: - ");
+        System.out.println("1 - Address");
+        System.out.println("2 - Phone Number");
+        System.out.println("3 - Password");
+        if (isAdmin) {
+            System.out.println("4 - Name");
+            System.out.println("5 - IC & Birthdate");
+            System.out.println("6 - Salary");
+            System.out.println("7 - Position");
+            System.out.println("8 - Account Status");
+        }
+
+        System.out.println("");
+        System.out.println("0 - Comfirm");
+        System.out.println("9 - Cancelled all changes");
+
+        do {
+            selection = General.intInput("  Selection: ", "Enter Integer only.");
+
+            if (!isAdmin) {
+                switch (selection) {
+                    case 0, 1, 2, 3, 9 -> {
+                        loop = 0;
+                    }
+                    default -> {
+                        System.out.println("Select 0-3 or 9 only.");
+                        loop++;
+                    }
+                }
+            } else {
+                if (selection >= 0 && selection <= 9) {
+                    loop = 0;
+                } else {
+                    System.out.println("Select 0-9 only.");
+                    loop++;
+                }
+            }
+        } while (loop != 0);
+        return selection;
+    }
+
+    public static Staff staffEditDetail(Staff editedStaff, boolean isAdmin, boolean isOther) {
+        int selection2;
+        do {
+            selection2 = Staff.infoEditMenu(isAdmin);
+            if (isAdmin) {
+                switch (selection2) {
+                    case 1 -> {
+                        editedStaff.setAddress(General.stringNullCheckingInput("Address: ", "Address cannot be empty."));
+                    }
+                    case 2 -> {
+                        editedStaff.setPhoneNum(General.phoneInput("Phone Number(without '-'): "));
+                    }
+                    case 3 -> {
+                        editedStaff.setPassword(Staff.createPassword());
+                    }
+
+                    case 4 -> {
+                        editedStaff.setName(General.stringNullCheckingInput("Name: ", "Name cannot be empty."));
+                    }
+                    case 5 -> {
+                        editedStaff.setBirthdate(General.dateInput("Birthdate(DD/MM/YYYY): ", "Wrong date format. Enter again."));
+                        editedStaff.setIc(General.icInput("IC                   : "));
+                    }
+                    case 6 -> {
+                        editedStaff.setSalary(General.doubleInput("Salary: RM ", "Only numbers requried."));
+                    }
+                    case 7 -> {
+                        System.out.println("Position List:- ");
+                        System.out.println("  1 - Normal Worker");
+                        System.out.println("  2 - Human Resource");
+                        System.out.println("  3 - Manager");
+                        System.out.println("  4 - Program Admin");
+                        int selectionP;
+                        do {
+                            selectionP = General.intInput("Select Position: ", "  Selection only Interger.");
+                            switch (selectionP) {
+                                case 1 ->
+                                    editedStaff.setPosition("Normal Worker");
+                                case 2 ->
+                                    editedStaff.setPosition("Human Resource");
+                                case 3 ->
+                                    editedStaff.setPosition("Manager");
+                                case 4 ->
+                                    editedStaff.setPosition("Program Admin");
+                                default ->
+                                    System.out.println("  Selection only 1-4.");
+                            }
+                        } while (selectionP < 1 || selectionP > 4);
+                        System.out.println("Position: " + editedStaff.getPosition());
+                    }
+                    case 8 -> {
+                        if (!isOther) {
+                            System.out.println("Resign self not allowed.");
+                        } else {
+                            if (editedStaff.getAccountStatus().equals("Active") || editedStaff.getAccountStatus().equals("Inactive")) {
+                                editedStaff.setAccountStatus("Resign");
+                            } else {
+                                editedStaff.setAccountStatus("Inactive");
+                            }
+                        }
+                    }
+                    case 0 -> {
+                        Staff.editStaffFile(editedStaff);
+                        System.out.println("Edit complete.");
+                        System.out.println(editedStaff.toString());
+                        System.out.println(editedStaff.toStringAdmin("salary"));
+                        System.out.println(editedStaff.toStringAdmin("password"));
+                    }
+                    case 9 -> {
+                        System.out.println("Modify cancelled. Back to main menu.");
+                    }
+                }
+            } else {
+                switch (selection2) {
+                    case 1 -> {
+                        editedStaff.setAddress(General.stringNullCheckingInput("Address: ", "Address cannot be empty."));
+                    }
+                    case 2 -> {
+                        editedStaff.setPhoneNum(General.phoneInput("Phone Number(without '-'): "));
+                    }
+                    case 3 -> {
+                        editedStaff.setPassword(Staff.createPassword());
+                    }
+                    case 0 -> {
+                        Staff.editStaffFile(editedStaff);
+                        System.out.println("Edit complete.");
+                        System.out.println(editedStaff.toString());
+                        System.out.println(editedStaff.toStringAdmin("salary"));
+                        System.out.println(editedStaff.toStringAdmin("password"));
+                    }
+                    case 9 -> {
+                        System.out.println("Modify cancelled. Back to main menu.");
+                    }
+                }
+            }
+        } while (selection2 != 9 && selection2 != 0);
+
+        return editedStaff;
+    }
+
+    public static void editStaffFile(Staff editedStaff) {
+        Staff staffResult;
+        String lineFile, lineEdit;
+        try ( FileReader reader = new FileReader("src\\staff.txt")) {
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] staffDetail = line.split("\\|");
+                staffResult = new Staff(staffDetail[0], staffDetail[1], staffDetail[2],
+                        staffDetail[3], staffDetail[4], staffDetail[5], staffDetail[6],
+                        staffDetail[7], Double.parseDouble(staffDetail[8]), staffDetail[9]);
+                if (staffDetail[0].equals(editedStaff.getStaffID())) {
+                    try ( FileWriter writer = new FileWriter("src\\staffTemp.txt", true)) {
+                        lineEdit = String.format("%s|%s|%s|%s|%s|%s|%s|%s|%f|%s\n",
+                                editedStaff.staffID, editedStaff.name, editedStaff.ic, editedStaff.birthdate,
+                                editedStaff.phoneNum, editedStaff.address, editedStaff.position,
+                                editedStaff.password, editedStaff.salary, editedStaff.accountStatus);
+
+                        writer.write(lineEdit);
+                        writer.close();
+                    } catch (IOException e) {
+                        e.getStackTrace();
+                    }
+                } else {
+                    try ( FileWriter writer = new FileWriter("src\\staffTemp.txt", true)) {
+                        lineFile = String.format("%s|%s|%s|%s|%s|%s|%s|%s|%f|%s\n",
+                                staffResult.staffID, staffResult.name, staffResult.ic, staffResult.birthdate,
+                                staffResult.phoneNum, staffResult.address, staffResult.position,
+                                staffResult.password, staffResult.salary, staffResult.accountStatus);
+
+                        writer.write(lineFile);
+                        writer.close();
+                    } catch (IOException e) {
+                        e.getStackTrace();
+                    }
+                }
+            }
+            reader.close();
+            //delete src\\staff.txt
+            File deleteFile = new File("src\\staff.txt");
+            if (!deleteFile.delete()) {
+                System.out.println("Failed to delete the file \"src\\staff.txt\".");
+            }
+            //reneme src\\staffTemp.txt to src\\staff.txt
+            File rename = new File("src\\staffTemp.txt");
+            File renameResult = new File("src\\staff.txt");
+            if (!rename.renameTo(renameResult)) {
+                System.out.println("Rename Failed");
+            }
+
+        } catch (IOException e) {
+            System.out.println("staff.txt open failed.");
+        }
+
     }
 }
