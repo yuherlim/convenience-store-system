@@ -88,8 +88,8 @@ public class MemberDriver {
             do {
                 loop = 0;
                 addMember.setIc(General.icInput("ic : "));
-                ArrayList<Member> memberSearch = Member.searchObj(addMember.getIc(), "IcChecking", members);
-                if (memberSearch.size() == 1) {
+                ArrayList<Member> memberSearch = Member.searchObj(addMember.getIc(), "IC", "All",members);
+                if (memberSearch.isEmpty() == false) {
                     System.out.println("IC registered, please enter again");
                     loop = 1;
                 }
@@ -210,7 +210,7 @@ public class MemberDriver {
         do {
             loop = 0;
             inputMode = Member.searchMenu();
-            indexSelection = Member.searchDisplay(inputMode[0], inputMode[1], members);
+            indexSelection = Member.searchDisplay(inputMode[0], inputMode[1],"All", members);
 
             if (indexSelection == -1) {
                 charSelection = General.yesNoInput("Edit another member (Y/N) : ", "Invalid selection");
@@ -239,8 +239,8 @@ public class MemberDriver {
                                     do {
                                         loop = 0;
                                         members.get(indexSelection).setIc(General.icInput("ic : "));
-                                         ArrayList<Member> memberSearch = Member.searchObj(members.get(indexSelection).getIc(), "IcChecking", members);
-                                        if (memberSearch.size() == 1) {
+                                         ArrayList<Member> memberSearch = Member.searchObj(members.get(indexSelection).getIc(), "IC","All" ,members);
+                                        if (memberSearch.isEmpty() == false) {
                                             System.out.println("IC registered, please enter again");
                                             loop = 1;
                                             continue;
@@ -294,7 +294,7 @@ public class MemberDriver {
         readFile("member", members);
         do {
             inputMode = Member.searchMenu();
-            indexSelection = Member.searchDisplay(inputMode[0], inputMode[1], members);
+            indexSelection = Member.searchDisplay(inputMode[0], inputMode[1],"All", members);
             if (indexSelection == -1) {
                 charSelection = General.yesNoInput("Edit another member (Y/N) : ", "Invalid selection");
                 continue;
