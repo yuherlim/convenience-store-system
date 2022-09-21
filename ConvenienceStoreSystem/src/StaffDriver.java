@@ -3,6 +3,9 @@
  *
  * @author JiaQing
  */
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class StaffDriver {
@@ -10,13 +13,16 @@ public class StaffDriver {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int selection;
+        Staff staffLogin = new Staff("ST-000", "Lim Jia Qing", "990809015027", "08/09/1999",
+                "0176922172", "Setapak, Kuala Lumpur", "Program Admin", "abc123", 0.0, "Active");
+
         //Staff submenu
         do {
             do {
                 System.out.println("---------");
                 System.out.println("| Staff |");
                 System.out.println("---------");
-                System.out.println("<" + "LOGINNAME" + "> | " + "POSITION");        //add login name and position
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
                 Staff.updateNumberOfStaff();
                 System.out.println("1 - Add Staff");
                 System.out.println("2 - Display Staff");
@@ -26,34 +32,36 @@ public class StaffDriver {
                 selection = General.intInput("  Selection: ", "  Please only select 0~4.");
             } while (selection < 0 || selection > 4);
 
+            General.clearScreen();
+
             switch (selection) {
                 case 1 ->
-                    StaffDriver.addStaff();
-                case 2 -> 
-                    StaffDriver.displayStaff();
-                case 3 -> {
-                }
+                    StaffDriver.addStaff(staffLogin);
+                case 2 ->
+                    StaffDriver.displayStaff(staffLogin);
+                case 3 ->
+                    StaffDriver.searchStaff(staffLogin);
                 case 4 -> {
                 }
                 case 0 -> {
-                    System.out.println("Return to Main Menu. Press any key to continue...");
+                    System.out.print("Return to Main Menu. Press any key to continue...");
                     scanner.nextLine();
                 }
                 default ->
                     System.out.println("  Please only select 0~4.");
             }
         } while (selection != 0);
-
     }
 
-    public static void addStaff() {
+    //add new staff and write into txt file
+    public static void addStaff(Staff staffLogin) {
         Scanner scanner = new Scanner(System.in);
         Staff addStaff = new Staff();
 
         System.out.println("-------------");
         System.out.println("| Add Staff |");
         System.out.println("-------------");
-        System.out.println("<" + "LOGINNAME" + "> | " + "POSITION");        //add login name and position
+        System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());
 
         System.out.print("Name(same as IC): ");
         addStaff.setName(scanner.nextLine());
@@ -65,7 +73,7 @@ public class StaffDriver {
 
         addStaff.setBirthdate(General.dateInput("Birthdate(DD/MM/YYYY): ", "Wrong date format. Enter again."));
 
-        addStaff.setPhoneNum(General.phoneInput("Phone Number(without '-'): "));
+        addStaff.setPhoneNum(General.phoneInput());
 
         System.out.print("Address: ");
         addStaff.setAddress(scanner.nextLine());
@@ -102,6 +110,7 @@ public class StaffDriver {
         System.out.println(" New Staff Information");
         System.out.println("***********************");
         System.out.println(addStaff.toString());
+        System.out.println(addStaff.toStringAdmin("Salary"));
         System.out.println("***********************");
         char yOrN;
         do {
@@ -123,21 +132,159 @@ public class StaffDriver {
         } while (yOrN != 'Y' && yOrN != 'N');
         System.out.println("Press any key to continue...");
         scanner.nextLine();
+        General.clearScreen();
     }
 
-    public static void displayStaff() {
+    //display all staff info or active+inactive staff info
+    public static void displayStaff(Staff staffLogin) {
+        Scanner scanner = new Scanner(System.in);
+        Staff displayStaff;
+        int age;
+
         System.out.println("-----------------");
         System.out.println("| Display Staff |");
         System.out.println("-----------------");
-        System.out.println("<" + "LOGINNAME" + "> | " + "POSITION");        //add login name and position
+        System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());
 
-        System.out.println("Staff ID  Name                            IC            Age  Phone Num    Position");
-        System.out.println("--------  ------------------------------  ------------  ---  -----------  --------------");
-        //read file
-        //store in Staff
-        //print all detail in one line
-        //loop
-        System.out.println();
+        if (staffLogin.getPosition().equals("Normal Worker")) {
+            System.out.println("Staff ID  Name                            IC            Age  Phone Num    Position        Account Status");
+            System.out.println("--------  ------------------------------  ------------  ---  -----------  --------------  --------------");
 
+            try ( FileReader reader = new FileReader("src\\staff.txt")) {
+                BufferedReader bufferedReader = new BufferedReader(reader);
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    String[] staffDetail = line.split("\\|");
+                    displayStaff = new Staff(staffDetail[0], staffDetail[1], staffDetail[2],
+                            staffDetail[3], staffDetail[4], staffDetail[5], staffDetail[6],
+                            staffDetail[7], Double.parseDouble(staffDetail[8]), staffDetail[9]);
+                    //calc age
+                    age = General.ageCalc(displayStaff.getBirthdate());
+                    System.out.printf(" %s   %-30s  %s  %3d  %-11s  %-14s  %-14s\n",
+                            displayStaff.getStaffID(), displayStaff.getName(), displayStaff.getIc(), age,
+                            displayStaff.getPhoneNum(), displayStaff.getPosition(),
+                            displayStaff.getAccountStatus());
+                }
+                reader.close();
+            } catch (IOException e) {
+                System.out.println("staff.txt open failed.");
+            }
+        } else {
+            System.out.println("Staff ID  Name                            IC            Age  Phone Num    Position        Account Status  Salary");
+            System.out.println("--------  ------------------------------  ------------  ---  -----------  --------------  --------------  ---------");
+
+            try ( FileReader reader = new FileReader("src\\staff.txt")) {
+                BufferedReader bufferedReader = new BufferedReader(reader);
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    String[] staffDetail = line.split("\\|");
+                    displayStaff = new Staff(staffDetail[0], staffDetail[1], staffDetail[2],
+                            staffDetail[3], staffDetail[4], staffDetail[5], staffDetail[6],
+                            staffDetail[7], Double.parseDouble(staffDetail[8]), staffDetail[9]);
+                    //calc age
+                    age = General.ageCalc(displayStaff.getBirthdate());
+                    System.out.printf(" %s   %-30s  %s  %3d  %-11s  %-14s  %-14s  %5.2f\n",
+                            displayStaff.getStaffID(), displayStaff.getName(), displayStaff.getIc(), age,
+                            displayStaff.getPhoneNum(), displayStaff.getPosition(),
+                            displayStaff.getAccountStatus(), displayStaff.getSalary());
+                }
+                reader.close();
+            } catch (IOException e) {
+                System.out.println("staff.txt open failed.");
+            }
+        }
+        System.out.print("  Press <Enter> to continue...");
+        scanner.nextLine();
+        General.clearScreen();
+    }
+
+    //Search staff by Staff id / name / IC
+    //search by name function in Staff class
+    public static void searchStaff(Staff staffLogin) {
+        Scanner scanner = new Scanner(System.in);
+        Staff searchStaff;
+        int selection;
+        boolean staffExist = false, isAdmin = !staffLogin.getPosition().equals("Normal Worker");
+
+        do {
+            do {
+                System.out.println("----------------");
+                System.out.println("| Search Staff |");
+                System.out.println("----------------");
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());
+
+                System.out.println("Search staff by: -");
+                System.out.println("1 - Staff ID");
+                System.out.println("2 - Name");
+                System.out.println("3 - IC" + '\n');
+                System.out.println("0 - Staff Menu");
+
+                selection = General.intInput("  Selection: ", "  Please only select 0~4.");
+            } while (selection < 0 || selection > 3);
+
+            switch (selection) {
+                case 1 -> {
+                    String staffIDSearch = Staff.staffIDInput("Staff ID : ", "Invalid Staff ID.");
+                    //read file
+                    searchStaff = Staff.searchAllStaff(staffIDSearch, "Staff ID");
+
+                    if (!searchStaff.getName().equals("")) {
+                        if (isAdmin) {
+                            System.out.println(searchStaff.toString() + '\n'
+                                    + searchStaff.toStringAdmin("salary") + '\n'
+                                    + searchStaff.toStringAdmin("password"));
+                        } else {
+                            System.out.println(searchStaff.toString());
+                        }
+                        break;
+                    } else {
+                        System.out.println("Staff not exist.");
+                    }
+                }
+                case 2 -> {
+                    String nameSearch = General.stringNullCheckingInput("Name : ", "Name cannot be empty.");
+                    //read file
+                    searchStaff = Staff.searchAllStaff(nameSearch, "Name");
+
+                    if (!searchStaff.getName().equals("")) {
+                        if (isAdmin) {
+                            System.out.println(searchStaff.toString() + '\n'
+                                    + searchStaff.toStringAdmin("salary") + '\n'
+                                    + searchStaff.toStringAdmin("password"));
+                        } else {
+                            System.out.println(searchStaff.toString());
+                        }
+                        break;
+                    } else {
+                        System.out.println("Staff not exist.");
+                    }
+                }
+                case 3 -> {
+                    String icSearch = General.icInput("IC : ");
+                    //read file
+                    searchStaff = Staff.searchAllStaff(icSearch, "IC");
+
+                    if (!searchStaff.getIc().equals("")) {
+                        if (isAdmin) {
+                            System.out.println(searchStaff.toString() + '\n'
+                                    + searchStaff.toStringAdmin("salary") + '\n'
+                                    + searchStaff.toStringAdmin("password"));
+                        } else {
+                            System.out.println(searchStaff.toString());
+                        }
+                        break;
+                    } else {
+                        System.out.println("Staff not exist.");
+                    }
+                }
+                case 0 ->
+                    System.out.println("Back to Staff Menu.");
+                default ->
+                    System.out.println("  Please only select 0~4.");
+            }
+            System.out.print("Press <Enter> to continue...");
+            scanner.nextLine();
+            General.clearScreen();
+        } while (selection != 0);
     }
 }
