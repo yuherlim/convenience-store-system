@@ -334,5 +334,9 @@ public class General {
         }
     }
     
-
+    public static void systemPause() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Press <Enter> to continue...");
+        sc.nextLine();
+    }
 }
