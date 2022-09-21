@@ -71,12 +71,10 @@ public class General {
             System.out.print(promptMsg);
             try {
                 input = sc.nextInt();
-                sc.nextLine();      //get rid of the newline
             } catch (Exception e) {
-                sc.nextLine();
-                System.out.println(errorMsg);
-                loop = 1;
                 sc.nextLine();      //get rid of the newline if string is inputted.
+                System.out.println(errorMsg);
+                loop = 1;    
             }
         } while (loop == 1);
         return input;
@@ -92,12 +90,11 @@ public class General {
             System.out.print(promptMsg);
             try {
                 input = sc.nextDouble();
-                sc.nextLine();      //get rid of the newline
+
             } catch (Exception e) {
-                sc.nextLine();
+                sc.nextLine();      //get rid of the newline if string is inputted.
                 System.out.println(errorMsg);
                 loop = 1;
-                sc.nextLine();      //get rid of the newline if string is inputted.
             }
 
         } while (loop == 1);
