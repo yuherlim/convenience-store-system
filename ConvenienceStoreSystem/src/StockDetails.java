@@ -17,7 +17,7 @@ public class StockDetails {
     public static String fileName = "stockDetails.txt";
     
     public StockDetails() {
-        
+        this("", 0, 0d, "", "");
     }
     
     public StockDetails(String productCode, int qty, double costPrice, String cnNo, String invNo) {

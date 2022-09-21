@@ -1,3 +1,3 @@
-INV00001|12/02/2022|Justin|ABC Company%1420.40%Valid
-INV00002|24/04/2022|Danny|PQR Company%325.92%Valid
-INV00003|30/05/2022|Ah Lian|XYZ Company%306.00%Invalid
+INV0001|12/02/2022|Justin|ABC Company%1420.40%Valid
+INV0002|24/04/2022|Danny|PQR Company%325.92%Valid
+INV0003|30/05/2022|Ah Lian|XYZ Company%306.00%Invalid
