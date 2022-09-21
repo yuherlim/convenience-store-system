@@ -139,7 +139,6 @@ public class General {
     public static String phoneInput(String promptMsg) {
         Scanner sc = new Scanner(System.in);
         String phoneNum;
-        int loop = 0;
 
         do {
             System.out.print(promptMsg);
@@ -335,8 +334,9 @@ public class General {
     }
 
     public static void systemPause() {
+        Scanner sc = new Scanner(System.in);
         System.out.print("Press <Enter> to continue...");
-        scanner.nextLine();
+        sc.nextLine();
 
     }
 
