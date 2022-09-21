@@ -27,13 +27,13 @@ public class ProductDriver {
         
 //        ProductDriver.addProduct(products);
 
-//        ProductDriver.modifyProduct(products);
+        ProductDriver.modifyProduct();
 
-//        ProductDriver.searchProduct(products);
+//        ProductDriver.searchProduct();
         
-        ProductDriver.modifyProduct(products);
+//        ProductDriver.modifyProduct(products);
         
-//        products = readFile(Product.fileName, products);
+//        products = Product.readFile(Product.fileName);
 //        
 //        for (Product p: products) {
 //            System.out.println("Product:");
@@ -49,96 +49,96 @@ public class ProductDriver {
 
     }
     
-    public static ArrayList<Product> readFile(String fileName, ArrayList<Product> products) {
-        try {
-            //Array lists used when reading from transaction details and stock details text files
-            ArrayList<TransactionDetails> transactionDetails = new ArrayList<>();
-            ArrayList<StockDetails> stockDetails = new ArrayList<>();
-            
-            FileReader reader = new FileReader("src\\" + fileName);
-            BufferedReader bufferedReader = new BufferedReader(reader);
- 
-            String line;
- 
-            while ((line = bufferedReader.readLine()) != null) {
-//                System.out.println(line);
-                String[] buffer = line.split("\\%");
-                String[] string1 = buffer[0].split("\\|");
-                String[] string2 = buffer[1].split("\\|");
-                String[] string3 = buffer[2].split("\\|");
-                
-                //Store the read data into their respective variables to be used later to create product object.
-                String category = buffer[3];
-                String code = string1[0];
-                String name = string1[1];
-                
-                //Convert string to double for currentSellingPrice and currentCostPrice
-                //element 1 is currentSellingPrice and element 2 is currentCostPrice
-                double[] doubleArr = new double[2];
-                for (int i = 0; i < string2.length; i++) {
-                    doubleArr[i] = Double.parseDouble(string2[i]);
-                }
-                
-                //Convert string to integer for stockQty and minReorderQty
-                //element 1 is stockQty and element 2 is minReorderQty
-                int[] intArr = new int[2];
-                for (int i = 0; i < string3.length; i++) {
-                    intArr[i] = Integer.parseInt(string3[i]);
-                }
-
-                //read from transactionDetails.txt and create a copy of transactionDetails records
-                ArrayList<TransactionDetails> allTD = (ArrayList<TransactionDetails>) TransactionDetailsDriver.readFile(TransactionDetails.fileName, transactionDetails).clone();
-                transactionDetails.clear();
-                //Add elements of transaction details that is associated with this product code.
-                for (TransactionDetails td: allTD) {
-                    if (td.getProductCode().equals(code))
-                        transactionDetails.add(td);
-                }
-                
-                //read from stockDetails.txt and create a copy of stock details records.
-                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetailsDriver.readFile(StockDetails.fileName, stockDetails).clone();
-                stockDetails.clear();
-                //Add elements of stock details that is associated with this product code.
-                for (StockDetails sd: allSD) {
-                    if(sd.getProductCode().equals(code))
-                        stockDetails.add(sd);
-                }
-                
-                //store cloned versions of transactionDetails and stockDetails as they will be used again in subsequent loops
-                products.add(new Product(code, name, doubleArr[0], doubleArr[1], intArr[0], intArr[1], category, (ArrayList<TransactionDetails>)transactionDetails.clone(), (ArrayList<StockDetails>)stockDetails.clone()));
-                
-            
-            }
-            reader.close();
- 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
-        return products;
-    }
+//    public static ArrayList<Product> readFile(String fileName, ArrayList<Product> products) {
+//        try {
+//            //Array lists used when reading from transaction details and stock details text files
+//            ArrayList<TransactionDetails> transactionDetails = new ArrayList<>();
+//            ArrayList<StockDetails> stockDetails = new ArrayList<>();
+//            
+//            FileReader reader = new FileReader("src\\" + fileName);
+//            BufferedReader bufferedReader = new BufferedReader(reader);
+// 
+//            String line;
+// 
+//            while ((line = bufferedReader.readLine()) != null) {
+////                System.out.println(line);
+//                String[] buffer = line.split("\\%");
+//                String[] string1 = buffer[0].split("\\|");
+//                String[] string2 = buffer[1].split("\\|");
+//                String[] string3 = buffer[2].split("\\|");
+//                
+//                //Store the read data into their respective variables to be used later to create product object.
+//                String category = buffer[3];
+//                String code = string1[0];
+//                String name = string1[1];
+//                
+//                //Convert string to double for currentSellingPrice and currentCostPrice
+//                //element 1 is currentSellingPrice and element 2 is currentCostPrice
+//                double[] doubleArr = new double[2];
+//                for (int i = 0; i < string2.length; i++) {
+//                    doubleArr[i] = Double.parseDouble(string2[i]);
+//                }
+//                
+//                //Convert string to integer for stockQty and minReorderQty
+//                //element 1 is stockQty and element 2 is minReorderQty
+//                int[] intArr = new int[2];
+//                for (int i = 0; i < string3.length; i++) {
+//                    intArr[i] = Integer.parseInt(string3[i]);
+//                }
+//
+//                //read from transactionDetails.txt and create a copy of transactionDetails records
+//                ArrayList<TransactionDetails> allTD = (ArrayList<TransactionDetails>) TransactionDetailsDriver.readFile(TransactionDetails.fileName, transactionDetails).clone();
+//                transactionDetails.clear();
+//                //Add elements of transaction details that is associated with this product code.
+//                for (TransactionDetails td: allTD) {
+//                    if (td.getProductCode().equals(code))
+//                        transactionDetails.add(td);
+//                }
+//                
+//                //read from stockDetails.txt and create a copy of stock details records.
+//                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetailsDriver.readFile(StockDetails.fileName, stockDetails).clone();
+//                stockDetails.clear();
+//                //Add elements of stock details that is associated with this product code.
+//                for (StockDetails sd: allSD) {
+//                    if(sd.getProductCode().equals(code))
+//                        stockDetails.add(sd);
+//                }
+//                
+//                //store cloned versions of transactionDetails and stockDetails as they will be used again in subsequent loops
+//                products.add(new Product(code, name, doubleArr[0], doubleArr[1], intArr[0], intArr[1], category, (ArrayList<TransactionDetails>)transactionDetails.clone(), (ArrayList<StockDetails>)stockDetails.clone()));
+//                
+//            
+//            }
+//            reader.close();
+// 
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        
+//        return products;
+//    }
     
-    public static void writeFile(String fileName, ArrayList<Product> products) {
-        String line;
-        try {
-            //Create FileWriter set to write mode for second parameter (false)
-            FileWriter writer = new FileWriter("src\\" + fileName, false);
-  
-            for (int i = 0; i < products.size(); i++) {
-                //Create a new record to be written
-                line = String.format("%s|%s%%%.2f|%.2f|%%%d|%d%%%s\n", products.get(i).getCode(), products.get(i).getName(), products.get(i).getCurrentSellingPrice(), products.get(i).getCurrentCostPrice(), products.get(i).getStockQty(), products.get(i).getMinReorderQty(), products.get(i).getCategory());
-                //Writes the record to the file.
-                writer.write(line);
-            }
-  
-            // Closes the writer
-            writer.close();
-        }
-  
-        catch (Exception e) {
-            e.getStackTrace();
-        }
-    }
+//    public static void writeFile(String fileName, ArrayList<Product> products) {
+//        String line;
+//        try {
+//            //Create FileWriter set to write mode for second parameter (false)
+//            FileWriter writer = new FileWriter("src\\" + fileName, false);
+//  
+//            for (int i = 0; i < products.size(); i++) {
+//                //Create a new record to be written
+//                line = String.format("%s|%s%%%.2f|%.2f|%%%d|%d%%%s\n", products.get(i).getCode(), products.get(i).getName(), products.get(i).getCurrentSellingPrice(), products.get(i).getCurrentCostPrice(), products.get(i).getStockQty(), products.get(i).getMinReorderQty(), products.get(i).getCategory());
+//                //Writes the record to the file.
+//                writer.write(line);
+//            }
+//  
+//            // Closes the writer
+//            writer.close();
+//        }
+//  
+//        catch (Exception e) {
+//            e.getStackTrace();
+//        }
+//    }
     
 //    //method that adds new category into a specified txt file.
 //    public static void addCategory(String fileName) {
@@ -179,17 +179,18 @@ public class ProductDriver {
 //    }
     
     //Method to add a new product
-    public static void addProduct(ArrayList<Product> products) {
+    public static void addProduct() {
         
         printHeader("addProduct");
         
+        ArrayList<Product> products = new ArrayList<>();
         //Read the current product list
-        products = readFile(Product.fileName, products);
+        products = Product.readFile(Product.fileName);
         
-        //Used when reading records available from stock details
-        ArrayList<StockDetails> currentStockDetails = new ArrayList<>();
-        //Read the current stock details list
-        currentStockDetails = StockDetailsDriver.readFile(StockDetails.fileName, currentStockDetails);
+//        //Used when reading records available from stock details
+//        ArrayList<StockDetails> currentStockDetails = new ArrayList<>();
+//        //Read the current stock details list
+//        currentStockDetails = StockDetailsDriver.readFile(StockDetails.fileName, currentStockDetails);
         
 //        //Read the current stock details list and store a copy of it in currentStockDetails
 //        ArrayList<StockDetails> currentStockDetails = (ArrayList<StockDetails>) StockDetailsDriver.readFile(StockDetails.fileName, stockDetails).clone();
@@ -361,11 +362,11 @@ public class ProductDriver {
     }
     
     //method to search for products and print the search results.
-    public static void searchProduct(ArrayList<Product> products) {
+    public static void searchProduct() {
         printHeader("searchProduct");
         
-        //Read product details and store it into an array list
-        products = readFile(Product.fileName, products);
+        //Array list to store the returned search results
+        ArrayList<Product> productSearchResults = new ArrayList<Product>();
         
         //search menu
         int printCount;
@@ -379,16 +380,16 @@ public class ProductDriver {
                     printCount = 0;
                     System.out.println("Search results: ");
                     printHeader("searchTableHeader");
-                    for (int i = 0; i < products.size(); i++) {
-                        if (products.get(i).getCode().equals(code)) {
-                            System.out.println(products.get(i));
+                    productSearchResults = Product.search("productCode", code);
+                    if (productSearchResults != null) {
+                        for (int i = 0; i < productSearchResults.size(); i++) {
+                            System.out.println(productSearchResults.get(i));
                             printCount++;
-                            break;
-                        } 
-                    }
-                    if (printCount == 0) {
+                        }
+                    } else {
                         System.out.println("Product code entered does not exist.");
                     }
+                    
                     System.out.printf("< %d record(s) >\n", printCount);
                     System.out.println("");
                     break;
@@ -398,16 +399,16 @@ public class ProductDriver {
                     printCount = 0;
                     System.out.println("Search results: ");
                     printHeader("searchTableHeader");
-                    for (int i = 0; i < products.size(); i++) {
-                        if (products.get(i).getName().equals(name)) {
-                            System.out.println(products.get(i));
+                    productSearchResults = Product.search("productName", name);
+                    if (productSearchResults != null) {
+                        for (int i = 0; i < productSearchResults.size(); i++) {
+                            System.out.println(productSearchResults.get(i));
                             printCount++;
-                            break;
-                        } 
-                    }
-                    if (printCount == 0) {
+                        }
+                    } else {
                         System.out.println("Product name entered does not exist.");
                     }
+                    
                     System.out.printf("< %d record(s) >\n", printCount);
                     System.out.println("");
                     break;
@@ -417,15 +418,16 @@ public class ProductDriver {
                     printCount = 0;
                     System.out.println("Search results: ");
                     printHeader("searchTableHeader");
-                    for (int i = 0; i < products.size(); i++) {
-                        if (products.get(i).getCategory().equals(category)) {
-                            System.out.println(products.get(i));
+                    productSearchResults = Product.search("productCategory", category);
+                    if (productSearchResults != null) {
+                        for (int i = 0; i < productSearchResults.size(); i++) {
+                            System.out.println(productSearchResults.get(i));
                             printCount++;
                         }
-                    }
-                    if (printCount == 0) {
+                    } else {
                         System.out.println("Product category entered does not exist.");
                     }
+  
                     System.out.printf("< %d record(s) >\n", printCount);
                     System.out.println("");
                     break;
@@ -439,55 +441,56 @@ public class ProductDriver {
         } while(selection != 0);
     }
     
-    //method overloading - this searchProduct accepts a second argument for searchType, and returns the array list containing the products searched.
-    public static Product searchProduct(String searchType, String searchString) {
-        
-        //Read product details and store it into an array list
-        ArrayList<Product> products = new ArrayList<>();
-        
-        products = readFile(Product.fileName, products);
-        
-        Product searchResultsProducts = new Product();
-        
-        //to keep track of the searchCount;
-        int searchCount = 0;
-        
-        switch(searchType) {
-            case "productCode":
-                for (int i = 0; i < products.size(); i++) {
-                    if (products.get(i).getCode().equals(searchString)) {
-                        searchResultsProducts = new Product(products.get(i));
-                        searchCount++;
-                        break;
-                    } 
-                }
-                if (searchCount == 0)
-                    return null;
-                break;
-            case "productName":
-                for (int i = 0; i < products.size(); i++) {
-                    if (products.get(i).getName().equals(searchString)) {
-                        searchResultsProducts = new Product(products.get(i));
-                        searchCount++;
-                        break;
-                    } 
-                }
-                if (searchCount == 0)
-                    return null;
-                break;
-            default:
-                System.out.println("Invalid searchType.");
-        }
-        
-        return searchResultsProducts;
-    }
+//    //method overloading - this searchProduct accepts two string as arguments, one for searchType and a searchString, and returns the product object containing the product searched.
+//    public static Product searchProduct(String searchType, String searchString) {
+//        
+//        //Read product details and store it into an array list
+//        ArrayList<Product> products = new ArrayList<>();
+//        
+//        products = Product.readFile(Product.fileName);
+//        
+//        Product searchResultsProduct = new Product();
+//        
+//        //to keep track of the searchCount;
+//        int searchCount = 0;
+//        
+//        switch(searchType) {
+//            case "productCode":
+//                for (int i = 0; i < products.size(); i++) {
+//                    if (products.get(i).getCode().equals(searchString)) {
+//                        searchResultsProduct = new Product(products.get(i));
+//                        searchCount++;
+//                        break;
+//                    } 
+//                }
+//                break;
+//            case "productName":
+//                for (int i = 0; i < products.size(); i++) {
+//                    if (products.get(i).getName().equals(searchString)) {
+//                        searchResultsProduct = new Product(products.get(i));
+//                        searchCount++;
+//                        break;
+//                    } 
+//                }
+//                break;
+//            default:
+//                System.out.println("Invalid searchType.");
+//        }
+//        
+//        if (searchCount == 0)
+//            return null;
+//        
+//        return searchResultsProduct;
+//    }
     
     //method to modify product details.
-    public static void modifyProduct(ArrayList<Product> products) {
-        
-        
+    public static void modifyProduct() {
+        ArrayList<Product> products = new ArrayList<>();
         //Read the current product list
-        products = readFile(Product.fileName, products);
+        products = Product.readFile(Product.fileName);
+        
+        //Product array list to store the search results
+        ArrayList<Product> searchResults = new ArrayList<>();
         
         //Product object to store search result.
         Product productSearchResult = new Product();
@@ -502,12 +505,16 @@ public class ProductDriver {
                 case 1:
                     //Ask for product code and search for the product details with the product code.
                     String code = codeInput();
-                    productSearchResult = searchProduct("productCode", code);
+                    searchResults = Product.search("productCode", code);
+                    if (searchResults != null)
+                        productSearchResult = searchResults.get(0);
                     break;
                 case 2:
                     //Ask for product name and search for the product details with the product name.
                     String name = General.stringInput("Enter product name: ", "Invalid product name, please try again").toUpperCase();
-                    productSearchResult = searchProduct("productName", name);
+                    searchResults = Product.search("productCode", name);
+                    if (searchResults != null)
+                        productSearchResult = searchResults.get(0);
                     break;
                 case 0:
                     System.out.println("Returning to product menu...");
@@ -518,7 +525,7 @@ public class ProductDriver {
             }
             
             //if product does not exist prompt user.
-            if (productSearchResult == null) {
+            if (searchResults == null) {
                 System.out.println("");
                 System.out.println("Search Results: ");
                 printHeader("searchTableHeader");
@@ -576,7 +583,7 @@ public class ProductDriver {
                     //loop through the products array list and find the product to be edited.
                     for (int i = 0; i < products.size(); i++) {
                         if (products.get(i).equals(productSearchResult)) {
-                            products.set(i, productSearchResult);
+                            products.set(i, new Product(productSearchResult));
                             break;
                         }
                     }
@@ -589,7 +596,7 @@ public class ProductDriver {
                     //revert the productSearchResult
                     for (int i = 0; i < products.size(); i++) {
                         if (products.get(i).equals(productSearchResult)) {
-                            productSearchResult = products.get(i);
+                            productSearchResult = new Product(products.get(i));
                             break;
                         }
                     }
@@ -639,7 +646,7 @@ public class ProductDriver {
     public static String nameInput() {
         //read current product list in to array list
         ArrayList<Product> products = new ArrayList<>();
-        products = readFile(Product.fileName, products);
+        products = Product.readFile(Product.fileName);
         //Validate product name to prevent duplicate products to be created.
         String name;
         boolean validName;
