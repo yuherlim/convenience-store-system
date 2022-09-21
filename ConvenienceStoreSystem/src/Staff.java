@@ -210,13 +210,13 @@ public class Staff extends Person {
                         staffDetail[7], Double.parseDouble(staffDetail[8]), staffDetail[9]);
                 switch (condition) {
                     case "Name" -> {
-                        if (staffResult.getStaffID().equals(searcher)) {
+                        if (staffResult.getName().equals(searcher)) {
                             staffExist = true;
                             break OUTER;
                         }
                     }
                     case "Staff ID" -> {
-                        if (staffResult.getName().equals(searcher)) {
+                        if (staffResult.getStaffID().equals(searcher)) {
                             staffExist = true;
                             break OUTER;
                         }
