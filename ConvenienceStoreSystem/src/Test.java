@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class Test { 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        General.systemPause();
+        
 //        Product testp = new Product();
 //        testp.setCode("P0001");
 //        testp.setName("test");
@@ -42,7 +42,7 @@ public class Test {
 //        double doubletest = General.doubleInput("Please enter a double: ", "Not a double");
 //        
 //        System.out.println(doubletest);
-//        
+//       
 //        int inttest = General.intInput("Please enter an integer: ", "Not an integer");
 //        
 //        System.out.println(inttest);

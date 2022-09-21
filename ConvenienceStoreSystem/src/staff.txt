@@ -1,4 +1,4 @@
-ST-000|Lim Jia Qing|990809015027|08/09/1999|0176922172|Setapak, Kuala Lumpur|Program Admin|abc123|0.0|Active
+ST-000|Lim Jia Qing|990809015027|08/09/1999|0122172692|Setapak, Kuala Lumpur|Normal Worker|abc123|0.000000|Active
 ST-001|Name Test 1|990809012323|01/05/2001|0176922174|Muar, Johor, Malaysia|Normal Worker||2000.230000|Inactive
 ST-002|Khor Zhi Ying|020110101100|10/01/2002|0102221897|Setapak, Kuala Lumpur, Malaysia.|Manager||80000.880000|Inactive
 ST-003|Name Test 2|990809015027|08/09/2005|0176922172|KL, Malaysia|Normal Worker||2000.900000|Inactive

@@ -77,8 +77,9 @@ public class Login {
                 }
                 case "Inactive" -> {
                     staffLogin.setPassword(Staff.createPassword());
+                    staffLogin.setAccountStatus("Active");
                     loop++;
-                    //active + write password(edit password + account status)
+                    Staff.editStaffFile(staffLogin);
                 }
                 default ->
                     System.out.println("Staff not in company.");
