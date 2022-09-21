@@ -17,6 +17,15 @@ import java.util.Scanner;
 public class Test { 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        General.systemPause();
+//        Product testp = new Product();
+//        testp.setCode("P0001");
+//        testp.setName("test");
+//        
+//        Product testp2 = new Product();
+//        testp2.setCode("P0001");
+//        
+//        System.out.println(testp.equals(testp2));
 //        char inputtest = General.charInput("Please enter a character : ", "Invalid character.");
         
 //        char inputtest = General.yesNoInput("Please enter a character : ", "Invalid character.");
@@ -38,7 +47,12 @@ public class Test {
 //        
 //        System.out.println(inttest);
         
+//        String prodCode = ProductDriver.codeInput();
         
+//        System.out.println(prodCode);
+//        int selection = ProductDriver.modifyMenu("modifyField");
+//        
+//        System.out.println(selection);
         
 //        int inttest = General.intInput("Please enter a int", "Not an int");
 //        

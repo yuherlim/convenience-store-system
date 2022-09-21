@@ -72,7 +72,7 @@ public class StaffDriver {
 
         addStaff.setBirthdate(General.dateInput("Birthdate(DD/MM/YYYY): ", "Wrong date format. Enter again."));
 
-        addStaff.setPhoneNum(General.phoneInput("Phone Number(without '-'): "));
+        addStaff.setPhoneNum(General.phoneInput());
 
         System.out.print("Address: ");
         addStaff.setAddress(scanner.nextLine());

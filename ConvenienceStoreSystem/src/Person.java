@@ -20,6 +20,8 @@ public abstract class Person {
     
     //Setter & getter
 
+    public Person(){}
+    
     public Person(String name, String ic, String birthdate, String phoneNum, String address) {
         this.name = name;
         this.ic = ic;
