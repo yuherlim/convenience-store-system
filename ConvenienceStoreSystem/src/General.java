@@ -55,7 +55,6 @@ public class General {
             input = sc.nextLine();
             if (input.length() == 0) {
                 loop = 1;
-                continue;
             }
         } while (loop == 1);
         return input;
@@ -128,7 +127,7 @@ public class General {
             input = Character.toUpperCase(charInput(promptMsg, errorMsg));
             loop = 0;
             if (input != 'Y' && input != 'N') {
-                System.out.println("Invalid input, please enter Y or N.");
+                System.out.println("  Invalid input, please enter Y or N.");
                 loop = 1;
             }
                
@@ -150,12 +149,12 @@ public class General {
 
     public static boolean phoneNumValidation(String phoneNum) {
         if (phoneNum.length() > 11 || phoneNum.length() < 10) {
-            System.out.println("Invalid length of phone number");
+            System.out.println("  Invalid length of phone number");
             return false;
         } else {
             for (int i = 0; i < phoneNum.length(); i++) {
                 if (Character.isDigit(phoneNum.charAt(i)) == false) {
-                    System.out.println("Invalid phone number format");
+                    System.out.println("  Invalid phone number format");
                     return false;
                 }
             }
@@ -179,25 +178,25 @@ public class General {
 
     public static boolean icValidation(String ic) {
         if (ic.length() != 12) {
-            System.out.println("Invalid length of ic");
+            System.out.println("  Invalid length of ic");
             return false;
         } else {
 
             if (Integer.parseInt(ic.substring(0, 2)) <= 20) {
                 if (dateChecking(ic.substring(4, 6) + "/" + ic.substring(2, 4) + "/20" + ic.substring(0, 2)) == false) {
-                    System.out.println("Invalid ic birthdate format");
+                    System.out.println("  Invalid ic birthdate format");
                     return false;
                 }
             } else {
                 if (dateChecking(ic.substring(4, 6) + "/" + ic.substring(2, 4) + "/19" + ic.substring(0, 2)) == false) {
-                    System.out.println("Invalid ic birthdate format");
+                    System.out.println("  Invalid ic birthdate format");
                     return false;
                 }
             }
 
             for (int i = 0; i < ic.length(); i++) {
                 if (Character.isDigit(ic.charAt(i)) == false) {
-                    System.out.println("Invalid ic number format");
+                    System.out.println("  Invalid ic number format");
                     return false;
                 }
             }
@@ -232,19 +231,19 @@ public class General {
             input = dateInput(promptMsg, errorMsg);
 
             if (ic.charAt(0) != input.charAt(8) || ic.charAt(1) != input.charAt(9)) {
-                System.out.println("Birthdate didnt same as IC");
+                System.out.println("  Birthdate didnt same as IC");
                 loop = 1;
                 continue;
             }
 
             if (ic.charAt(2) != input.charAt(3) || ic.charAt(3) != input.charAt(4)) {
-                System.out.println("Birthdate didnt same as IC");
+                System.out.println("  Birthdate didnt same as IC");
                 loop = 1;
                 continue;
             }
 
             if (ic.charAt(4) != input.charAt(0) || ic.charAt(5) != input.charAt(1)) {
-                System.out.println("Birthdate didnt same as IC");
+                System.out.println("  Birthdate didnt same as IC");
                 loop = 1;
                 continue;
             }
@@ -287,10 +286,11 @@ public class General {
             case "yymm":
                 return dtf.format(now).substring(8, 10) + dtf.format(now).substring(3, 5);
             default:
-                System.out.println("Invalid mode selection");
-                return "Invalid mode selection";
-
+                System.out.println("  Invalid mode selection");
+                
+                break;
         }
+                return "Invalid mode selection";
     }
 
     public static int ageCalc(String birthDate) {
