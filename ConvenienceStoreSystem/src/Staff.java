@@ -209,8 +209,20 @@ public class Staff extends Person {
                         staffDetail[3], staffDetail[4], staffDetail[5], staffDetail[6],
                         staffDetail[7], Double.parseDouble(staffDetail[8]), staffDetail[9]);
                 switch (condition) {
-                    case "Name", "Staff ID", "IC" -> {
+                    case "Name" -> {
+                        if (staffResult.getName().equals(searcher)) {
+                            staffExist = true;
+                            break OUTER;
+                        }
+                    }
+                    case "Staff ID" -> {
                         if (staffResult.getStaffID().equals(searcher)) {
+                            staffExist = true;
+                            break OUTER;
+                        }
+                    }
+                    case "IC" -> {
+                        if (staffResult.getIc().equals(searcher)) {
                             staffExist = true;
                             break OUTER;
                         }

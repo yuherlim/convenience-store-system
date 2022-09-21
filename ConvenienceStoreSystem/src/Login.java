@@ -79,8 +79,7 @@ public class Login {
                     staffLogin.setPassword(Staff.createPassword());
                     staffLogin.setAccountStatus("Active");
                     loop++;
-                    //write password(edit password + account status)
-                    //apply same as edit
+                    Staff.editStaffFile(staffLogin);
                 }
                 default ->
                     System.out.println("Staff not in company.");
