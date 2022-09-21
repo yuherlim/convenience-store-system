@@ -118,17 +118,15 @@ public class SupplierInvoiceDriver extends General {
                 si.setInvDate(dateInput("Enter invoice date: ", "Invalid date! Please try again.."));
 
                 //need compare to Staff class
-                String nameGetted;
                 do {
                     System.out.print("Enter staff name: ");
                     staffName = sc.nextLine();
-                    nameGetted = Staff.searchAllStaff(staffName, "Name").getName();
-                    if (!nameGetted.equals("")) {
+                    if (Staff.searchAllStaff(staffName, "Name").getName().equals(staffName)) {
                         si.setStaffName(staffName);
                     } else {
                         System.out.println("Invalid staff name! Please try again..");
                     }
-                } while (!nameGetted.equals(""));
+                } while (!Staff.searchAllStaff(staffName, "Name").getName().equals(staffName));
 
                 //need compare to Supplier class
 //                do {
