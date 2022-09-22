@@ -105,7 +105,6 @@ public class SupplierInvoiceDriver {
             //Create empty arraylist to store value
             ArrayList<SupplierInvoice> supplierInvoice = new ArrayList<>();
             ArrayList<StockDetails> stockDetails = new ArrayList<>();
-            ArrayList<Double> subTotal = new ArrayList<>();
 
             //Call readfile to read the invoice.txt
             SupplierInvoiceDriver.readFile(SupplierInvoice.fileName, supplierInvoice, stockDetails);
@@ -173,10 +172,10 @@ public class SupplierInvoiceDriver {
             //display the whole invoice details
             //set the total amount that return
             si.setAmount(SupplierInvoiceDriver.printInvoice(si, stockDetails));
-            
+
             //set the tag to 'Valid'
             si.setTag("Valid");
-            
+
             confirm = General.yesNoInput("Continue add this invoice? (Y/N) > ", "Invalid input! Please enter 'Y' or 'N' only.");
 
             if (confirm == 'Y') {
@@ -242,7 +241,77 @@ public class SupplierInvoiceDriver {
 
     //Edit Invoice function, edit specify field
     public static void editInvoice() {
+        Scanner sc = new Scanner(System.in);
+        String invNo;
+        String input;
+        char cont;
+        int selection;
+        int index;
 
+        do {
+            //Create an object to hold the current invoice
+            SupplierInvoice si = new SupplierInvoice();
+            //Create empty arraylist to store value
+            ArrayList<SupplierInvoice> supplierInvoice = new ArrayList<>();
+            ArrayList<StockDetails> stockDetails = new ArrayList<>();
+
+            //Read the file and store into ArrayList
+            supplierInvoice = SupplierInvoiceDriver.readFile(SupplierInvoice.fileName, supplierInvoice, stockDetails);
+            stockDetails = StockDetails.readFile(StockDetails.fileName);
+
+            do {
+                General.clearScreen();
+                System.out.println("----------------");
+                System.out.println("| Edit Invoice |");
+                System.out.println("----------------");
+
+                System.out.print("Enter Invoice Number (eg: INV0001): ");
+                invNo = sc.nextLine().toUpperCase();
+
+                index = searchInvoice(supplierInvoice, invNo, stockDetails);
+
+                si = supplierInvoice.get(index);
+
+            } while (index == -1);
+
+            do {
+                System.out.println('\n');
+                System.out.println("Editable Field: ");
+                System.out.println("1. Invoice Date" + '\n' + "2. Staff Incharge" + '\n' + "3. Supplier Name"
+                        + '\n' + "4. Item Details (Item code/quantity/cost price)");
+
+                selection = General.intInput("Select a field to edit (1-4): ", "Invalid Input! Please enter number only.");
+
+                if (selection < 1 || selection > 6) {
+                    System.out.println("Invalid selection! Please enter number 1-4 only.");
+                    General.systemPause();
+                    searchInvoice(supplierInvoice, invNo, stockDetails);
+                }
+
+            } while (selection < 1 || selection > 6);
+
+            switch (selection) {
+                case 1 -> {
+                    input = General.dateInput("Enter a new invoice date(DD/MM/YYYY): ", "Please enter date with format DD/MM/YYYY");
+                    si.setInvDate(input);
+                    supplierInvoice.set(index, si);
+                }
+                case 2 -> {
+                    do {
+                        System.out.print("Enter a new staff name: ");
+                        input = General.stringNullCheckingInput("Enter a new staff name: ", "  Input field cannot be empty, please enter again.");
+                        if (Staff.searchAllStaff(input, "Name").getName().equals(input)) {
+                            si.setStaffName(input);
+                        } else {
+                            System.out.println("Invalid staff name! Please try again..");
+                        }
+                    } while (!Staff.searchAllStaff(input, "Name").getName().equals(input));
+                }
+            }
+
+            cont = General.yesNoInput("Continue edit again? (Y/N) > ", "Invalid input! Please enter 'Y' or 'N' only.");
+
+        } while (cont == 'Y');
     }
 
     //Delete Invoice function, set the tag from 'Valid' to 'Invalid'
