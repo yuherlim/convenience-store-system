@@ -200,7 +200,7 @@ public class SupplierInvoiceDriver extends General {
             //Call readfile to read the invoice.txt
             supplierInvoice = SupplierInvoiceDriver.readFile(SupplierInvoice.fileName, supplierInvoice, stockDetails);
             
-            stockDetails = StockDetailsDriver.readFile(StockDetails.fileName, stockDetails);
+            stockDetails = StockDetails.readFile(StockDetails.fileName);
 
 
             do {
@@ -212,7 +212,7 @@ public class SupplierInvoiceDriver extends General {
                 invNo = sc.nextLine().toUpperCase();
                 
                 //loop for find the same inv no.
-                for (int i = 0; i <= supplierInvoice.size(); i++) {
+                for (int i = 0; i < supplierInvoice.size(); i++) {
                     //if same, then print out result
                     if (supplierInvoice.get(i).getInvNo().equals(invNo)) {
                         SupplierInvoiceDriver.printInvoice(supplierInvoice, i, stockDetails, subTotal);
@@ -255,7 +255,7 @@ public class SupplierInvoiceDriver extends General {
             SupplierInvoiceDriver.readFile(SupplierInvoice.fileName, supplierInvoice, stockDetails);
 
             //Call readfile to read the stock.txt and store to arrayList
-            StockDetailsDriver.readFile(StockDetails.fileName, stockDetails);
+            stockDetails = StockDetails.readFile(StockDetails.fileName);
 
             do {
                 System.out.println("------------------");
