@@ -15,8 +15,35 @@ import java.util.regex.Pattern;
 public class SupplierDriver {
     
     public static void main(String[] args) {
+        
+        int selection;
+        do {
+            selection = supplierMenu();
+            switch(selection) {
+                case 1:
+                    addSupplier();
+                    break;
+                case 2:
+                    modifySupplier();
+                    break;
+                case 3:
+                    searchSupplier();
+                    break;
+                case 4:
+                    viewSupplier();
+                    break;
+                case 0:
+                    System.out.println("Returning to main menu...");
+                    break;
+                default:
+                    System.out.println("Please ensure your selection is (0-4).");
+            }
+        } while(selection != 0);
+        
 //        addSupplier();
-        searchSupplier();
+//        searchSupplier();
+//        modifySupplier();
+//        viewSupplier();
     }
     
     //Method to add a new suplier
@@ -105,6 +132,127 @@ public class SupplierDriver {
         
     }
     
+    //method to modify supplier details.
+    public static void modifySupplier() {
+        //Read the current supplier records into an array list.
+        ArrayList<Supplier> suppliers = Supplier.readFile(Supplier.fileName);
+        
+//        //Supplier array list to store the search results
+//        ArrayList<Supplier> searchResults = new ArrayList<>();
+        
+        //Supplier object to store search result.
+        Supplier supplierSearchResult = new Supplier();
+        
+        //modify menu 1: search for product record to edit.
+        int selection;
+        do {
+            printHeader("modifySupplier");
+            
+            selection = modifyMenu("search");
+            switch(selection) {
+                case 1:
+                    //Ask for supplier ID and search for the supplier details with the supplier ID.
+                    String supplierId = idInput();
+                    supplierSearchResult = Supplier.search("supplierId", supplierId);
+                    break;
+                case 2:
+                    //Ask for supplier name and search for the supplier details with the supplier name.
+                    String name = General.stringInput("Enter supplier name: ", "Invalid supplier name, please try again").toUpperCase();
+                    supplierSearchResult = Supplier.search("supplierName", name);
+                    break;
+                case 0:
+                    System.out.println("Returning to supplier menu...");
+                    continue;
+                default:
+                    System.out.println("Please ensure your selection is (0-2).");
+                    continue;
+            }
+            
+            //if supplier does not exist prompt user.
+            if (supplierSearchResult == null) {
+                System.out.println("");
+                System.out.println("Search Results: ");
+                printHeader("searchTableHeader");
+                System.out.println("Supplier does not exist.");
+                System.out.println("");
+                continue;
+            }
+            
+            //modify menu 2: ask for what field to edit
+            int modifyFieldSelection;
+            do {
+                //print search results
+                System.out.println("");
+                System.out.println("Search Results: ");
+                printHeader("searchTableHeader");
+                System.out.println(supplierSearchResult);
+                System.out.println("");
+                
+                modifyFieldSelection = modifyMenu("modifyField"); 
+                switch(modifyFieldSelection) {
+                    case 1:
+                        //Ask for new supplier name.
+                        String name = nameInput();
+                        supplierSearchResult.setName(name);
+                        break;
+                    case 2:
+                        //Ask for new phone number.
+                        String phoneNo = General.phoneInput("Enter phone number : ");
+                        supplierSearchResult.setPhoneNo(phoneNo);
+                        break;
+                    case 3:
+                        //Ask for new email
+                        String email = emailInput();
+                        supplierSearchResult.setEmail(email);
+                        break;
+                    case 4:
+                        //Ask for new address.
+                        String address = General.stringNullCheckingInput("Enter address: ", "Empty input detected, please try again.").toUpperCase();
+                        supplierSearchResult.setAddress(address);
+                        break;
+                    case 0:
+                        System.out.println("Returning to modify supplier menu...");
+                        continue;
+                    default: 
+                        System.out.println("Please ensure your selection is (0-4).");
+                        continue;
+                }
+                
+                
+                //ask for confirmation.
+                char confirmation = 'N';
+                confirmation = General.yesNoInput("Confirm modify supplier details? (Y)es/(N)o : ", "Invalid input, please enter Y or N.");
+                
+                if (confirmation == 'Y') {
+                    //loop through the suppliers array list and find the supplier to be edited.
+                    for (int i = 0; i < suppliers.size(); i++) {
+                        if (suppliers.get(i).equals(supplierSearchResult)) {
+                            suppliers.set(i, new Supplier(supplierSearchResult));
+                            break;
+                        }
+                    }
+                    
+                    //modify the supplier list with the edited details.
+                    Supplier.modify(Supplier.fileName, suppliers);
+                    System.out.println("Supplier details successfully modified.");
+                } else {
+                    //loop through the suppliers array list and find the supplier that was not edited.
+                    //revert the supplierSearchResult
+                    for (int i = 0; i < suppliers.size(); i++) {
+                        if (suppliers.get(i).equals(supplierSearchResult)) {
+                            supplierSearchResult = new Supplier(suppliers.get(i));
+                            break;
+                        }
+                    }
+                    System.out.println("Supplier details is not modified.");
+                }
+                
+                System.out.println("");
+            } while (modifyFieldSelection != 0);
+        } while(selection != 0);
+        
+    }
+    
     //method to search for suppliers and print the search results.
     public static void searchSupplier() {
         printHeader("searchSupplier");
@@ -170,6 +318,33 @@ public class SupplierDriver {
             }
             
         } while(selection != 0);
+    }
+    
+    //method to view suppliers
+    public static void viewSupplier() {
+        printHeader("viewSupplier");
+        
+        //Read the current product records into an array list.
+        ArrayList<Supplier> suppliers = Supplier.readFile(Supplier.fileName);
+        
+        //to keep track of the number of records printed.
+        int printCount = 0;
+        
+        //print out all the suppliers
+        System.out.println("Suppliers: ");
+        printHeader("searchTableHeader");
+        
+        if (!suppliers.isEmpty()) {
+            printCount = Supplier.display(suppliers);
+        } else {
+            System.out.println("No supplier record found.");
+        }
+        
+        System.out.println("");
+        System.out.printf("< %d record(s) >\n", printCount);
+        System.out.println("");
+        
+        General.systemPause();
     }
     
     //method to print headers.
@@ -299,6 +474,20 @@ public class SupplierDriver {
         return supplierId;
     }
     
+    //Display the supplier menu and return selection.
+    public static int supplierMenu() {
+        printHeader("supplierMenu");
+        System.out.println("1. Add new supplier(s)");
+        System.out.println("2. Modify supplier(s)");
+        System.out.println("3. Search supplier(s)");
+        System.out.println("4. View supplier(s)");
+        System.out.println("");
+        System.out.println("0. Return to main menu");
+        System.out.println("");
+        
+        return General.intInput("Enter selection (0-4) : ", "Invalid input, please enter an integer.");
+    }
+    
     //Displays the search menu used in searchSupplier method and returns selection.
     public static int searchMenu() {
         System.out.println("Which field do you want to search by?");
@@ -310,5 +499,40 @@ public class SupplierDriver {
         System.out.println("");
 
         return General.intInput("Enter selection (0-2) : ", "Invalid input, please enter an integer.");
+    }
+    
+    //Displays the menus used in modifySupplier method and returns selection
+    public static int modifyMenu(String menuType) {
+        int selection = 0;
+        switch(menuType) {
+            case "search":
+                System.out.println("Which field do you want to search by?");
+                System.out.println("Available choices: ");
+                System.out.println("1. Supplier ID");
+                System.out.println("2. Supplier Name");
+                System.out.println("");
+                System.out.println("0. Return to supplier menu");
+                System.out.println("");
+
+                selection = General.intInput("Enter selection (0-2) : ", "Invalid input, please enter an integer.");
+                break;
+            case "modifyField":
+                System.out.println("Which field do you want to modify?");
+                System.out.println("Available choices: ");
+                System.out.println("1. Supplier Name");
+                System.out.println("2. Phone Number");
+                System.out.println("3. Email");
+                System.out.println("4. Address");
+                System.out.println("");
+                System.out.println("0. Return to modify supplier menu");
+                System.out.println("");
+
+                selection = General.intInput("Enter selection (0-4) : ", "Invalid input, please enter an integer.");
+                break;
+            default:
+                System.out.println("Menu type does not exist.");
+        }
+        
+        return selection;
     }
 }
