@@ -1,7 +1,6 @@
 
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Scanner;
 
 /*
@@ -59,25 +58,28 @@ public class Member extends Person {
 
     }
 
+    // Member search function
     public static void searchMember() {
         ArrayList<Member> members = new ArrayList<>();
-        int intInput;
-        int loop;
-        int selection;
         char charSelection;
         String[] inputMode;
         MemberDriver.readFile("member", members);
 
         do {
+            General.clearScreen();
+            System.out.println("=============");
+            System.out.println("|Search Member|");
+            System.out.println("=============");
             inputMode = searchMenu();
-            searchDisplay(inputMode[0], inputMode[1], members);
+            searchDisplay(inputMode[0], inputMode[1], "All", members);
 
-            charSelection = General.yesNoInput("Search another Member (Y/N)", "Invalid Selection");
+            charSelection = General.yesNoInput("Search another Member (Y/N)", "  Invalid Selection");
 
         } while (charSelection == 'Y');
 
     }
 
+    // Member search mode menu
     public static String[] searchMenu() {
         int selection;
         int loop;
@@ -86,25 +88,23 @@ public class Member extends Person {
 
         do {
             loop = 0;
-            System.out.println("================");
-            System.out.println("Search Member");
-            System.out.println("================");
-            System.out.println("Search by :");
+            System.out.println("Search Member by :");
             System.out.println("1 - ID");
             System.out.println("2 - IC");
             System.out.println("3 - Name");
             System.out.println("4 - Birth month");
             System.out.println("5 - All Member");
-            selection = General.intInput("Selection : ", "Invalid selection");
+            System.out.println("===============");
+            selection = General.intInput("Selection : ", "  Invalid selection");
 
             switch (selection) {
                 case 1:
                     inputMode[1] = "ID";
                     do {
                         loop = 0;
-                        inputMode[0] = General.stringNullCheckingInput("Member id : ", "s").toUpperCase();
+                        inputMode[0] = General.stringNullCheckingInput("Member ID                     : ", "s").toUpperCase();
                         if (memberIdValidation(inputMode[0]) == false) {
-                            System.out.println("Invalid member id");
+                            System.out.println("  Invalid member id");
                             loop = 1;
                         }
                     } while (loop == 1);
@@ -113,34 +113,35 @@ public class Member extends Person {
                     inputMode[1] = "IC";
                     do {
                         loop = 0;
-                        inputMode[0] = General.stringNullCheckingInput("Member ic : ", "Invalid Member ic");
+                        inputMode[0] = General.stringNullCheckingInput("Member IC                     : ", "  Invalid Member IC");
                         if (General.icValidation(inputMode[0]) == false) {
-                            System.out.println("Invalid member ic");
+                            System.out.println("  Invalid member IC");
                             loop = 1;
                         }
                     } while (loop == 1);
                     break;
                 case 3:
-                    inputMode[1] = "name";
-                    inputMode[0] = General.stringInput("Member name : ", "Invalid Member name");
+                    inputMode[1] = "Name";
+                    inputMode[0] = General.stringInput("Member name                   : ", "  Invalid Member name");
                     break;
                 case 4:
-                    inputMode[1] = "birth month";
+                    inputMode[1] = "Birth month";
                     do {
                         loop = 0;
-                        intInput = General.intInput("Member birth month (1-12) : ", "Invalid Member month");
+                        intInput = General.intInput("Member birth month (1-12)      : ", "  Invalid Member month");
                         if (intInput < 1 || intInput > 12) {
-                            System.out.println("Invalid Member month");
+                            System.out.println("  Invalid Member month");
                             loop = 1;
                         }
                     } while (loop == 1);
-                    inputMode[0] = String.valueOf(intInput);
+                    inputMode[0] = String.format("%02d", intInput);
                     break;
                 case 5:
-                    inputMode[1] = "active";
+                    inputMode[1] = "Active";
                     inputMode[0] = " ";
+                    break;
                 default:
-                    System.out.println("Invalid selection");
+                    System.out.println("  Invalid selection");
                     loop = 1;
                     break;
             }
@@ -149,32 +150,45 @@ public class Member extends Person {
         return inputMode;
     }
 
-    public static int searchDisplay(String input, String mode, ArrayList<Member> members) {
+    //Member search function for displaying the member details searched
+    public static int searchDisplay(String input, String mode, String status, ArrayList<Member> members) {
         int loop;
         int indexSelection = -1;
         int intSelection;
 
-        ArrayList<Member> memberSearch = Member.searchObj(input, mode, members);
+        ArrayList<Member> memberSearch = Member.searchObj(input, mode, status, members);
 
-        ArrayList<Integer> index = Member.searchIndex(input, mode, members);
+        ArrayList<Integer> index = Member.searchIndex(input, mode, status, members);
 
         if (index.isEmpty()) {
-            System.out.println("Member not found");
+            System.out.println("  Member not found");
             return -1;
         } else if (index.size() == 1) {
-            Member.displayDetails(memberSearch.get(0));
-            return 0;
+            if (memberSearch.get(0).getStatus().equals("Active")) {
+                Member.displayDetails(memberSearch.get(0));
+                return 0;
+            } else {
+                System.out.println("  Member Inactive");
+                return -1;
+            }
+
         } else {
             do {
                 loop = 0;
                 Member.displayMember(memberSearch);
-                intSelection = General.intInput("Selection : ", "Invalid selection input");
-                if (intSelection < 0 && intSelection > index.size()) {
-                    System.out.println("Invalid selection");
+                intSelection = General.intInput("Selection : ", "  Invalid selection input");
+                if (intSelection <= 0 || intSelection > index.size()) {
+                    System.out.println("  Invalid selection");
                     loop = 1;
                 } else {
                     indexSelection = index.get(intSelection - 1);
-                    Member.displayDetails(memberSearch.get(intSelection - 1));
+                    if (memberSearch.get(intSelection - 1).getStatus().equals("Active")) {
+                        Member.displayDetails(memberSearch.get(intSelection - 1));
+                    } else {
+                        System.out.println("  Member Inactive");
+                        return -1;
+                    }
+
                 }
             } while (loop == 1);
 
@@ -182,12 +196,17 @@ public class Member extends Person {
         return indexSelection;
     }
 
-    public static ArrayList<Member> searchObj(String input, String mode, ArrayList<Member> members) {
+    //Search function for returning the object of the matched object in the arraylist by passing in the criterions for searching
+    public static ArrayList<Member> searchObj(String input, String mode, String status, ArrayList<Member> members) {
         ArrayList<Member> member = new ArrayList<>();
 
         if ("IC".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
-                if (members.get(i).getStatus().equals("Active")) {
+                if (status.equals("All")) {
+                    if (members.get(i).getIc().equals(input)) {
+                        member.add(members.get(i));
+                    }
+                } else if (members.get(i).getStatus().equals(status)) {
                     if (members.get(i).getIc().equals(input)) {
                         member.add(members.get(i));
                     }
@@ -195,29 +214,41 @@ public class Member extends Person {
             }
         } else if ("ID".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
-                if (members.get(i).getStatus().equals("Active")) {
+                if (status.equals("All")) {
+                    if (members.get(i).getId().equals(input)) {
+                        member.add(members.get(i));
+                    }
+                } else if (members.get(i).getStatus().equals(status)) {
                     if (members.get(i).getId().equals(input)) {
                         member.add(members.get(i));
                     }
                 }
             }
-        } else if ("name".equals(mode)) {
+        } else if ("Name".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
-                if (members.get(i).getStatus().equals("Active")) {
+                if (status.equals("All")) {
+                    if (members.get(i).getName().equals(input)) {
+                        member.add(members.get(i));
+                    }
+                } else if (members.get(i).getStatus().equals(status)) {
                     if (members.get(i).getName().equals(input)) {
                         member.add(members.get(i));
                     }
                 }
             }
-        } else if ("birth month".equals(mode)) {
+        } else if ("Birth month".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
-                if (members.get(i).getStatus().equals("Active")) {
+                if (status.equals("All")) {
                     if (members.get(i).getBirthdate().substring(3, 5).equals(input)) {
                         member.add(members.get(i));
+                    } else if (members.get(i).getStatus().equals(status)) {
+                        if (members.get(i).getBirthdate().substring(3, 5).equals(input)) {
+                            member.add(members.get(i));
+                        }
                     }
                 }
             }
-        } else if ("active".equals(mode)) {
+        } else if ("Active".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
                 if (members.get(i).getStatus().equals("Active")) {
                     member.add(members.get(i));
@@ -229,23 +260,34 @@ public class Member extends Person {
                     member.add(members.get(i));
                 }
             }
-        } else if ("all".equals(mode)) {
+        } else if ("All".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
                 member.add(members.get(i));
 
             }
 
-        } else if ("young adult".equals(mode)) {
+        } else if ("Young adult".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
-                if (members.get(i).getStatus().equals("Active")) {
+                if (status.equals("All")) {
+                    if (General.ageCalc(members.get(i).getBirthdate()) <= 30) {
+                        member.add(members.get(i));
+                    }
+                } else if (members.get(i).getStatus().equals(status)) {
                     if (General.ageCalc(members.get(i).getBirthdate()) <= 30) {
                         member.add(members.get(i));
                     }
                 }
             }
-        } else if ("middle aged adult".equals(mode)) {
+
+        } else if ("Middle aged adult".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
-                if (members.get(i).getStatus().equals("Active")) {
+                if (status.equals("All")) {
+                    if (General.ageCalc(members.get(i).getBirthdate()) > 30) {
+                        if (General.ageCalc(members.get(i).getBirthdate()) <= 45) {
+                            member.add(members.get(i));
+                        }
+                    }
+                } else if (members.get(i).getStatus().equals(status)) {
                     if (General.ageCalc(members.get(i).getBirthdate()) > 30) {
                         if (General.ageCalc(members.get(i).getBirthdate()) <= 45) {
                             member.add(members.get(i));
@@ -255,23 +297,33 @@ public class Member extends Person {
             }
         } else if ("Old adult".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
-                if (members.get(i).getStatus().equals("Active")) {
+                if (status.equals("All")) {
+                    if (General.ageCalc(members.get(i).getBirthdate()) > 45) {
+                        member.add(members.get(i));
+                    }
+
+                } else if (members.get(i).getStatus().equals(status)) {
                     if (General.ageCalc(members.get(i).getBirthdate()) > 45) {
                         member.add(members.get(i));
                     }
                 }
-
             }
         }
 
         return member;
     }
 
-    public static ArrayList<Integer> searchIndex(String input, String mode, ArrayList<Member> members) {
+    //Search function for returning the index of the matched object in the arraylist by passing in the criterions for searching
+    public static ArrayList<Integer> searchIndex(String input, String mode, String status, ArrayList<Member> members) {
         ArrayList<Integer> index = new ArrayList<>();
+
         if ("IC".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
-                if (members.get(i).getStatus().equals("Active")) {
+                if (status.equals("All")) {
+                    if (members.get(i).getIc().equals(input)) {
+                        index.add(i);
+                    }
+                } else if (members.get(i).getStatus().equals(status)) {
                     if (members.get(i).getIc().equals(input)) {
                         index.add(i);
                     }
@@ -279,29 +331,41 @@ public class Member extends Person {
             }
         } else if ("ID".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
-                if (members.get(i).getStatus().equals("Active")) {
+                if (status.equals("All")) {
+                    if (members.get(i).getId().equals(input)) {
+                        index.add(i);
+                    }
+                } else if (members.get(i).getStatus().equals(status)) {
                     if (members.get(i).getId().equals(input)) {
                         index.add(i);
                     }
                 }
             }
-        } else if ("name".equals(mode)) {
+        } else if ("Name".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
-                if (members.get(i).getStatus().equals("Active")) {
+                if (status.equals("All")) {
+                    if (members.get(i).getName().equals(input)) {
+                        index.add(i);
+                    }
+                } else if (members.get(i).getStatus().equals(status)) {
                     if (members.get(i).getName().equals(input)) {
                         index.add(i);
                     }
                 }
             }
-        } else if ("birth month".equals(mode)) {
+        } else if ("Birth month".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
-                if (members.get(i).getStatus().equals("Active")) {
+                if (status.equals("All")) {
                     if (members.get(i).getBirthdate().substring(3, 5).equals(input)) {
                         index.add(i);
+                    } else if (members.get(i).getStatus().equals(status)) {
+                        if (members.get(i).getBirthdate().substring(3, 5).equals(input)) {
+                            index.add(i);
+                        }
                     }
                 }
             }
-        } else if ("active".equals(mode)) {
+        } else if ("Active".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
                 if (members.get(i).getStatus().equals("Active")) {
                     index.add(i);
@@ -313,23 +377,34 @@ public class Member extends Person {
                     index.add(i);
                 }
             }
-        } else if ("all".equals(mode)) {
+        } else if ("All".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
                 index.add(i);
 
             }
 
-        } else if ("young adult".equals(mode)) {
+        } else if ("Young adult".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
-                if (members.get(i).getStatus().equals("Active")) {
+                if (status.equals("All")) {
+                    if (General.ageCalc(members.get(i).getBirthdate()) <= 30) {
+                        index.add(i);
+                    }
+                } else if (members.get(i).getStatus().equals(status)) {
                     if (General.ageCalc(members.get(i).getBirthdate()) <= 30) {
                         index.add(i);
                     }
                 }
             }
-        } else if ("middle aged adult".equals(mode)) {
+
+        } else if ("Middle aged adult".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
-                if (members.get(i).getStatus().equals("Active")) {
+                if (status.equals("All")) {
+                    if (General.ageCalc(members.get(i).getBirthdate()) > 30) {
+                        if (General.ageCalc(members.get(i).getBirthdate()) <= 45) {
+                            index.add(i);
+                        }
+                    }
+                } else if (members.get(i).getStatus().equals(status)) {
                     if (General.ageCalc(members.get(i).getBirthdate()) > 30) {
                         if (General.ageCalc(members.get(i).getBirthdate()) <= 45) {
                             index.add(i);
@@ -339,19 +414,23 @@ public class Member extends Person {
             }
         } else if ("Old adult".equals(mode)) {
             for (int i = 0; i < members.size(); i++) {
-                if (members.get(i).getStatus().equals("Active")) {
+                if (status.equals("All")) {
+                    if (General.ageCalc(members.get(i).getBirthdate()) > 45) {
+                        index.add(i);
+                    }
+
+                } else if (members.get(i).getStatus().equals(status)) {
                     if (General.ageCalc(members.get(i).getBirthdate()) > 45) {
                         index.add(i);
                     }
                 }
-
             }
         }
+
         return index;
     }
 
     public static void edit(ArrayList<Member> members) {
-
         writeFile("member", members);
 
     }
@@ -363,75 +442,132 @@ public class Member extends Person {
 
     public static void display() {
         ArrayList<Member> members = new ArrayList<>();
-        int loop;
+        char charSelection;
         int selection;
         Scanner sc = new Scanner(System.in);
-
+        int loop;
+        //Read member txt file
+        MemberDriver.readFile("member", members);
         do {
-            MemberDriver.readFile("member", members);
-            System.out.println("Member Submenu");
-            System.out.println("====================");
-            System.out.println("1.Active Member");
-            System.out.println("2.Inactive member");
-            System.out.println("3.Member in current birth month");
-            System.out.println("4.Young adult customer");
-            System.out.println("5.Middle aged customer");
-            System.out.println("6.Old adult customer");
-            System.out.println("7.Display all member");
-            System.out.println("====================");
-            System.out.print("Enter your selection: ");
-            selection = sc.nextInt();
+            do {
+                loop = 0;
 
-            switch (selection) {
-                case 1:
+                //Prompt and get user selection on which type of member record needed to be displayed
+                General.clearScreen();
+                System.out.println("================");
+                System.out.println("|Member Display|");
+                System.out.println("================");
+                System.out.println("1.Active Member");
+                System.out.println("2.Inactive member");
+                System.out.println("3.Member in current birth month");
+                System.out.println("4.Young adult customer");
+                System.out.println("5.Middle aged customer");
+                System.out.println("6.Old adult customer");
+                System.out.println("7.Display all member");
+                System.out.println("===============");
+                System.out.print("Enter your selection: ");
+                selection = sc.nextInt();
 
-                    displayMember(searchObj("", "active", members));
+                switch (selection) {
+                    case 1:
+                        System.out.println("======================");
+                        System.out.println("|Active Member record|");
+                        System.out.println("======================");
+                        System.out.println(" ");
+                        System.out.println("=====================================================================================");
+                        displayMember(searchObj("", "Active", "All", members));
+                        System.out.println("=====================================================================================");
+                        break;
+                    case 2:
+                        System.out.println("======================");
+                        System.out.println("|Active Member record|");
+                        System.out.println("======================");
+                        System.out.println(" ");
+                        System.out.println("=====================================================================================");
+                        displayMember(searchObj("", "Inactive", "All", members));
+                        System.out.println("=====================================================================================");
+                        break;
+                    case 3:
+                        System.out.println("======================");
+                        System.out.println("|Active Member record|");
+                        System.out.println("======================");
+                        System.out.println(" ");
+                        System.out.println("=====================================================================================");
+                        displayMember(searchObj(General.getCurrentDateTime("mm"), "Birth month", "Active", members));
+                        System.out.println("=====================================================================================");
+                        break;
+                    case 4:
+                        System.out.println("======================");
+                        System.out.println("|Active Member record|");
+                        System.out.println("======================");
+                        System.out.println(" ");
+                        System.out.println("=====================================================================================");
+                        displayMember(searchObj("", "Young adult", "Active", members));
+                        System.out.println("=====================================================================================");
+                        break;
+                    case 5:
+                        System.out.println("======================");
+                        System.out.println("|Active Member record|");
+                        System.out.println("======================");
+                        System.out.println(" ");
+                        System.out.println("======================================================================================");
+                        displayMember(searchObj("", "Middle aged adult", "Active", members));
+                        System.out.println("======================================================================================");
+                        break;
+                    case 6:
+                        System.out.println("======================");
+                        System.out.println("|Active Member record|");
+                        System.out.println("======================");
+                        System.out.println(" ");
+                        System.out.println("=====================================================================================");
+                        displayMember(searchObj("", "Old adult", "Active", members));
+                        System.out.println("=====================================================================================");
+                        break;
+                    case 7:
+                        System.out.println("======================");
+                        System.out.println("|Active Member record|");
+                        System.out.println("======================");
+                        System.out.println(" ");
+                        System.out.println("=====================================================================================");
+                        displayMember(searchObj("", "All", "Active", members));
+                        System.out.println("=====================================================================================");
+                        break;
+                    default:
+                        System.out.println("  Invalid selection");
+                        loop = 1;
+                        break;
 
-                    break;
-                case 2:
-                    displayMember(searchObj("", "inactive", members));
-                    break;
-                case 3:
-                    displayMember(searchObj(General.getCurrentDateTime("mm"), "birth month", members));
-                    break;
-                case 4:
-                    displayMember(searchObj("", "young adult", members));
-                    break;
-                case 5:
-                    displayMember(searchObj("", "middle aged adult", members));
-                    break;
-                case 6:
-                    displayMember(searchObj("", "old adult", members));
-                    break;
-                case 7:
-                    displayMember(searchObj("", "all", members));
-                    break;
-                case 0:
-                    break;
-                default:
-                    System.out.println("Invalid selection please try again");
-                    break;
-            }
-        } while (selection > 5 || selection < 0);
+                }
+            } while (loop == 1);
 
+            charSelection = General.yesNoInput("Display another member (Y/N) : ", "  Invalid Selection");
+        } while (charSelection == 'Y');
     }
 
     public static void displayMember(ArrayList<Member> members) {
+        System.out.println("========================================================================================================================================================================");
         for (int i = 0; i < members.size(); i++) {
-            System.out.printf("| %04d | %-8s | %-30s | %-12s | %-11s | %-60s | \n", (i + 1), members.get(i).getId(), members.get(i).getName(), members.get(i).getIc(), members.get(i).getPhoneNum(), members.get(i).getAddress());
+            System.out.printf("| %04d | %-8s | %-30s | %-12s | %-10s | %-11s | %-60s | %-8s |\n", (i + 1), members.get(i).getId(), members.get(i).getName(), members.get(i).getIc(), members.get(i).getBirthdate(), members.get(i).getPhoneNum(), members.get(i).getAddress(), members.get(i).getStatus());
+            System.out.println("========================================================================================================================================================================");
+            if ((i + 1) % 20 == 0) {
+                General.systemPause();
+            }
         }
     }
 
     public static void displayMember(Member members) {
-        System.out.printf("| %-8s | %-30s | %-12s | %-11s | %-60s | \n", members.getId(), members.getName(), members.getIc(), members.getPhoneNum(), members.getAddress());
+        //Display Member details
+        System.out.printf("| %-8s | %-30s | %-12s | %-10s | %-11s | %-60s | \n", members.getId(), members.getName(), members.getIc(), members.getBirthdate(), members.getPhoneNum(), members.getAddress());
 
     }
 
     public static void displayDetails(Member members) {
-        members.toString();
+        //Display Member details{
+        System.out.println(members.toString());
 
     }
 
+    //Write file function
     public static void writeFile(String fileName, ArrayList<Member> members) {
         String line;
         try {
@@ -440,7 +576,7 @@ public class Member extends Person {
 
             for (int i = 0; i < members.size(); i++) {
                 //Create a new record to be written
-                line = String.format("%s|%s|%s|%s|%s|%s|%s\n", members.get(i).getId(), members.get(i).getName(), members.get(i).getIc(), members.get(i).getBirthdate(), members.get(i).getPhoneNum(),members.get(i).getAddress(), members.get(i).getStatus());
+                line = String.format("%s|%s|%s|%s|%s|%s|%s\n", members.get(i).getId(), members.get(i).getName(), members.get(i).getIc(), members.get(i).getBirthdate(), members.get(i).getPhoneNum(), members.get(i).getAddress(), members.get(i).getStatus());
                 //Writes the record to the file.
                 writer.write(line);
             }
@@ -452,6 +588,7 @@ public class Member extends Person {
         }
     }
 
+    //Member ID validation
     public static boolean memberIdValidation(String id) {
         if (id.length() == 8) {
             if (id.charAt(0) != 'M') {
