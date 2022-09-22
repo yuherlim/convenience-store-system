@@ -12,7 +12,7 @@ public class SupplierInvoice {
     private String supplierName;
     private ArrayList<StockDetails> stockDetails;
     private double amount;
-    private String tag = "Valid";
+    private String tag;
     private static int numOfInv;
     public static String fileName = "invoice.txt";
 
@@ -122,11 +122,6 @@ public class SupplierInvoice {
                 + "Supplier: " + supplierName + '\n'
                 + "Total Amount: " + amount + '\n';
     }
-
-//    @Override
-//    public String toString() {
-//        return "SupplierInvoice{" + "invNo=" + invNo + ", invDate=" + invDate + ", staffName=" + staffName + ", supplierName=" + supplierName + ", stockDetails=" + stockDetails + ", amount=" + amount + ", tag=" + tag + '}';
-//    }
     
     
 }

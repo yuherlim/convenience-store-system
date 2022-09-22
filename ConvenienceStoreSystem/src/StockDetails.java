@@ -10,12 +10,12 @@ import java.util.Objects;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author Yu
  */
 public class StockDetails {
+
     private String productCode;
     private int qty;
     private double costPrice;
@@ -23,13 +23,13 @@ public class StockDetails {
     private String invNo;
 
     public static String fileName = "stockDetails.txt";
-    
+
     public StockDetails() {
         productCode = "";
         cnNo = "";
         invNo = "";
     }
-    
+
     public StockDetails(StockDetails sd) {
         this.productCode = sd.productCode;
         this.qty = sd.qty;
@@ -37,7 +37,7 @@ public class StockDetails {
         this.cnNo = sd.cnNo;
         this.invNo = sd.invNo;
     }
-    
+
     public StockDetails(String productCode, int qty, double costPrice, String cnNo, String invNo) {
         this.productCode = productCode;
         this.qty = qty;
@@ -87,68 +87,60 @@ public class StockDetails {
     }
 
     //reads file and returns StockDetails array list.
-    public static ArrayList<StockDetails> readFile(String fileName) {  
+    public static ArrayList<StockDetails> readFile(String fileName) {
         ArrayList<StockDetails> stockDetails = new ArrayList<>();
-        try {
-            FileReader reader = new FileReader("src\\" + fileName);
+
+        try ( FileReader reader = new FileReader("src\\" + fileName)) {
             BufferedReader bufferedReader = new BufferedReader(reader);
- 
+
             String line;
- 
+
             while ((line = bufferedReader.readLine()) != null) {
                 String[] buffer = line.split("\\%");
                 //first string is product code, second string is either invoice number or credit note number
                 String[] string1 = buffer[0].split("\\|");
                 String string2 = buffer[1];
-                String string3 = buffer[2];   
-                
+                String string3 = buffer[2];
+
                 //Convert string to integer for stock details quantity.
                 int qty = Integer.parseInt(string2);
-                
+
                 //Convert string to double for stock details cost price
                 double costPrice = Double.parseDouble(string3);
-                
+
                 //Check whether the current stock detail object has a invoice no or a credit no
-                if (string1[1].substring(0,1).equals("I"))
+                if (string1[1].substring(0, 1).equals("I")) {
                     stockDetails.add(new StockDetails(string1[0], qty, costPrice, "", string1[1]));
-                else
+                } else {
                     stockDetails.add(new StockDetails(string1[0], qty, costPrice, string1[1], ""));
+                }
             }
-            reader.close();
- 
+
         } catch (IOException e) {
-            e.printStackTrace();
         }
-        
+
         return stockDetails;
     }
-    
+
     //method to write the data of a transaction details array list into a specified file name.
     public static void writeFile(String fileName, ArrayList<StockDetails> stockDetails) {
         String line;
-        try {
-            //Create FileWriter set to write mode
-            FileWriter writer = new FileWriter("src\\" + fileName, false);
-  
+        try ( //Create FileWriter set to write mode
+                 FileWriter writer = new FileWriter("src\\" + fileName, false)) {
             for (int i = 0; i < stockDetails.size(); i++) {
                 //Create a new record to be written
-                if (stockDetails.get(i).getInvNo().equals(""))
+                if (stockDetails.get(i).getInvNo().equals("")) {
                     line = String.format("%s|%s%%%d%%%.2f\n", stockDetails.get(i).getProductCode(), stockDetails.get(i).getCnNo(), stockDetails.get(i).getQty(), stockDetails.get(i).getCostPrice());
-                else
+                } else {
                     line = String.format("%s|%s%%%d%%%.2f\n", stockDetails.get(i).getProductCode(), stockDetails.get(i).getInvNo(), stockDetails.get(i).getQty(), stockDetails.get(i).getCostPrice());
+                }
                 //Writes the record to the file.
                 writer.write(line);
             }
-  
-            // Closes the writer
-            writer.close();
-        }
-  
-        catch (Exception e) {
-            e.getStackTrace();
+        } catch (IOException e) {
         }
     }
-    
+
     @Override
     public String toString() {
         return "StockDetails{" + "productCode=" + productCode + ", qty=" + qty + ", costPrice=" + costPrice + ", cnNo=" + cnNo + ", invNo=" + invNo + '}';
@@ -174,5 +166,5 @@ public class StockDetails {
         }
         return Objects.equals(this.invNo, other.invNo);
     }
-    
+
 }
