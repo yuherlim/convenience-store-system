@@ -21,6 +21,7 @@ import java.awt.event.KeyEvent;
  */
 public class General {
 
+    //String input and validation function, digit input is not allowed 
     public static String stringInput(String promptMsg, String errorMsg) {
         String input;
         int loop;
@@ -45,6 +46,7 @@ public class General {
         return input;
     }
 
+    //String input and validation function, validate for null input
     public static String stringNullCheckingInput(String promptMsg, String errorMsg) {
         String input;
         int loop;
@@ -61,6 +63,7 @@ public class General {
 
     }
 
+    //Integer input and validation function
     public static int intInput(String promptMsg, String errorMsg) {
         int input = 0;
         int loop;
@@ -81,6 +84,7 @@ public class General {
         return input;
     }
 
+    //Double input and validation function
     public static double doubleInput(String promptMsg, String errorMsg) {
         double input = 0.00;
         int loop;
@@ -103,6 +107,7 @@ public class General {
         return input;
     }
 
+    //Character input and validation function
     public static char charInput(String promptMsg, String errorMsg) {
         String input;
         int loop;
@@ -119,7 +124,8 @@ public class General {
         } while (loop == 1);
         return input.charAt(0);
     }
-    
+
+    //Yes or No input and validation function, character input 'Y' or 'N' is accepted
     public static char yesNoInput(String promptMsg, String errorMsg) {
         char input;
         int loop;
@@ -130,11 +136,12 @@ public class General {
                 System.out.println("  Invalid input, please enter Y or N.");
                 loop = 1;
             }
-               
+
         } while (loop == 1);
         return input;
     }
-    
+
+    //Phone number input and validation function
     public static String phoneInput(String promptMsg) {
         Scanner sc = new Scanner(System.in);
         String phoneNum;
@@ -147,6 +154,7 @@ public class General {
         return phoneNum;
     }
 
+    //Phone number format validation function
     public static boolean phoneNumValidation(String phoneNum) {
         if (phoneNum.length() > 11 || phoneNum.length() < 10) {
             System.out.println("  Invalid length of phone number");
@@ -162,6 +170,7 @@ public class General {
         return true;
     }
 
+    //IC input and validation function
     public static String icInput(String promptMsg) {
         Scanner sc = new Scanner(System.in);
         String ic;
@@ -176,6 +185,7 @@ public class General {
         return ic;
     }
 
+    //IC format validation function
     public static boolean icValidation(String ic) {
         if (ic.length() != 12) {
             System.out.println("  Invalid length of ic");
@@ -204,6 +214,7 @@ public class General {
         return true;
     }
 
+    //Date input and validation function
     public static String dateInput(String promptMsg, String errorMsg) {
         Scanner sc = new Scanner(System.in);
         String input;
@@ -221,6 +232,7 @@ public class General {
         return input;
     }
 
+    //Birthdate input and validation function, birthdate must same as stated in the ic
     public static String birthDateInput(String promptMsg, String errorMsg, String ic) {
         Scanner sc = new Scanner(System.in);
         String input;
@@ -252,6 +264,7 @@ public class General {
         return input;
     }
 
+    //Date format validation function
     public static boolean dateChecking(String dateStr) {
         DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
         date.setLenient(false);
@@ -264,6 +277,7 @@ public class General {
         return true;
     }
 
+    //Obtain current date time function 
     public static String getCurrentDateTime(String mode) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
@@ -287,12 +301,13 @@ public class General {
                 return dtf.format(now).substring(8, 10) + dtf.format(now).substring(3, 5);
             default:
                 System.out.println("  Invalid mode selection");
-                
+
                 break;
         }
-                return "Invalid mode selection";
+        return "Invalid mode selection";
     }
 
+    //Age calculation function
     public static int ageCalc(String birthDate) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         long difference_In_Years = 0;
@@ -321,6 +336,7 @@ public class General {
         return (int) difference_In_Years;
     }
 
+    //Clear screen function
     public static void clearScreen() {
         try {
             Robot robot = new Robot();
@@ -333,6 +349,7 @@ public class General {
         }
     }
 
+    //System pause function
     public static void systemPause() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Press <Enter> to continue...");

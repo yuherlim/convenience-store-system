@@ -1,7 +1,6 @@
 
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Scanner;
 
 /*
@@ -59,6 +58,7 @@ public class Member extends Person {
 
     }
 
+    // Member search function
     public static void searchMember() {
         ArrayList<Member> members = new ArrayList<>();
         char charSelection;
@@ -66,8 +66,12 @@ public class Member extends Person {
         MemberDriver.readFile("member", members);
 
         do {
+            General.clearScreen();
+            System.out.println("=============");
+            System.out.println("|Search Member|");
+            System.out.println("=============");
             inputMode = searchMenu();
-            searchDisplay(inputMode[0], inputMode[1],"All", members);
+            searchDisplay(inputMode[0], inputMode[1], "All", members);
 
             charSelection = General.yesNoInput("Search another Member (Y/N)", "  Invalid Selection");
 
@@ -75,6 +79,7 @@ public class Member extends Person {
 
     }
 
+    // Member search mode menu
     public static String[] searchMenu() {
         int selection;
         int loop;
@@ -145,12 +150,13 @@ public class Member extends Person {
         return inputMode;
     }
 
+    //Member search function for displaying the member details searched
     public static int searchDisplay(String input, String mode, String status, ArrayList<Member> members) {
         int loop;
         int indexSelection = -1;
         int intSelection;
 
-        ArrayList<Member> memberSearch = Member.searchObj(input, mode,status, members);
+        ArrayList<Member> memberSearch = Member.searchObj(input, mode, status, members);
 
         ArrayList<Integer> index = Member.searchIndex(input, mode, status, members);
 
@@ -190,22 +196,7 @@ public class Member extends Person {
         return indexSelection;
     }
 
-    public static boolean memberStatusChecking(ArrayList<Member> members) {
-        if (members.get(0).getStatus().equals("Inactive")) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public static boolean memberChecking(ArrayList<Member> members) {
-        if (members.isEmpty()) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
+    //Search function for returning the object of the matched object in the arraylist by passing in the criterions for searching
     public static ArrayList<Member> searchObj(String input, String mode, String status, ArrayList<Member> members) {
         ArrayList<Member> member = new ArrayList<>();
 
@@ -322,6 +313,7 @@ public class Member extends Person {
         return member;
     }
 
+    //Search function for returning the index of the matched object in the arraylist by passing in the criterions for searching
     public static ArrayList<Integer> searchIndex(String input, String mode, String status, ArrayList<Member> members) {
         ArrayList<Integer> index = new ArrayList<>();
 
@@ -450,121 +442,132 @@ public class Member extends Person {
 
     public static void display() {
         ArrayList<Member> members = new ArrayList<>();
+        char charSelection;
         int selection;
         Scanner sc = new Scanner(System.in);
-
+        int loop;
+        //Read member txt file
+        MemberDriver.readFile("member", members);
         do {
-            MemberDriver.readFile("member", members);
-            System.out.println("================");
-            System.out.println("|Member Display|");
-            System.out.println("================");
-            System.out.println("1.Active Member");
-            System.out.println("2.Inactive member");
-            System.out.println("3.Member in current birth month");
-            System.out.println("4.Young adult customer");
-            System.out.println("5.Middle aged customer");
-            System.out.println("6.Old adult customer");
-            System.out.println("7.Display all member");
-            System.out.println("===============");
-            System.out.print("Enter your selection: ");
-            selection = sc.nextInt();
+            do {
+                loop = 0;
 
-            switch (selection) {
-                case 1:
-                    System.out.println("======================");
-                    System.out.println("|Active Member record|");
-                    System.out.println("======================");
-                    System.out.println(" ");
-                    System.out.println("=====================================================================================");
-                    displayMember(searchObj("", "Active","All" ,members));
-                    System.out.println("=====================================================================================");
-                    break;
-                case 2:
-                    System.out.println("======================");
-                    System.out.println("|Active Member record|");
-                    System.out.println("======================");
-                    System.out.println(" ");
-                    System.out.println("=====================================================================================");
-                    displayMember(searchObj("", "Inactive","All", members));
-                    System.out.println("=====================================================================================");
-                    break;
-                case 3:
-                    System.out.println("======================");
-                    System.out.println("|Active Member record|");
-                    System.out.println("======================");
-                    System.out.println(" ");
-                    System.out.println("=====================================================================================");
-                    displayMember(searchObj(General.getCurrentDateTime("mm"), "Birth month","Active",members));
-                    System.out.println("=====================================================================================");
-                    break;
-                case 4:
-                    System.out.println("======================");
-                    System.out.println("|Active Member record|");
-                    System.out.println("======================");
-                    System.out.println(" ");
-                    System.out.println("=====================================================================================");
-                    displayMember(searchObj("", "Young adult","Active", members));
-                    System.out.println("=====================================================================================");
-                    break;
-                case 5:
-                    System.out.println("======================");
-                    System.out.println("|Active Member record|");
-                    System.out.println("======================");
-                    System.out.println(" ");
-                    System.out.println("========================================================================================================================================================================");
-                    displayMember(searchObj("", "Middle aged adult", "Active",members));
-                    System.out.println("========================================================================================================================================================================");
-                    break;
-                case 6:
-                    System.out.println("======================");
-                    System.out.println("|Active Member record|");
-                    System.out.println("======================");
-                    System.out.println(" ");
-                    System.out.println("=====================================================================================");
-                    displayMember(searchObj("", "Old adult","Active", members));
-                    System.out.println("=====================================================================================");
-                    break;
-                case 7:
-                    System.out.println("======================");
-                    System.out.println("|Active Member record|");
-                    System.out.println("======================");
-                    System.out.println(" ");
-                    System.out.println("=====================================================================================");
-                    displayMember(searchObj("", "All","Active", members));
-                    System.out.println("=====================================================================================");
+                //Prompt and get user selection on which type of member record needed to be displayed
+                General.clearScreen();
+                System.out.println("================");
+                System.out.println("|Member Display|");
+                System.out.println("================");
+                System.out.println("1.Active Member");
+                System.out.println("2.Inactive member");
+                System.out.println("3.Member in current birth month");
+                System.out.println("4.Young adult customer");
+                System.out.println("5.Middle aged customer");
+                System.out.println("6.Old adult customer");
+                System.out.println("7.Display all member");
+                System.out.println("===============");
+                System.out.print("Enter your selection: ");
+                selection = sc.nextInt();
 
-                    break;
-                case 0:
-                    break;
-                default:
-                    System.out.println("  Invalid selection");
-                    break;
-            }
-        } while (selection > 5 || selection < 0);
+                switch (selection) {
+                    case 1:
+                        System.out.println("======================");
+                        System.out.println("|Active Member record|");
+                        System.out.println("======================");
+                        System.out.println(" ");
+                        System.out.println("=====================================================================================");
+                        displayMember(searchObj("", "Active", "All", members));
+                        System.out.println("=====================================================================================");
+                        break;
+                    case 2:
+                        System.out.println("======================");
+                        System.out.println("|Active Member record|");
+                        System.out.println("======================");
+                        System.out.println(" ");
+                        System.out.println("=====================================================================================");
+                        displayMember(searchObj("", "Inactive", "All", members));
+                        System.out.println("=====================================================================================");
+                        break;
+                    case 3:
+                        System.out.println("======================");
+                        System.out.println("|Active Member record|");
+                        System.out.println("======================");
+                        System.out.println(" ");
+                        System.out.println("=====================================================================================");
+                        displayMember(searchObj(General.getCurrentDateTime("mm"), "Birth month", "Active", members));
+                        System.out.println("=====================================================================================");
+                        break;
+                    case 4:
+                        System.out.println("======================");
+                        System.out.println("|Active Member record|");
+                        System.out.println("======================");
+                        System.out.println(" ");
+                        System.out.println("=====================================================================================");
+                        displayMember(searchObj("", "Young adult", "Active", members));
+                        System.out.println("=====================================================================================");
+                        break;
+                    case 5:
+                        System.out.println("======================");
+                        System.out.println("|Active Member record|");
+                        System.out.println("======================");
+                        System.out.println(" ");
+                        System.out.println("======================================================================================");
+                        displayMember(searchObj("", "Middle aged adult", "Active", members));
+                        System.out.println("======================================================================================");
+                        break;
+                    case 6:
+                        System.out.println("======================");
+                        System.out.println("|Active Member record|");
+                        System.out.println("======================");
+                        System.out.println(" ");
+                        System.out.println("=====================================================================================");
+                        displayMember(searchObj("", "Old adult", "Active", members));
+                        System.out.println("=====================================================================================");
+                        break;
+                    case 7:
+                        System.out.println("======================");
+                        System.out.println("|Active Member record|");
+                        System.out.println("======================");
+                        System.out.println(" ");
+                        System.out.println("=====================================================================================");
+                        displayMember(searchObj("", "All", "Active", members));
+                        System.out.println("=====================================================================================");
+                        break;
+                    default:
+                        System.out.println("  Invalid selection");
+                        loop = 1;
+                        break;
 
+                }
+            } while (loop == 1);
+
+            charSelection = General.yesNoInput("Display another member (Y/N) : ", "  Invalid Selection");
+        } while (charSelection == 'Y');
     }
 
     public static void displayMember(ArrayList<Member> members) {
-            System.out.println("========================================================================================================================================================================");
+        System.out.println("========================================================================================================================================================================");
         for (int i = 0; i < members.size(); i++) {
-            System.out.printf("| %04d | %-8s | %-30s | %-12s | %-10s | %-11s | %-60s | %-8s |\n", (i + 1), members.get(i).getId(), members.get(i).getName(), members.get(i).getIc(), members.get(i).getBirthdate(), members.get(i).getPhoneNum(), members.get(i).getAddress(),members.get(i).getStatus());
+            System.out.printf("| %04d | %-8s | %-30s | %-12s | %-10s | %-11s | %-60s | %-8s |\n", (i + 1), members.get(i).getId(), members.get(i).getName(), members.get(i).getIc(), members.get(i).getBirthdate(), members.get(i).getPhoneNum(), members.get(i).getAddress(), members.get(i).getStatus());
             System.out.println("========================================================================================================================================================================");
-            if((i+1) % 20 == 0){
+            if ((i + 1) % 20 == 0) {
                 General.systemPause();
             }
         }
     }
 
     public static void displayMember(Member members) {
+        //Display Member details
         System.out.printf("| %-8s | %-30s | %-12s | %-10s | %-11s | %-60s | \n", members.getId(), members.getName(), members.getIc(), members.getBirthdate(), members.getPhoneNum(), members.getAddress());
 
     }
 
     public static void displayDetails(Member members) {
+        //Display Member details{
         System.out.println(members.toString());
 
     }
 
+    //Write file function
     public static void writeFile(String fileName, ArrayList<Member> members) {
         String line;
         try {
@@ -585,6 +588,7 @@ public class Member extends Person {
         }
     }
 
+    //Member ID validation
     public static boolean memberIdValidation(String id) {
         if (id.length() == 8) {
             if (id.charAt(0) != 'M') {
