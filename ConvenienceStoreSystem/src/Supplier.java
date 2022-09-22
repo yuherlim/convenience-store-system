@@ -134,12 +134,19 @@ public class Supplier {
         
     }
     
-    public static void modify() {
-        
+    //Accepts the file name and a modified supplier array list and writes it to a file.
+    public static void modify(String fileName, ArrayList<Supplier> suppliers) {
+        Supplier.writeFile(fileName, suppliers);
     }
     
-    public static void display() {
-        
+    //Accepts a Supplier array list, displays the suppliers, and return the print count.
+    public static int display(ArrayList<Supplier> suppliers) {
+        int printCount = 0;
+        for (Supplier sp: suppliers) {
+            System.out.println(sp);
+            printCount++;
+        }
+        return printCount;
     }
     
     //reads file and returns Supplier array list.
@@ -199,7 +206,7 @@ public class Supplier {
     @Override
     public String toString() {
 //        return "Supplier{" + "id=" + id + ", name=" + name + ", phoneNo=" + phoneNo + ", email=" + email + ", address=" + address + '}';
-        return String.format("| %6s | %25s | %12s | %40s | %57s |\n", id, name, phoneNo, email, address);
+        return String.format("| %-6s | %-25s | %-12s | %-40s | %-70s |", id, name, phoneNo, email, address);
     }
 
     @Override

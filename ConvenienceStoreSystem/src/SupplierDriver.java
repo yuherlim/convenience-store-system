@@ -15,7 +15,8 @@ import java.util.regex.Pattern;
 public class SupplierDriver {
     
     public static void main(String[] args) {
-        addSupplier();
+//        addSupplier();
+        searchSupplier();
     }
     
     //Method to add a new suplier
@@ -104,6 +105,73 @@ public class SupplierDriver {
         
     }
     
+    //method to search for suppliers and print the search results.
+    public static void searchSupplier() {
+        printHeader("searchSupplier");
+        
+        //object to store the returned search results
+        Supplier supplierSearchResult;
+        //Array list to store search results to be printed
+        ArrayList<Supplier> searchResultList = new ArrayList<>();
+        
+        //search menu
+        int printCount;
+        int selection;
+        do {
+            //clear the searchResultList for subsequent loops
+            searchResultList.clear();
+            selection = searchMenu();
+            switch(selection) {
+                case 1:
+                    //Ask for supplier ID and search for the supplier details with the supplier ID.
+                    String supplierId = idInput();
+                    printCount = 0;
+                    System.out.println("Search results: ");
+                    printHeader("searchTableHeader");
+                    supplierSearchResult = Supplier.search("supplierId", supplierId);
+                    
+                    if (supplierSearchResult != null) {
+                        //Add the search result to a supplier array list to be printed using the supplier display method.
+                        searchResultList.add(supplierSearchResult);
+                        printCount = Supplier.display(searchResultList);
+                    } else {
+                        System.out.println("Supplier ID entered does not exist.");
+                    }
+                    
+                    System.out.println("");
+                    System.out.printf("< %d record(s) >\n", printCount);
+                    System.out.println("");
+                    break;
+                case 2:
+                    //Ask for supplier name and search for the supplier details with the supplier name.
+                    String name = General.stringInput("Enter supplier name: ", "Invalid supplier name, please try again").toUpperCase();
+                    printCount = 0;
+                    System.out.println("Search results: ");
+                    printHeader("searchTableHeader");
+                    supplierSearchResult = Supplier.search("supplierName", name);
+                    
+                    if (supplierSearchResult != null) {
+                        //Add the search result to a supplier array list to be printed using the supplier display method.
+                        searchResultList.add(supplierSearchResult);
+                        printCount = Supplier.display(searchResultList);
+                    } else {
+                        System.out.println("Supplier name entered does not exist.");
+                    }
+                    
+                    System.out.println("");
+                    System.out.printf("< %d record(s) >\n", printCount);
+                    System.out.println("");
+                    break;
+                case 0:
+                    System.out.println("Returning to supplier menu...");
+                    break;
+                default:
+                    System.out.println("Please ensure your selection is (0-2).");
+            }
+            
+        } while(selection != 0);
+    }
+    
     //method to print headers.
     public static void printHeader(String headerType) {
         switch(headerType) {
@@ -138,9 +206,9 @@ public class SupplierDriver {
                 System.out.println("");
                 break;
             case "searchTableHeader":
-                System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                System.out.println("| Code   | Name                      | Phone number | Email                                    | Address                                                   |");
-                System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println("| Code   | Name                      | Phone number | Email                                    | Address                                                                |");
+                System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 break;
             default:
                 System.out.println("Header type does not exist.");
@@ -161,6 +229,7 @@ public class SupplierDriver {
             for (int i = 0; i < suppliers.size(); i++) {
                 if (suppliers.get(i).getName().equals(name)) {
                     System.out.println("This supplier name has already existed, please try another supplier name.");
+                    System.out.println("");
                     validName = false;
                     break;
                 } 
@@ -190,10 +259,56 @@ public class SupplierDriver {
             }
             if (!validEmail) {
                 System.out.println("Invalid email inputted, please try again.");
+                System.out.println("");
             }
             
         } while(validEmail == false);
         
         return email;
+    }
+    
+    //Validation for supplier id.
+    public static String idInput() {
+        String supplierId;
+        boolean validSupplierId;
+        do {
+            validSupplierId = true;
+            
+            supplierId = General.stringNullCheckingInput("Enter supplier ID (Eg: SP0001) : ", "Empty input detected. Please ensure that you have inputted something.").toUpperCase();
+            
+            if (supplierId.length() != 6) {
+                validSupplierId = false;
+            } else if (supplierId.charAt(0) != 'S' && supplierId.charAt(1) != 'P') {
+                validSupplierId = false;
+            } else {
+                for (int i = 2; i < supplierId.length(); i++) {
+                    if (!Character.isDigit(supplierId.charAt(i))) {
+                        validSupplierId = false;
+                        break;
+                    }
+                }
+            }
+            
+            if (validSupplierId == false) {
+                System.out.println("Invalid supplier ID inputted. Please try again.");
+                System.out.println("");
+            }
+            
+        } while(validSupplierId == false);
+        
+        return supplierId;
+    }
+    
+    //Displays the search menu used in searchSupplier method and returns selection.
+    public static int searchMenu() {
+        System.out.println("Which field do you want to search by?");
+        System.out.println("Available choices: ");
+        System.out.println("1. Supplier ID");
+        System.out.println("2. Supplier Name");
+        System.out.println("");
+        System.out.println("0. Return to product menu");
+        System.out.println("");
+
+        return General.intInput("Enter selection (0-2) : ", "Invalid input, please enter an integer.");
     }
 }
