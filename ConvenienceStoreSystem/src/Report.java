@@ -10,6 +10,10 @@ public class Report {
     private ArrayList<Transaction> transactions;
     private ArrayList<Product> products;
     
+    public Report() {
+        
+    }
+    
     //Constructor
     public Report(String reportTitle, String dateGenerated, ArrayList<Transaction> transactions, ArrayList<Product> products){
         this.reportTitle = reportTitle;
@@ -59,10 +63,41 @@ public class Report {
         
     }
     
+    //displays the reorder report for products that needs to be restocked.
     public static void productReorderReport(){
-        Report reorderReport = new Report("Reorder Report", General.getCurrentDateTime());
-        ArrayList<Product> products = Product.readFile(Product.fileName);
+        General.clearScreen();
         
+        //Create a new report obj
+        Report reorderReport = new Report("Reorder Report", General.getCurrentDateTime("date"), null, Product.readFile(Product.fileName));
+       
+        int printCount = 0;
         
+        //Printing report header
+        System.out.println("==============");
+        System.out.println(reorderReport.getReportTitle());
+        System.out.println("==============");
+        System.out.println("Date generated: " + reorderReport.getDateGenerated());
+        System.out.println("The following products need to be reordered:");
+        System.out.println("--------------------------------------------------------------");
+        System.out.println("| Code  | Name                 | Quantity | Reorder Quantity |");
+        System.out.println("--------------------------------------------------------------");
+        for (Product p: reorderReport.products) {
+            if (p.getStockQty() < p.getMinReorderQty()) {
+                if (p.getStatus().equals("ACTIVE")) {
+                    System.out.printf("| %5s | %20s | %8d | %16d |\n", p.getCode(), p.getName(), p.getStockQty(), p.getMinReorderQty());
+                    printCount++;
+                }
+            }
+        }
+        
+        if (printCount == 0) {
+            System.out.println("There are no products that needs to be reordered.");
+        }
+        
+
+        System.out.println("");
+        System.out.printf("< %d record(s) >\n", printCount);
+        System.out.println("");
+        General.systemPause();
     }
 }
