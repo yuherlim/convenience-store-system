@@ -17,7 +17,32 @@ import java.util.Scanner;
 public class Test { 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+//        ArrayList<SupplierInvoice> si = new ArrayList<>();
+//        ArrayList<StockDetails> sd = new ArrayList<>();
+//        
+//        SupplierInvoiceDriver.readFile(SupplierInvoice.fileName, si, sd);
+//        for (SupplierInvoice i: si) {
+//            System.out.println("Invoice: ");
+//            System.out.println(i);
+//            System.out.println("Stock Details: ");
+//            for (StockDetails stockDets: i.getStockDetails()) {
+//                System.out.println(stockDets);
+//            }
+//        }
+
+        ArrayList<CreditNote> cn = new ArrayList<>();
+        ArrayList<StockDetails> sd = new ArrayList<>();
         
+        CreditNoteDriver.readFile(CreditNote.fileName, cn, sd);
+        for (CreditNote i: cn) {
+            System.out.println("Credit note: ");
+            System.out.println(i);
+            System.out.println("Stock Details: ");
+            for (StockDetails stockDets: i.getStockDetails()) {
+                System.out.println(stockDets);
+            }
+        }
+
 //        System.out.println(Supplier.search("supplierName", "Supplier A"));
 //        ArrayList<Supplier> suppliers = Supplier.readFile(Supplier.fileName);
 //        
@@ -47,12 +72,12 @@ public class Test {
 //        
 //        TransactionDetails.writeFile(TransactionDetails.fileName, transDets);
 
-        ArrayList<StockDetails> stockDets = StockDetails.readFile(StockDetails.fileName);
-        
-        stockDets.add(new StockDetails("P0008", 2, 2.50, "CN0002", ""));
-        stockDets.add(new StockDetails("P0009", 2, 2.50, "", "Inv0004"));
-        
-        StockDetails.writeFile(StockDetails.fileName, stockDets);
+//        ArrayList<StockDetails> stockDets = StockDetails.readFile(StockDetails.fileName);
+//        
+//        stockDets.add(new StockDetails("P0008", 2, 2.50, "CN0002", ""));
+//        stockDets.add(new StockDetails("P0009", 2, 2.50, "", "Inv0004"));
+//        
+//        StockDetails.writeFile(StockDetails.fileName, stockDets);
 
 //        Product testp = new Product();
 //        testp.setCode("P0001");

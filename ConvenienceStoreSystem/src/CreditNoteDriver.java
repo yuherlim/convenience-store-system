@@ -60,7 +60,7 @@ public class CreditNoteDriver {
             String line;
 
             while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
+//                System.out.println(line);
                 String[] buffer = line.split("\\%");
                 String[] string1 = buffer[0].split("\\|");
 
@@ -69,16 +69,22 @@ public class CreditNoteDriver {
                 String staffName = string1[2];
                 String supplierName = string1[3];
 
+               
+                
                 //read from stockDetails.txt and create a copy of stock details records.
-                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetailsDriver.readFile("stock details.txt", stockDetails).clone();
+                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetails.readFile(StockDetails.fileName).clone();
                 stockDetails.clear();
+                //Add elements of stock details that is associated with this credit number.
+                for (StockDetails sd: allSD) {
+                    if(sd.getCnNo().equals(cnNo))
+                        stockDetails.add(sd);
+                }
 
                 //Convert string to double for total amount
                 double doubleArr = Double.parseDouble(buffer[1]);
 
-                //creditNote.add(new CreditNote(cnNo, cnDate, staffName, supplierName, stockDetails, doubleArr));
+                creditNote.add(new CreditNote(cnNo, cnDate, staffName, supplierName, (ArrayList<StockDetails>)stockDetails.clone(), doubleArr));
             }
-
         } catch (IOException e) {
         }
 
@@ -104,26 +110,26 @@ public class CreditNoteDriver {
             cn.setCnDate(sc.nextLine());
 
             //need compare to Staff class
-            do {
-                System.out.print("Enter staff name: ");
-                staffName = sc.nextLine();
-                if (Staff.seacrhStaff(staffName) == false) {
-                    System.out.println("Invalid staff name! Please try again..");
-                } else {
-                    cn.setStaffName(staffName);
-                }
-            } while (Staff.seacrhStaff(staffName) == false);
+//            do {
+//                System.out.print("Enter staff name: ");
+//                staffName = sc.nextLine();
+//                if (Staff.seacrhStaff(staffName) == false) {
+//                    System.out.println("Invalid staff name! Please try again..");
+//                } else {
+//                    cn.setStaffName(staffName);
+//                }
+//            } while (Staff.seacrhStaff(staffName) == false);
 
             //need compare to Supplier class
-            do {
-                System.out.print("Enter Suplier name: ");
-                supplierName = sc.nextLine();
-                if (Supplier.seacrhSupplier(supplierName) == false) {
-                    System.out.println("Invalid supplier name! Please try again..");
-                } else {
-                    cn.setSupplierName(supplierName);
-                }
-            } while (Supplier.seacrhSupplier(supplierName) == false);
+//            do {
+//                System.out.print("Enter Suplier name: ");
+//                supplierName = sc.nextLine();
+//                if (Supplier.seacrhSupplier(supplierName) == false) {
+//                    System.out.println("Invalid supplier name! Please try again..");
+//                } else {
+//                    cn.setSupplierName(supplierName);
+//                }
+//            } while (Supplier.seacrhSupplier(supplierName) == false);
 
             do {
                 System.out.print("Enter the product code: ");
