@@ -28,6 +28,14 @@ public class Supplier {
     public Supplier() {
         this("","","","","");
     }
+    
+    public Supplier(Supplier sp) {
+        this.id = sp.id;
+        this.name = sp.name;
+        this.phoneNo = sp.phoneNo;
+        this.email = sp.email;
+        this.address = sp.address;
+    }
 
     public Supplier(String id, String name, String phoneNo, String email, String address) {
         this.id = id;
@@ -81,7 +89,47 @@ public class Supplier {
         
     }
     
-    public static void search() {
+     //accepts two string as arguments, one for searchType and a searchString, and returns the Supplier object containing the supplier searched.
+    //If the supplier does not exist, returns null
+    public static Supplier search(String searchType, String searchString) {
+        
+        //Read supplier details and store it into an array list
+        ArrayList<Supplier> suppliers = readFile(Supplier.fileName);
+        
+        
+        //Array list to store the search results for suppliers
+        ArrayList<Supplier> searchResultsSuppliers = new ArrayList<>();
+        
+        //to keep track of the searchCount
+        int searchCount = 0;
+        
+        //break when record is found because there supplierId and supplierNames are unique.
+        switch(searchType) {
+            case "supplierId":
+                for (int i = 0; i < suppliers.size(); i++) {
+                    if (suppliers.get(i).getId().equals(searchString)) {
+                        searchResultsSuppliers.add(new Supplier(suppliers.get(i)));
+                        searchCount++;
+                        break;
+                    } 
+                }
+                break;
+            case "supplierName":
+                for (int i = 0; i < suppliers.size(); i++) {
+                    if (suppliers.get(i).getName().equals(searchString)) {
+                        searchResultsSuppliers.add(new Supplier(suppliers.get(i)));
+                        searchCount++;
+                        break;
+                    } 
+                }
+                break;
+            default:
+                System.out.println("Invalid searchType.");
+        }
+        if (searchCount == 0)
+            return null;
+        
+        return new Supplier(searchResultsSuppliers.get(0));
         
     }
     
