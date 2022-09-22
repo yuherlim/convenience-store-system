@@ -136,15 +136,14 @@ public class SupplierInvoiceDriver {
             } while (!Staff.searchAllStaff(staffName, "Name").getName().equals(staffName));
 
             //need compare to Supplier class
-//                do {
-            System.out.print("Enter Suplier name: ");
-            supplierName = sc.nextLine();
-//                    if (Supplier.seacrhSupplier(supplierName) == false) {
-//                        System.out.println("Invalid supplier name! Please try again..");
-//                    } else {
-//                        si.setSupplierName(supplierName);
-//                    }
-//                } while (Supplier.seacrhSupplier(supplierName) == false);
+            do {
+                supplierName = General.stringNullCheckingInput("Enter a new supplier name: ", "  Input field cannot be empty, please enter again.");
+                if (Supplier.search("supplierName", supplierName).getName().equals(supplierName)) {
+                    si.setSupplierName(supplierName);
+                } else {
+                    System.out.println("Invalid staff name! Please try again..");
+                }
+            } while (!Supplier.search(supplierName, "supplierName").getName().equals(supplierName));
 
             do {
                 System.out.print("Enter the product code: ");
@@ -251,6 +250,7 @@ public class SupplierInvoiceDriver {
         do {
             //Create an object to hold the current invoice
             SupplierInvoice si = new SupplierInvoice();
+
             //Create empty arraylist to store value
             ArrayList<SupplierInvoice> supplierInvoice = new ArrayList<>();
             ArrayList<StockDetails> stockDetails = new ArrayList<>();
@@ -268,6 +268,7 @@ public class SupplierInvoiceDriver {
                 System.out.print("Enter Invoice Number (eg: INV0001): ");
                 invNo = sc.nextLine().toUpperCase();
 
+                //search and display the invoice result
                 index = searchInvoice(supplierInvoice, invNo, stockDetails);
 
                 si = supplierInvoice.get(index);
@@ -282,32 +283,50 @@ public class SupplierInvoiceDriver {
 
                 selection = General.intInput("Select a field to edit (1-4): ", "Invalid Input! Please enter number only.");
 
-                if (selection < 1 || selection > 6) {
-                    System.out.println("Invalid selection! Please enter number 1-4 only.");
-                    General.systemPause();
-                    searchInvoice(supplierInvoice, invNo, stockDetails);
-                }
-
-            } while (selection < 1 || selection > 6);
-
-            switch (selection) {
-                case 1 -> {
-                    input = General.dateInput("Enter a new invoice date(DD/MM/YYYY): ", "Please enter date with format DD/MM/YYYY");
-                    si.setInvDate(input);
-                    supplierInvoice.set(index, si);
-                }
-                case 2 -> {
-                    do {
-                        System.out.print("Enter a new staff name: ");
-                        input = General.stringNullCheckingInput("Enter a new staff name: ", "  Input field cannot be empty, please enter again.");
-                        if (Staff.searchAllStaff(input, "Name").getName().equals(input)) {
-                            si.setStaffName(input);
-                        } else {
-                            System.out.println("Invalid staff name! Please try again..");
+                switch (selection) {
+                    case 1 -> {
+                        input = General.dateInput("Enter invoice date(DD/MM/YYYY): ", "Please enter date with format DD/MM/YYYY");
+                        si.setInvDate(input);
+                        supplierInvoice.set(index, si);
+                        break;
+                    }
+                    case 2 -> {
+                        do {
+                            input = General.stringNullCheckingInput("Enter a new staff name: ", "  Input field cannot be empty, please enter again.");
+                            if (Staff.searchAllStaff(input, "Name").getName().equals(input)) {
+                                si.setStaffName(input);
+                                supplierInvoice.set(index, si);
+                            } else {
+                                System.out.println("Invalid staff name! Please try again..");
+                            }
+                        } while (!Staff.searchAllStaff(input, "Name").getName().equals(input));
+                        break;
+                    }
+                    case 3 -> {
+                        do {
+                            input = General.stringNullCheckingInput("Enter a new supplier name: ", "  Input field cannot be empty, please enter again.");
+                            if (Supplier.search(input, "supplierName").getName().equals(input)) {
+                                si.setSupplierName(input);
+                                supplierInvoice.set(index, si);
+                            } else {
+                                System.out.println("Invalid staff name! Please try again..");
+                            }
+                        } while (!Supplier.search(input, "supplierName").getName().equals(input));
+                        break;
+                    }
+                    case 4 -> {
+                        editInvoiceItem(supplierInvoice, si, stockDetails, index);
+                        break;
+                    }
+                    default -> {
+                        if (selection < 1 || selection > 6) {
+                            System.out.println("Invalid selection! Please enter number 1-4 only.");
+                            General.systemPause();
+                            searchInvoice(supplierInvoice, invNo, stockDetails);
                         }
-                    } while (!Staff.searchAllStaff(input, "Name").getName().equals(input));
+                    }
                 }
-            }
+            } while (selection < 1 || selection > 6);
 
             cont = General.yesNoInput("Continue edit again? (Y/N) > ", "Invalid input! Please enter 'Y' or 'N' only.");
 
@@ -388,12 +407,12 @@ public class SupplierInvoiceDriver {
             //Loop for display stock details
             for (int i = 0; i < currentInvoiceStockDetails.size(); i++) {
                 subtotal = currentInvoiceStockDetails.get(i).getCostPrice() * currentInvoiceStockDetails.get(i).getQty();
-                System.out.printf("%s                %.2f              %d                   %8.2f\n",
+                System.out.printf("%s             %.2f              %d                   %8.2f\n",
                         currentInvoiceStockDetails.get(i).getProductCode(), currentInvoiceStockDetails.get(i).getCostPrice(), currentInvoiceStockDetails.get(i).getQty(), subtotal);
                 totalAmount += subtotal;
             }
             System.out.println("---------------------------------------------------------------------");
-            System.out.printf("Total Amount(RM)                                            %8.2f \n \n", totalAmount);
+            System.out.printf("Total Amount(RM)                                          %8.2f \n \n", totalAmount);
         } else {
             System.out.println("Invoice has been canceled.");
         }
@@ -421,4 +440,65 @@ public class SupplierInvoiceDriver {
         return totalAmount;
     }
 
+    public static void editInvoiceItem(ArrayList<SupplierInvoice> supplierInvoice, SupplierInvoice si, ArrayList<StockDetails> stockDetails, int index) {
+        String productCode;
+        double costPrice;
+        int quantity;
+
+        double subtotal;
+        int num = 1;
+        int item;
+        int field;
+
+        General.clearScreen();
+
+        //Used to store the stock details with the current invoice no.
+        ArrayList<StockDetails> currentInvoiceStockDetails = new ArrayList<>();
+
+        System.out.println("<Edit Invoice Item>");
+
+        //Loop for compare the same invNo.
+        for (int i = 0; i < stockDetails.size(); i++) {
+            if (supplierInvoice.get(index).getInvNo().equals(stockDetails.get(i).getInvNo())) {
+                //store the stock details with the current invoice number.
+                currentInvoiceStockDetails.add(new StockDetails(stockDetails.get(i)));
+            }
+        }
+
+        System.out.println("    ---------------------------------------------------------------------");
+        System.out.println("    Item               Cost Price          Qty                 Total(RM)");
+        System.out.println("    ---------------------------------------------------------------------");
+
+        //Loop for display stock details
+        for (int i = 0; i < currentInvoiceStockDetails.size(); i++) {
+            subtotal = currentInvoiceStockDetails.get(i).getCostPrice() * currentInvoiceStockDetails.get(i).getQty();
+            System.out.printf("%d  %s                %.2f              %d                   %8.2f\n",
+                    num, currentInvoiceStockDetails.get(i).getProductCode(), currentInvoiceStockDetails.get(i).getCostPrice(), currentInvoiceStockDetails.get(i).getQty(), subtotal);
+            num++;
+        }
+
+        do {
+            item = General.intInput("Which item did you want to edit? : ", "  Please input a number.");
+            if (item < num || item > num) {
+                System.out.printf("Please input 1-%d : ", num);
+            }
+        } while (item < num || item > num);
+
+        do {
+            System.out.println('\n');
+            System.out.println("1. Product Code" + '\n' + "2. Cost Price" + '\n' + "3. Quantity");
+            System.out.print("Please select a field to edit the item (1-3): ");
+            field = General.intInput("Please select a field to edit the item (1-3): ", "  Please input a number.");
+            if (field < 1 || field > 3) {
+                System.out.println("Please input 1-3 : ");
+            }
+        } while (field < 1 || field > 3);
+
+        switch (field) {
+            case 1 -> {
+                System.out.print("Enter product code: ");
+            }
+        }
+
+    }
 }
