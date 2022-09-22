@@ -68,14 +68,20 @@ public class SupplierInvoiceDriver extends General {
 
                 //Convert string to double for total amount
                 double doubleArr = Double.parseDouble(buffer[1]);
-
-//                //read from stockDetails.txt and create a copy of stock details records.
-//                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetailsDriver.readFile(StockDetails.fileName, stockDetails).clone();
-//                stockDetails.clear();
-                supplierInvoice.add(new SupplierInvoice(invNo, invDate, staffName, supplierName, stockDetails, doubleArr, tag));
+                
+                //read from stockDetails.txt and create a copy of stock details records.
+                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetails.readFile(StockDetails.fileName).clone();
+                stockDetails.clear();
+                //Add elements of stock details that is associated with this invoice number.
+                for (StockDetails sd: allSD) {
+                    if(sd.getInvNo().equals(invNo))
+                        stockDetails.add(sd);
+                }
+                
+                //store cloned versions of stockDetails as it will be used again in subsequent loops
+                supplierInvoice.add(new SupplierInvoice(invNo, invDate, staffName, supplierName, (ArrayList<StockDetails>)stockDetails.clone(), doubleArr, tag));
 
             }
-
         } catch (IOException e) {
         }
 
@@ -195,7 +201,7 @@ public class SupplierInvoiceDriver extends General {
             //Create empty arraylist to store value
             ArrayList<SupplierInvoice> supplierInvoice = new ArrayList<>();
             ArrayList<StockDetails> stockDetails = new ArrayList<>();
-            ArrayList<Double> subTotal = new ArrayList<>();
+//            ArrayList<Double> subTotal = new ArrayList<>();
 
             //Call readfile to read the invoice.txt
             supplierInvoice = SupplierInvoiceDriver.readFile(SupplierInvoice.fileName, supplierInvoice, stockDetails);
@@ -215,7 +221,9 @@ public class SupplierInvoiceDriver extends General {
                 for (int i = 0; i < supplierInvoice.size(); i++) {
                     //if same, then print out result
                     if (supplierInvoice.get(i).getInvNo().equals(invNo)) {
-                        SupplierInvoiceDriver.printInvoice(supplierInvoice, i, stockDetails, subTotal);
+                        SupplierInvoiceDriver.printInvoice(supplierInvoice, i, stockDetails);
+                        break;
+//                        SupplierInvoiceDriver.printInvoice(supplierInvoice, i, stockDetails, subTotal);
                     }
                 }
 
@@ -255,7 +263,7 @@ public class SupplierInvoiceDriver extends General {
             SupplierInvoiceDriver.readFile(SupplierInvoice.fileName, supplierInvoice, stockDetails);
 
             //Call readfile to read the stock.txt and store to arrayList
-            stockDetails = StockDetails.readFile(StockDetails.fileName);
+            StockDetails.readFile(StockDetails.fileName);
 
             do {
                 System.out.println("------------------");
@@ -291,10 +299,14 @@ public class SupplierInvoiceDriver extends General {
         } while (cont == 'Y');
     }
 
-    public static void printInvoice(ArrayList<SupplierInvoice> supplierInvoice, int index, ArrayList<StockDetails> stockDetails, ArrayList<Double> subTotal) {
+//    public static void printInvoice(ArrayList<SupplierInvoice> supplierInvoice, int index, ArrayList<StockDetails> stockDetails, ArrayList<Double> subTotal) {
+    public static void printInvoice(ArrayList<SupplierInvoice> supplierInvoice, int index, ArrayList<StockDetails> stockDetails) {
         
         double totalAmount = 0d;
-        SupplierInvoiceDriver.calcSubTotal(supplierInvoice, index, stockDetails);
+//        SupplierInvoiceDriver.calcSubTotal(supplierInvoice, index, stockDetails);
+        
+        //Used to store the stock details with the current invoice no.
+        ArrayList<StockDetails> currentInvoiceStockDetails = new ArrayList<>();
 
         System.out.printf("Invoice No.: %s                             Invoice Date: %s \n", supplierInvoice.get(index).getInvNo(), supplierInvoice.get(index).getInvDate());
         System.out.printf("Supplier: %s                                Staff Incharge: %s \n", supplierInvoice.get(index).getSupplierName(), supplierInvoice.get(index).getStaffName());
@@ -302,15 +314,23 @@ public class SupplierInvoiceDriver extends General {
         System.out.println("Item               Cost Price          Qty                 Total(RM)");
         System.out.println("---------------------------------------------------------------------");
         for (int i = 0; i < stockDetails.size(); i++) {
-            System.out.println("print");
+//            System.out.println("print");
             if (supplierInvoice.get(index).getInvNo().equals(stockDetails.get(i).getInvNo())) {
 //                System.out.println(stockDetails.get(i));
-                System.out.printf("%s                 %.2f                 %d                  %.2f",
-                        stockDetails.get(i).getProductCode(), stockDetails.get(i).getCostPrice(), stockDetails.get(i).getQty(), subTotal.get(i));
-                totalAmount += subTotal.get(i);
+                //store the stock details with the current invoice number.
+                currentInvoiceStockDetails.add(new StockDetails(stockDetails.get(i)));   
             }
         }
-        System.out.println("---------------------------------------------------------------------");
+        //Loop for display stock details
+        double subtotal;
+        for (int i = 0; i < currentInvoiceStockDetails.size(); i++) {
+            subtotal = 0d;
+            subtotal = currentInvoiceStockDetails.get(i).getCostPrice() * currentInvoiceStockDetails.get(i).getQty();
+            System.out.printf("%s                 %.2f                 %d                  %.2f\n",
+                        currentInvoiceStockDetails.get(i).getProductCode(), currentInvoiceStockDetails.get(i).getCostPrice(), currentInvoiceStockDetails.get(i).getQty(), subtotal);
+                totalAmount += subtotal;
+        }
+        System.out.println("---------------------------------------------------------------------\n");
         System.out.printf("Total Amount(RM)                                             %.2f \n", totalAmount);
     }
 
@@ -347,10 +367,10 @@ public class SupplierInvoiceDriver extends General {
 
         for (int i = 0; i < stockDetails.size(); i++) {
             if (supplierInvoice.get(index).getInvNo().equals(stockDetails.get(i).getInvNo())) {
-                subTotal.add(i, (stockDetails.get(i).getCostPrice() * stockDetails.get(i).getQty()));
+                subTotal.add(stockDetails.get(i).getCostPrice() * stockDetails.get(i).getQty());
             }
         }
 
-        return subTotal;
+        return (ArrayList<Double>)subTotal.clone();
     }
 }

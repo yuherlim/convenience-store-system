@@ -30,6 +30,14 @@ public class StockDetails {
         invNo = "";
     }
     
+    public StockDetails(StockDetails sd) {
+        this.productCode = sd.productCode;
+        this.qty = sd.qty;
+        this.costPrice = sd.costPrice;
+        this.cnNo = sd.cnNo;
+        this.invNo = sd.invNo;
+    }
+    
     public StockDetails(String productCode, int qty, double costPrice, String cnNo, String invNo) {
         this.productCode = productCode;
         this.qty = qty;

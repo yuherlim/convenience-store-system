@@ -107,47 +107,41 @@ public class SupplierDriver {
     //method to print headers.
     public static void printHeader(String headerType) {
         switch(headerType) {
-            case "productMenu":
-                System.out.println("------------------");
-                System.out.println(" | Product Menu | ");
-                System.out.println("------------------");
+            case "supplierMenu":
+                System.out.println("-------------------");
+                System.out.println(" | Supplier Menu | ");
+                System.out.println("-------------------");
                 System.out.println("");
                 break;
             case "addSupplier":
-                System.out.println("------------------------");
+                System.out.println("-------------------------");
                 System.out.println(" | Add new supplier(s) | ");
+                System.out.println("-------------------------");
+                System.out.println("");
+                break;
+            case "modifySupplier":
+                System.out.println("------------------------");
+                System.out.println(" | Modify supplier(s) | ");
                 System.out.println("------------------------");
                 System.out.println("");
                 break;
-            case "modifyProduct":
-                System.out.println("-----------------------");
-                System.out.println(" | Modify product(s) | ");
-                System.out.println("-----------------------");
+            case "searchSupplier":
+                System.out.println("------------------------");
+                System.out.println(" | Search supplier(s) | ");
+                System.out.println("------------------------");
                 System.out.println("");
                 break;
-            case "searchProduct":
-                System.out.println("-----------------------");
-                System.out.println(" | Search product(s) | ");
-                System.out.println("-----------------------");
+            case "viewSupplier":
+                System.out.println("----------------------");
+                System.out.println(" | View supplier(s) | ");
+                System.out.println("----------------------");
                 System.out.println("");
                 break;
-            case "editProductStatus":
-                System.out.println("----------------------------");
-                System.out.println(" | Edit product(s) status | ");
-                System.out.println("----------------------------");
-                System.out.println("");
+            case "searchTableHeader":
+                System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println("| Code   | Name                      | Phone number | Email                                    | Address                                                   |");
+                System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 break;
-            case "viewProduct":
-                System.out.println("---------------------");
-                System.out.println(" | View product(s) | ");
-                System.out.println("---------------------");
-                System.out.println("");
-                break;
-//            case "searchTableHeader":
-//                System.out.println("---------------------------------------------------------------------------------------------------------------------------------------");
-//                System.out.println("| Code  | Name                 | Category             | Selling price (RM) | Cost Price (RM) | Quantity | Reorder Quantity | Status   |");
-//                System.out.println("---------------------------------------------------------------------------------------------------------------------------------------");
-//                break;
             default:
                 System.out.println("Header type does not exist.");
         }

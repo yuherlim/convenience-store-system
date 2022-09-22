@@ -13,7 +13,7 @@ public class CreditNote {
     private String supplierName;
     private ArrayList<StockDetails> stockDetails;
     private double amount;
-    private static String fileName = "creditNote.txt";
+    public static String fileName = "creditNote.txt";
     
     public CreditNote(){
         this.cnNo = "";
@@ -21,12 +21,21 @@ public class CreditNote {
         this.amount = 0d;
     }
     
-    public CreditNote(String cnNo, String cnDate, String staffName, String supplierName, StockDetails[] stockDetails, double amount) {
+    public CreditNote(CreditNote cn) {
+        this.cnNo = cn.cnNo;
+        this.cnDate = cn.cnDate;
+        this.staffName = cn.staffName;
+        this.supplierName = cn.supplierName;
+        this.stockDetails = cn.stockDetails;
+        this.amount = cn.amount;
+    }
+    
+    public CreditNote(String cnNo, String cnDate, String staffName, String supplierName, ArrayList<StockDetails> stockDetails, double amount) {
         this.cnNo = cnNo;
         this.cnDate = cnDate;
         this.staffName = staffName;
         this.supplierName = supplierName;
-        this.stockDetails = new ArrayList<>(Arrays.asList(stockDetails));
+        this.stockDetails = stockDetails;
         this.amount = amount;
     }
 
@@ -102,4 +111,11 @@ public class CreditNote {
             e.getStackTrace();
         }
     }
+
+//    @Override
+//    public String toString() {
+//        return "CreditNote{" + "cnNo=" + cnNo + ", cnDate=" + cnDate + ", staffName=" + staffName + ", supplierName=" + supplierName + ", stockDetails=" + stockDetails + ", amount=" + amount + '}';
+//    }
+    
+    
 }

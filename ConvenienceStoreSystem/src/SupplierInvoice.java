@@ -122,4 +122,11 @@ public class SupplierInvoice {
                 + "Supplier: " + supplierName + '\n'
                 + "Total Amount: " + amount + '\n';
     }
+
+//    @Override
+//    public String toString() {
+//        return "SupplierInvoice{" + "invNo=" + invNo + ", invDate=" + invDate + ", staffName=" + staffName + ", supplierName=" + supplierName + ", stockDetails=" + stockDetails + ", amount=" + amount + ", tag=" + tag + '}';
+//    }
+    
+    
 }
