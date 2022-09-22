@@ -31,15 +31,11 @@ public class Product {
     //File name to store product records.
     public static String fileName = "products.txt";
     
-//    private static int nextCode = 0;     //Read from file to get nextCode
-
     public Product() {
         this.code = "";
         this.name = "";
         this.category = "";
         this.status = "";
-//        code = "P" + String.format("%04d", nextCode);
-//        nextCode++;
     }
     
     public Product(Product p) {
@@ -55,8 +51,6 @@ public class Product {
         this.status = p.status;
     }
 
-   
-
     public Product(String code, String name, double currentSellingPrice, double currentCostPrice, int stockQty, int minReorderQty, String category, ArrayList<TransactionDetails> transactionDetails, ArrayList<StockDetails> stockDetails, String status) {
         this.code = code;
         this.name = name;
@@ -70,9 +64,6 @@ public class Product {
         this.status = status;
     }
     
-    
-    
-
     public String getCode() {
         return code;
     }
@@ -153,7 +144,86 @@ public class Product {
         this.status = status;
     }
     
+    //method that updates the quantity, selling price, and cost price to be used when creating invoices and credit notes.
+    //it will update the product details based on latest information in stockDetails.txt
+    public static void updateProduct() {
+        //Read current products into an array list.
+        ArrayList<Product> products = readFile(Product.fileName);
+        
+        //Read current stockDetails into an array list.
+        ArrayList<StockDetails> stockDetails = StockDetails.readFile(StockDetails.fileName);
+        
+        double sumCostPrice;
+        int costPriceCount;
+        double averageCostPrice;
+        int prodQty = 0;
+        double currentSellingPrice;
+        boolean productInvoiceExist;
+        
+        for (Product p : products) {
+            sumCostPrice = 0d;
+            costPriceCount = 0;
+            averageCostPrice = 0d;
+            prodQty = 0;
+            currentSellingPrice = 0d;
+            productInvoiceExist = false;
+            //loop calculate the sum of the cost prices for this product and update the product's current quantity.
+            for (int i = 0; i < stockDetails.size(); i++) {
+                if (p.getCode().equals(stockDetails.get(i).getProductCode())) {
+                    productInvoiceExist = true;
+                    //check whether invoice no string is empty, if it is, then it is a credit note
+                    if (!stockDetails.get(i).getInvNo().equals("")) {
+                        sumCostPrice += stockDetails.get(i).getCostPrice();
+                        costPriceCount++;
+                        prodQty += stockDetails.get(i).getQty();
+                    } else
+                        prodQty -= stockDetails.get(i).getQty();   
+                }
+            }
+            //Only update product details if there are invoices associated with the product.
+            if (productInvoiceExist) {
+                //calculate average cost price for this product
+                averageCostPrice = sumCostPrice / costPriceCount;
+
+                //set current product's cost price to the average cost price of this product in all invoices containing this product.
+                p.setCurrentCostPrice(averageCostPrice);
+
+                //set the current product's selling price by marking up the cost price by 50%
+                currentSellingPrice = averageCostPrice * 1.5;
+                p.setCurrentSellingPrice(currentSellingPrice);
+
+                //set the updated stock quantity of this product.
+                p.setStockQty(prodQty);
+            }
+            
+        }
+        
+        //update the edited product details
+        modify(Product.fileName, products);
+        
+    }
     
+    //method that updates the quantity when a transaction is made.
+    //it will update the product details based on latest information in transactionDetails.txt
+    public static void updateQuantity() {
+        //Read current products into an array list.
+        ArrayList<Product> products = readFile(Product.fileName);
+        
+        //Read the current transaction details into an array list.
+        ArrayList<TransactionDetails> transactionDetails = TransactionDetails.readFile(TransactionDetails.fileName);
+        
+        //Deduct the quantity of products in transactions from the total quantity that a product has.
+        for (Product p : products) {
+            for (TransactionDetails td: transactionDetails) {
+                if (p.getCode().equals(td.getProductCode())) {
+                    p.setStockQty(p.getStockQty() - td.getQty());
+                }
+            }
+        }
+        
+        //update the edited product details
+        modify(Product.fileName, products);
+    }
     
     //Accepts the file name and a product array list with additional new products and writes it to a file.
     public static void add(String fileName, ArrayList<Product> products) {
@@ -216,11 +286,14 @@ public class Product {
         Product.writeFile(fileName, products);
     }
     
-    //Accepts a Product array list and displays the products.
-    public void display(ArrayList<Product> products) {
+    //Accepts a Product array list, displays the products, and return the print count.
+    public static int display(ArrayList<Product> products) {
+        int printCount = 0;
         for (Product p: products) {
             System.out.println(p);
+            printCount++;
         }
+        return printCount;
     }
     
     //Accepts the file name and a product array list with the updated status and writes it to a file.
@@ -245,6 +318,7 @@ public class Product {
         }
     }
     
+    //method to read a specified file into a Product array list and return it
     public static ArrayList<Product> readFile(String fileName) {
         //Array list to store the product records
         ArrayList<Product> products = new ArrayList<>();
@@ -287,7 +361,7 @@ public class Product {
                 }
 
                 //read from transactionDetails.txt and create a copy of transactionDetails records
-                ArrayList<TransactionDetails> allTD = (ArrayList<TransactionDetails>) TransactionDetailsDriver.readFile(TransactionDetails.fileName, transactionDetails).clone();
+                ArrayList<TransactionDetails> allTD = (ArrayList<TransactionDetails>) TransactionDetails.readFile(TransactionDetails.fileName).clone();
                 transactionDetails.clear();
                 //Add elements of transaction details that is associated with this product code.
                 for (TransactionDetails td: allTD) {
@@ -296,7 +370,7 @@ public class Product {
                 }
                 
                 //read from stockDetails.txt and create a copy of stock details records.
-                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetailsDriver.readFile(StockDetails.fileName, stockDetails).clone();
+                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetails.readFile(StockDetails.fileName).clone();
                 stockDetails.clear();
                 //Add elements of stock details that is associated with this product code.
                 for (StockDetails sd: allSD) {
@@ -316,6 +390,7 @@ public class Product {
         return products;
     }
     
+    //method to write the data of a product array list into a specified file name.
     public static void writeFile(String fileName, ArrayList<Product> products) {
         String line;
         try {
@@ -344,13 +419,7 @@ public class Product {
         return String.format("| %-5s | %-20s | %-20s | %18.2f | %15.2f | %8d | %16d | %-8s |", code, name, category, currentSellingPrice, currentCostPrice, stockQty, minReorderQty, status);
     }
 
-//    @Override
-//    public String toString() {
-//        return "Product{" + "code=" + code + ", name=" + name + ", currentSellingPrice=" + currentSellingPrice + ", currentCostPrice=" + currentCostPrice + ", stockQty=" + stockQty + ", minReorderQty=" + minReorderQty + ", category=" + category + ", transactionDetails=" + transactionDetails + ", stockDetails=" + stockDetails + ", status=" + status + '}';
-//    }
-
-    
-
+    //Override equals method to compare objects using their product codes.
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
