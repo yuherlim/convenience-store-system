@@ -1,4 +1,9 @@
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /*
@@ -14,8 +19,8 @@ public class Supplier {
     private String id;
     private String name;
     private String phoneNo;
+    private String email;
     private String address;
-    private String industry;
     
     //fileName containing supplier details.
     public static String fileName = "supplier.txt";
@@ -24,14 +29,22 @@ public class Supplier {
         this("","","","","");
     }
     
-    public Supplier(String id, String name, String phoneNo, String address, String industry) {
+    public Supplier(Supplier sp) {
+        this.id = sp.id;
+        this.name = sp.name;
+        this.phoneNo = sp.phoneNo;
+        this.email = sp.email;
+        this.address = sp.address;
+    }
+
+    public Supplier(String id, String name, String phoneNo, String email, String address) {
         this.id = id;
         this.name = name;
         this.phoneNo = phoneNo;
+        this.email = email;
         this.address = address;
-        this.industry = industry;
     }
-    
+
     public String getId() {
         return id;
     }
@@ -56,6 +69,14 @@ public class Supplier {
         this.phoneNo = phoneNo;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -64,19 +85,52 @@ public class Supplier {
         this.address = address;
     }
 
-    public String getIndustry() {
-        return industry;
-    }
-
-    public void setIndustry(String industry) {
-        this.industry = industry;
-    }
-
-    public static void add() {
-        
+    //Accepts the file name and a supplier array list with additional new suppliers and writes it to a file.
+    public static void add(String fileName, ArrayList<Supplier> suppliers) {
+        Supplier.writeFile(fileName, suppliers);
     }
     
-    public static void search() {
+     //accepts two string as arguments, one for searchType and a searchString, and returns the Supplier object containing the supplier searched.
+    //If the supplier does not exist, returns null
+    public static Supplier search(String searchType, String searchString) {
+        
+        //Read supplier details and store it into an array list
+        ArrayList<Supplier> suppliers = readFile(Supplier.fileName);
+        
+        
+        //Array list to store the search results for suppliers
+        ArrayList<Supplier> searchResultsSuppliers = new ArrayList<>();
+        
+        //to keep track of the searchCount
+        int searchCount = 0;
+        
+        //break when record is found because there supplierId and supplierNames are unique.
+        switch(searchType) {
+            case "supplierId":
+                for (int i = 0; i < suppliers.size(); i++) {
+                    if (suppliers.get(i).getId().equals(searchString)) {
+                        searchResultsSuppliers.add(new Supplier(suppliers.get(i)));
+                        searchCount++;
+                        break;
+                    } 
+                }
+                break;
+            case "supplierName":
+                for (int i = 0; i < suppliers.size(); i++) {
+                    if (suppliers.get(i).getName().equals(searchString)) {
+                        searchResultsSuppliers.add(new Supplier(suppliers.get(i)));
+                        searchCount++;
+                        break;
+                    } 
+                }
+                break;
+            default:
+                System.out.println("Invalid searchType.");
+        }
+        if (searchCount == 0)
+            return null;
+        
+        return new Supplier(searchResultsSuppliers.get(0));
         
     }
     
@@ -88,21 +142,63 @@ public class Supplier {
         
     }
     
-    public static void addIndustry() {
+    //reads file and returns Supplier array list.
+    public static ArrayList<Supplier> readFile(String fileName) {
+        ArrayList<Supplier> suppliers = new ArrayList<>();
+        try {
+            FileReader reader = new FileReader("src\\" + fileName);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+ 
+            String line;
+ 
+            while ((line = bufferedReader.readLine()) != null) {
+//                System.out.println(line);
+                String[] buffer = line.split("\\|");
+                String supplierId = buffer[0];
+                String supplierName = buffer[1];
+                String supplierPhoneNum = buffer[2];
+                String supplierEmail = buffer[3];
+                String supplierAddress = buffer[4];
+                
+                suppliers.add(new Supplier(supplierId, supplierName, supplierPhoneNum, supplierEmail, supplierAddress));
+            }
+            reader.close();
+ 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         
+        return suppliers;
     }
     
-    public static void readFile() {
-        
+    //method to write the data of a Supplier array list into a specified file name.
+    public static void writeFile(String fileName, ArrayList<Supplier> suppliers) {
+        String line;
+        try {
+            //Create FileWriter set to write mode
+            FileWriter writer = new FileWriter("src\\" + fileName, false);
+  
+            for (int i = 0; i < suppliers.size(); i++) {
+                //Create a new record to be written
+                line = String.format("%s|%s|%s|%s|%s\n", suppliers.get(i).getId(), suppliers.get(i).getName(), suppliers.get(i).getPhoneNo(), suppliers.get(i).getEmail(), suppliers.get(i).getAddress());
+                //Writes the record to the file.
+                writer.write(line);
+            }
+  
+            // Closes the writer
+            writer.close();
+        }
+  
+        catch (Exception e) {
+            e.getStackTrace();
+        }
     }
     
-    public static void writeFile() {
-        
-    }
     
+    //Needs to be changed to displaying in table form.
     @Override
     public String toString() {
-        return "Supplier{" + "id=" + id + ", name=" + name + ", phoneNo=" + phoneNo + ", address=" + address + ", industry=" + industry + '}';
+        return "Supplier{" + "id=" + id + ", name=" + name + ", phoneNo=" + phoneNo + ", email=" + email + ", address=" + address + '}';
     }
 
     @Override
