@@ -1,4 +1,3 @@
-
 /**
  *
  * @author JiaQing
@@ -9,8 +8,10 @@ public class FrontDriver {
         int selectMain, selectHome;
         
         do {
+            General.clearScreen();
             selectHome = Front.homePage();
-
+            General.clearScreen();
+            
             if (selectHome == 1) {
                 Staff staffLogin = Front.loginPage();
                 selectMain = Front.mainMenu(staffLogin);
@@ -36,11 +37,9 @@ public class FrontDriver {
                     case 0 -> {
                         System.out.println("  *** Log Out. Back to Home Page. ***");
                         General.systemPause();
-                        General.clearScreen();
                     }
                 }
             } else {
-                General.clearScreen();
                 System.out.println("Thanks for using Convenience Store POS System...");
                 General.systemPause();
             }
