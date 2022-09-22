@@ -198,7 +198,8 @@ public class Supplier {
     //Needs to be changed to displaying in table form.
     @Override
     public String toString() {
-        return "Supplier{" + "id=" + id + ", name=" + name + ", phoneNo=" + phoneNo + ", email=" + email + ", address=" + address + '}';
+//        return "Supplier{" + "id=" + id + ", name=" + name + ", phoneNo=" + phoneNo + ", email=" + email + ", address=" + address + '}';
+        return String.format("| %6s | %25s | %12s | %40s | %57s |\n", id, name, phoneNo, email, address);
     }
 
     @Override
