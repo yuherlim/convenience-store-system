@@ -17,20 +17,13 @@ import java.util.Scanner;
 public class Test { 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        ArrayList<Product> products = new ArrayList<>();
-        products.add(new Product());
-        products.add(new Product());
-        products.add(new Product());
         
-        products.get(0).setName("test1");
-        products.get(1).setName("test2");
-        products.get(2).setName("test3");
+        Product.updateProduct();
+        Product.updateQuantity();
+        ArrayList<Product> products = Product.readFile(Product.fileName);
         
-        products.remove(0);
-        products.remove(1);
-        products.remove(2);
-        
-        for (Product p: products) {
+        ProductDriver.printHeader("searchTableHeader");
+        for (Product p : products) {
             System.out.println(p);
         }
 //        Product testp = new Product();
