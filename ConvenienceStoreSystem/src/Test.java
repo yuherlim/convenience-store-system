@@ -18,6 +18,42 @@ public class Test {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         
+        System.out.println(Supplier.search("supplierName", "Supplier A"));
+//        ArrayList<Supplier> suppliers = Supplier.readFile(Supplier.fileName);
+//        
+//        suppliers.add(new Supplier("testID", "testName", "testNo", "testEmail", "testAddress"));
+//        suppliers.add(new Supplier("testID", "testName", "testNo", "testEmail", "testAddress"));
+//        
+//        Supplier.writeFile(Supplier.fileName, suppliers);
+        
+        String email = SupplierDriver.emailInput();
+        System.out.println(email);
+        
+//        for (Supplier s : suppliers) {
+//            System.out.println(s);
+//        }
+        
+//        Product.updateProduct();
+//        Product.updateQuantity();
+//        ArrayList<Product> products = Product.readFile(Product.fileName);
+//        
+//        ProductDriver.printHeader("searchTableHeader");
+//        for (Product p : products) {
+//            System.out.println(p);
+//        }
+//        ArrayList<TransactionDetails> transDets = TransactionDetails.readFile(TransactionDetails.fileName);
+//        
+//        transDets.add(new TransactionDetails(8, "T0006", "P0001", 4.00));
+//        
+//        TransactionDetails.writeFile(TransactionDetails.fileName, transDets);
+
+//        ArrayList<StockDetails> stockDets = StockDetails.readFile(StockDetails.fileName);
+//        
+//        stockDets.add(new StockDetails("P0008", 2, 2.50, "CN0002", ""));
+//        stockDets.add(new StockDetails("P0009", 2, 2.50, "", "I0004"));
+//        
+//        StockDetails.writeFile(StockDetails.fileName, stockDets);
+
 //        Product testp = new Product();
 //        testp.setCode("P0001");
 //        testp.setName("test");
@@ -98,43 +134,6 @@ public class Test {
 //            System.out.println(t);
             
     }
-    
-    public static ArrayList<StockDetails> readFile(String fileName, ArrayList<StockDetails> stockDetails) {
-        try {
-            FileReader reader = new FileReader("src\\stockDetails.txt");
-            BufferedReader bufferedReader = new BufferedReader(reader);
- 
-            String line;
- 
-            while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
-                String[] buffer = line.split("\\%");
-                //first string is product name, second string is either invoice number or credit note number
-                String[] string1 = buffer[0].split("\\|");
-                String string2 = buffer[1];
-                String string3 = buffer[2];   
-                
-                //Convert string to integer for transaction details quantity.
-                int qty = Integer.parseInt(string2);
-                
-                //Convert string to double for transaction details selling price
-                double costPrice = Double.parseDouble(string3);
-                
-                if (string1[1].substring(0,1).equals("I"))
-                    stockDetails.add(new StockDetails(string1[0], qty, costPrice, "", string1[1]));
-                else
-                    stockDetails.add(new StockDetails(string1[0], qty, costPrice, string1[1], ""));
-            }
-            reader.close();
- 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
-        return stockDetails;
-    }
-    
-    
 }
 
 

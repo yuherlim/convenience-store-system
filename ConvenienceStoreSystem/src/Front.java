@@ -8,12 +8,33 @@ import java.io.IOException;
 import java.io.FileReader;
 import java.util.Scanner;
 
-public class Login {
+public class Front {
 
-    public static void main(String[] args) {
+    public static int homePage() {
+        int selection;
+        System.out.println("=====================");
+        System.out.println("  Convenience Store");
+        System.out.println("=====================");
+        System.out.println("     POS system");
+        System.out.println("");
+        System.out.println("1 - Staff Login");
+        System.out.println("0 - Exit Program");
+
+        do {
+            selection = General.intInput("Selection: ", "  Enter Integer only.");
+            if (selection != 0 && selection != 1) {
+                System.out.println("  Select 0 and 1 only.");
+            }
+        } while (selection != 0 && selection != 1);
+        return selection;
+    }
+
+    public static Staff loginPage() {
+
         Scanner scanner = new Scanner(System.in);
         Staff staffLogin = new Staff();
         int loop;
+
         do {
             loop = 0;
             System.out.println("---------------");
@@ -42,7 +63,7 @@ public class Login {
                     }
                     reader.close();
                 } catch (IOException e) {
-                    System.out.println("staff.txt open failed.");
+                    System.out.println("  staff.txt open failed.");
                 }
 
                 if (!staffIdExist) {
@@ -77,14 +98,43 @@ public class Login {
                 case "Inactive" -> {
                     staffLogin.setPassword(Staff.createPassword());
                     staffLogin.setAccountStatus("Active");
-                    loop++;
                     Staff.editStaffFile(staffLogin);
+                    System.out.println("*** Hi, " + staffLogin.getName() + ". ***");
+                    loop++;
                 }
                 default ->
-                    System.out.println("Staff not in company.");
+                    System.out.println("  >Staff not in company.");
             }
             General.systemPause();
             General.clearScreen();
         } while (loop == 0);
+        return staffLogin;
     }
+    
+    public static int mainMenu(Staff staffLogin){
+        int selection;
+
+        System.out.println("===========");
+        System.out.println(" Main Menu");
+        System.out.println("===========");
+        System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');
+        System.out.println("");
+        System.out.println("1 - Sales");
+        System.out.println("2 - Inventory Management");
+        System.out.println("3 - Product");
+        System.out.println("4 - Memberships");
+        System.out.println("5 - Supplier");
+        System.out.println("6 - Staff");
+        System.out.println("");
+        System.out.println("0 - Home Page");
+        
+        do {
+            selection = General.intInput("Selection: ", "  Enter Integer only.");
+            if (selection < 0 || selection > 6) {
+                System.out.println("  Select 0 - 6 only.");
+            }
+        } while (selection < 0 || selection > 6);
+        return selection;
+    }
+
 }
