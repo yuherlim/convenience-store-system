@@ -85,8 +85,9 @@ public class Supplier {
         this.address = address;
     }
 
-    public static void add() {
-        
+    //Accepts the file name and a supplier array list with additional new suppliers and writes it to a file.
+    public static void add(String fileName, ArrayList<Supplier> suppliers) {
+        Supplier.writeFile(fileName, suppliers);
     }
     
      //accepts two string as arguments, one for searchType and a searchString, and returns the Supplier object containing the supplier searched.

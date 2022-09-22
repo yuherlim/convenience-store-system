@@ -82,7 +82,7 @@ public class ProductDriver {
     //Method to add a new product
     public static void addProduct() {
         
-        
+        //Give user a choice to return to product menu.
         int selection;
         do {
             printHeader("addProduct");
@@ -106,7 +106,7 @@ public class ProductDriver {
         if (selection == 0)
             return;
         
-        //Read the current product list
+        //Read the current product list into an array list
         ArrayList<Product> products = Product.readFile(Product.fileName);
         
 //        //Used when reading records available from stock details

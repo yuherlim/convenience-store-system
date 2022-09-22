@@ -231,6 +231,7 @@ public class Product {
     }
     
     //accepts two string as arguments, one for searchType and a searchString, and returns the Product array list containing the product searched.
+    //if the product does not exist, return null
     public static ArrayList<Product> search(String searchType, String searchString) {
         
         //Read product details and store it into an array list

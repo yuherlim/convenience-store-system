@@ -26,7 +26,8 @@ public class Test {
 //        
 //        Supplier.writeFile(Supplier.fileName, suppliers);
         
-        
+        String email = SupplierDriver.emailInput();
+        System.out.println(email);
         
 //        for (Supplier s : suppliers) {
 //            System.out.println(s);
