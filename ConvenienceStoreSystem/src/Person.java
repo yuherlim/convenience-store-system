@@ -12,7 +12,7 @@ public abstract class Person {
     protected String address;
 
     //Constructor
-    public Person(String name, String ic, String birthdate, String phoneNum, String address) {
+    protected Person(String name, String ic, String birthdate, String phoneNum, String address) {
         this.name = name;
         this.ic = ic;
         this.birthdate = birthdate;
