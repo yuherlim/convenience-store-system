@@ -23,7 +23,8 @@ public class TransactionDetails {
     public static String fileName = "transactionDetails.txt";
     
     public TransactionDetails() {
-        
+        transactionId = "";
+        productCode = "";
     }
     
     public TransactionDetails(int qty, String transactionId, String productCode, double sellingPrice) {

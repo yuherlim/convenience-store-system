@@ -24,7 +24,9 @@ public class StockDetails {
     public static String fileName = "stockDetails.txt";
     
     public StockDetails() {
-        
+        productCode = "";
+        cnNo = "";
+        invNo = "";
     }
     
     public StockDetails(String productCode, int qty, double costPrice, String cnNo, String invNo) {
