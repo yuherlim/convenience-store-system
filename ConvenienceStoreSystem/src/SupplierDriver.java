@@ -137,13 +137,10 @@ public class SupplierDriver {
         //Read the current supplier records into an array list.
         ArrayList<Supplier> suppliers = Supplier.readFile(Supplier.fileName);
         
-//        //Supplier array list to store the search results
-//        ArrayList<Supplier> searchResults = new ArrayList<>();
-        
         //Supplier object to store search result.
-        Supplier supplierSearchResult = new Supplier();
+        Supplier supplierSearchResult;
         
-        //modify menu 1: search for product record to edit.
+        //modify menu 1: search for supplier record to edit.
         int selection;
         do {
             General.clearScreen();
@@ -180,7 +177,7 @@ public class SupplierDriver {
                 System.out.println("Search Results: ");
                 printHeader("searchTableHeader");
                 System.out.println("Supplier does not exist.");
-                System.out.println("");
+                General.systemPause();
                 continue;
             }
             
@@ -265,8 +262,6 @@ public class SupplierDriver {
     
     //method to search for suppliers and print the search results.
     public static void searchSupplier() {
-       
-        
         //object to store the returned search results
         Supplier supplierSearchResult;
         //Array list to store search results to be printed
@@ -349,7 +344,7 @@ public class SupplierDriver {
         
         printHeader("viewSupplier");
         
-        //Read the current product records into an array list.
+        //Read the current supplier records into an array list.
         ArrayList<Supplier> suppliers = Supplier.readFile(Supplier.fileName);
         
         //to keep track of the number of records printed.
@@ -418,8 +413,8 @@ public class SupplierDriver {
     //Validation for supplier name
     public static String nameInput() {
         //read current supplier list in to array list
-        ArrayList<Supplier> suppliers = new ArrayList<>();
-        suppliers = Supplier.readFile(Supplier.fileName);
+        ArrayList<Supplier> suppliers = Supplier.readFile(Supplier.fileName);
+        
         //Validate supplier name to prevent duplicate suppliers to be created.
         String name;
         boolean validName;

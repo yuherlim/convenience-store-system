@@ -23,13 +23,13 @@ public class FrontDriver {
                         //Inventory Management
                     }
                     case 3 -> {
-                        //Product
+                        ProductDriver.main(args);
                     }
                     case 4 -> {
                         //Membership
                     }
                     case 5 -> {
-                        //Supplier
+                        SupplierDriver.main(args);
                     }
                     case 6 -> {
                         StaffDriver.main(args, staffLogin);
