@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
 public class SupplierDriver {
     
     public static void main(String[] args) {
-        
         int selection;
         do {
             selection = supplierMenu();
@@ -34,24 +33,21 @@ public class SupplierDriver {
                     break;
                 case 0:
                     System.out.println("Returning to main menu...");
+                    General.systemPause();
                     break;
                 default:
                     System.out.println("Please ensure your selection is (0-4).");
+                    General.systemPause();
             }
         } while(selection != 0);
-        
-//        addSupplier();
-//        searchSupplier();
-//        modifySupplier();
-//        viewSupplier();
     }
     
     //Method to add a new suplier
     public static void addSupplier() {
-        
         //Give user a choice to return to supplier menu.
         int selection;
         do {
+            General.clearScreen();
             printHeader("addSupplier");
             System.out.println("Available choices: ");
             System.out.println("1. Start adding supplier(s)");
@@ -64,9 +60,11 @@ public class SupplierDriver {
                     break;
                 case 0:
                     System.out.println("Returning to supplier menu...");
+                    General.systemPause();
                     break;
                 default:
                     System.out.println("Please ensure your selection is (0-1).");
+                    General.systemPause();
             }
         } while(selection != 0 && selection != 1);
         
@@ -80,6 +78,8 @@ public class SupplierDriver {
         //Loop for user input and adding suppliers.
         char cont = 'Y';
         do {
+            General.clearScreen();
+            
             //User input
 
             //Set current supplier ID: get supplier ID of last element, take the back part, convert to integer, increment it, convert back to string to store. 
@@ -123,7 +123,7 @@ public class SupplierDriver {
             } else {
                 System.out.println("Supplier is not added.");
             }
-
+            
             System.out.println("");
             
             //Check whether user wants to continue adding new suppliers
@@ -146,6 +146,8 @@ public class SupplierDriver {
         //modify menu 1: search for product record to edit.
         int selection;
         do {
+            General.clearScreen();
+            
             printHeader("modifySupplier");
             
             selection = modifyMenu("search");
@@ -162,11 +164,15 @@ public class SupplierDriver {
                     break;
                 case 0:
                     System.out.println("Returning to supplier menu...");
+                    General.systemPause();
                     continue;
                 default:
                     System.out.println("Please ensure your selection is (0-2).");
+                    General.systemPause();
                     continue;
             }
+            
+            General.clearScreen();
             
             //if supplier does not exist prompt user.
             if (supplierSearchResult == null) {
@@ -181,6 +187,8 @@ public class SupplierDriver {
             //modify menu 2: ask for what field to edit
             int modifyFieldSelection;
             do {
+                General.clearScreen();
+                
                 //print search results
                 System.out.println("");
                 System.out.println("Search Results: ");
@@ -212,9 +220,11 @@ public class SupplierDriver {
                         break;
                     case 0:
                         System.out.println("Returning to modify supplier menu...");
+                        General.systemPause();
                         continue;
                     default: 
                         System.out.println("Please ensure your selection is (0-4).");
+                        General.systemPause();
                         continue;
                 }
                 
@@ -247,7 +257,7 @@ public class SupplierDriver {
                     System.out.println("Supplier details is not modified.");
                 }
                 
-                System.out.println("");
+                General.systemPause();
             } while (modifyFieldSelection != 0);
         } while(selection != 0);
         
@@ -255,7 +265,7 @@ public class SupplierDriver {
     
     //method to search for suppliers and print the search results.
     public static void searchSupplier() {
-        printHeader("searchSupplier");
+       
         
         //object to store the returned search results
         Supplier supplierSearchResult;
@@ -266,6 +276,9 @@ public class SupplierDriver {
         int printCount;
         int selection;
         do {
+            General.clearScreen();
+            printHeader("searchSupplier");
+            
             //clear the searchResultList for subsequent loops
             searchResultList.clear();
             selection = searchMenu();
@@ -274,6 +287,9 @@ public class SupplierDriver {
                     //Ask for supplier ID and search for the supplier details with the supplier ID.
                     String supplierId = idInput();
                     printCount = 0;
+                    
+                    General.clearScreen();
+                    
                     System.out.println("Search results: ");
                     printHeader("searchTableHeader");
                     supplierSearchResult = Supplier.search("supplierId", supplierId);
@@ -289,11 +305,15 @@ public class SupplierDriver {
                     System.out.println("");
                     System.out.printf("< %d record(s) >\n", printCount);
                     System.out.println("");
+                    General.systemPause();
                     break;
                 case 2:
                     //Ask for supplier name and search for the supplier details with the supplier name.
                     String name = General.stringInput("Enter supplier name: ", "Invalid supplier name, please try again").toUpperCase();
                     printCount = 0;
+                    
+                    General.clearScreen();
+                    
                     System.out.println("Search results: ");
                     printHeader("searchTableHeader");
                     supplierSearchResult = Supplier.search("supplierName", name);
@@ -309,12 +329,15 @@ public class SupplierDriver {
                     System.out.println("");
                     System.out.printf("< %d record(s) >\n", printCount);
                     System.out.println("");
+                    General.systemPause();
                     break;
                 case 0:
                     System.out.println("Returning to supplier menu...");
+                    General.systemPause();
                     break;
                 default:
                     System.out.println("Please ensure your selection is (0-2).");
+                    General.systemPause();
             }
             
         } while(selection != 0);
@@ -322,6 +345,8 @@ public class SupplierDriver {
     
     //method to view suppliers
     public static void viewSupplier() {
+        General.clearScreen();
+        
         printHeader("viewSupplier");
         
         //Read the current product records into an array list.
@@ -476,6 +501,7 @@ public class SupplierDriver {
     
     //Display the supplier menu and return selection.
     public static int supplierMenu() {
+        General.clearScreen();
         printHeader("supplierMenu");
         System.out.println("1. Add new supplier(s)");
         System.out.println("2. Modify supplier(s)");
