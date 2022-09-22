@@ -17,6 +17,9 @@ import java.util.Scanner;
 public class Test { 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        
+//        String supplierId = SupplierDriver.idInput();
+//        System.out.println(supplierId);
 //        ArrayList<SupplierInvoice> si = new ArrayList<>();
 //        ArrayList<StockDetails> sd = new ArrayList<>();
 //        
@@ -30,18 +33,18 @@ public class Test {
 //            }
 //        }
 
-        ArrayList<CreditNote> cn = new ArrayList<>();
-        ArrayList<StockDetails> sd = new ArrayList<>();
-        
-        CreditNoteDriver.readFile(CreditNote.fileName, cn, sd);
-        for (CreditNote i: cn) {
-            System.out.println("Credit note: ");
-            System.out.println(i);
-            System.out.println("Stock Details: ");
-            for (StockDetails stockDets: i.getStockDetails()) {
-                System.out.println(stockDets);
-            }
-        }
+//        ArrayList<CreditNote> cn = new ArrayList<>();
+//        ArrayList<StockDetails> sd = new ArrayList<>();
+//        
+//        CreditNoteDriver.readFile(CreditNote.fileName, cn, sd);
+//        for (CreditNote i: cn) {
+//            System.out.println("Credit note: ");
+//            System.out.println(i);
+//            System.out.println("Stock Details: ");
+//            for (StockDetails stockDets: i.getStockDetails()) {
+//                System.out.println(stockDets);
+//            }
+//        }
 
 //        System.out.println(Supplier.search("supplierName", "Supplier A"));
 //        ArrayList<Supplier> suppliers = Supplier.readFile(Supplier.fileName);

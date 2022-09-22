@@ -706,11 +706,11 @@ public class ProductDriver {
         do {
             validProductCode = true;
             
-            productCode = General.stringNullCheckingInput("Enter product code: ", "Empty input detected. Please ensure that you have inputted something.").toUpperCase();
+            productCode = General.stringNullCheckingInput("Enter product code (Eg: P0001) : ", "Empty input detected. Please ensure that you have inputted something.").toUpperCase();
             
-            if (productCode.charAt(0) != 'P') {
+            if (productCode.length() != 5) {
                 validProductCode = false;
-            } else if (productCode.length() != 5) {
+            } else if (productCode.charAt(0) != 'P') {
                 validProductCode = false;
             } else {
                 for (int i = 1; i < productCode.length(); i++) {
@@ -746,6 +746,7 @@ public class ProductDriver {
             for (int i = 0; i < products.size(); i++) {
                 if (products.get(i).getName().equals(name)) {
                     System.out.println("This product name has already existed, please try another product name.");
+                    System.out.println("");
                     validName = false;
                     break;
                 } 
@@ -814,9 +815,10 @@ public class ProductDriver {
         do {
             validMinReorderQty = false;
             minReorderQty = General.intInput("Enter minimum reorder quantity: ", "Invalid input, please ensure you have entered an integer.");
-            if (minReorderQty < 0)
+            if (minReorderQty < 0) {
                 System.out.println("Invalid, you have entered a negative number, please try again.");
-            else
+                System.out.println("");
+            } else
                 validMinReorderQty = true;
         } while(validMinReorderQty == false);
         
@@ -834,8 +836,11 @@ public class ProductDriver {
             currentCostPrice = General.doubleInput("Enter current cost price: ", "Invalid cost price, please try again.");
             if (currentCostPrice > 0)
                 validCostPrice = true;
-            else 
+            else {
                 System.out.println("Product current cost price cannot be a negative number. Please try again.");
+                System.out.println("");
+            }
+                
         } while(validCostPrice == false);
         return currentCostPrice;
     }
@@ -851,8 +856,11 @@ public class ProductDriver {
             currentSellingPrice = General.doubleInput("Enter current selling price: ", "Invalid selling price, please try again.");
             if (currentSellingPrice > currentCostPrice)
                 validSellingPrice = true;
-            else 
+            else {
                 System.out.println("Product current selling price cannot be smaller than the cost price. Please try again.");
+                System.out.println("");
+            }
+                
         } while(validSellingPrice == false);
         return currentSellingPrice;
     }
