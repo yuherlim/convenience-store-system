@@ -26,6 +26,7 @@ public class Product {
     private String category;
     private ArrayList<TransactionDetails> transactionDetails;
     private ArrayList<StockDetails> stockDetails;
+    private String status; 
     
     //File name to store product records.
     public static String fileName = "products.txt";
@@ -36,6 +37,7 @@ public class Product {
         this.code = "";
         this.name = "";
         this.category = "";
+        this.status = "";
 //        code = "P" + String.format("%04d", nextCode);
 //        nextCode++;
     }
@@ -50,10 +52,12 @@ public class Product {
         this.category = p.category;
         this.transactionDetails = p.transactionDetails;
         this.stockDetails = p.stockDetails;
+        this.status = p.status;
     }
 
-    public Product(String code, String name, double currentSellingPrice, double currentCostPrice, int stockQty, int minReorderQty, String category, ArrayList<TransactionDetails> transactionDetails, ArrayList<StockDetails> stockDetails) {
-//        code = "P" + nextCode;
+   
+
+    public Product(String code, String name, double currentSellingPrice, double currentCostPrice, int stockQty, int minReorderQty, String category, ArrayList<TransactionDetails> transactionDetails, ArrayList<StockDetails> stockDetails, String status) {
         this.code = code;
         this.name = name;
         this.currentSellingPrice = currentSellingPrice;
@@ -63,8 +67,10 @@ public class Product {
         this.category = category;
         this.transactionDetails = transactionDetails;
         this.stockDetails = stockDetails;
-//        nextCode++;
+        this.status = status;
     }
+    
+    
     
 
     public String getCode() {
@@ -138,48 +144,96 @@ public class Product {
     public void setStockDetails(ArrayList<StockDetails> stockDetails) {
         this.stockDetails = stockDetails;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
     
+    
+    
+    //Accepts the file name and a product array list with additional new products and writes it to a file.
     public static void add(String fileName, ArrayList<Product> products) {
         Product.writeFile(fileName, products);
     }
     
-    public void search() {
-        System.out.println("add function body");
+    //accepts two string as arguments, one for searchType and a searchString, and returns the Product array list containing the product searched.
+    public static ArrayList<Product> search(String searchType, String searchString) {
+        
+        //Read product details and store it into an array list
+        ArrayList<Product> products = readFile(Product.fileName);
+        
+        
+        //Array list to store the search results for products
+        ArrayList<Product> searchResultsProducts = new ArrayList<>();
+        
+        //to keep track of the searchCount
+        int searchCount = 0;
+        
+        switch(searchType) {
+            case "productCode":
+                for (int i = 0; i < products.size(); i++) {
+                    if (products.get(i).getCode().equals(searchString)) {
+                        searchResultsProducts.add(new Product(products.get(i)));
+                        searchCount++;
+                        break;
+                    } 
+                }
+                break;
+            case "productName":
+                for (int i = 0; i < products.size(); i++) {
+                    if (products.get(i).getName().equals(searchString)) {
+                        searchResultsProducts.add(new Product(products.get(i)));
+                        searchCount++;
+                        break;
+                    } 
+                }
+                break;
+            //No break added in if statement because there can be more than 1 search results in productCategory.
+            case "productCategory":
+                for (int i = 0; i < products.size(); i++) {
+                    if (products.get(i).getCategory().equals(searchString)) {
+                        searchResultsProducts.add(new Product(products.get(i)));
+                        searchCount++;
+                    } 
+                }
+                break;
+            default:
+                System.out.println("Invalid searchType.");
+        }
+        if (searchCount == 0)
+            return null;
+        
+        return (ArrayList<Product>)searchResultsProducts.clone();
+        
     }
     
+    //Accepts the file name and a modified product array list and writes it to a file.
     public static void modify(String fileName, ArrayList<Product> products) {
         Product.writeFile(fileName, products);
     }
     
-    public void display() {
-        System.out.println("add function body");
+    //Accepts a Product array list and displays the products.
+    public void display(ArrayList<Product> products) {
+        for (Product p: products) {
+            System.out.println(p);
+        }
     }
     
-    //Add a new product category in the specified txt file if it has not existed before.
-    public static void addCategory(String fileName, String category) {
-//        boolean exist = false;
-        
+    //Accepts the file name and a product array list with the updated status and writes it to a file.
+    public static void editProductStatus(String fileName, ArrayList<Product> products) {
+        Product.writeFile(fileName, products);
+    }
+    
+    //Add a new product category in the specified txt file
+    public static void addCategory(String fileName, String category) {      
         try {
             //Create FileWriter set to append mode (second parameter true) 
             FileWriter writer = new FileWriter("src\\" + fileName, true);
   
-//            for (int i = 0; i < categoryList.size(); i++) {
-//                //Check whether the category existed before or not.
-//                if (categoryList.get(i).equals(category)) {
-//                    System.out.println("This category already exists.");
-//                    exist = true;
-//                    break;
-//                }
-//            }
-//            //Writes the record to the file if the category has not existed before.
-//            char confirmation;
-//            if (!exist) {
-//                confirmation = General.yesNoInput("Confirm add category? (Y)es/(N)o : ", "Invalid input, please enter Y or N.");
-//                if (confirmation == 'Y')
-//                    writer.write(category + "\n");
-//                else 
-//                    exist = true;
-//            }
             //Write the new category into the specified fileName.
             writer.write(category + "\n");    
             // Closes the writer
@@ -189,7 +243,77 @@ public class Product {
         catch (Exception e) {
             e.getStackTrace();
         }
-//        return (!exist);
+    }
+    
+    public static ArrayList<Product> readFile(String fileName) {
+        //Array list to store the product records
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            //Array lists used when reading from transaction details and stock details text files
+            ArrayList<TransactionDetails> transactionDetails = new ArrayList<>();
+            ArrayList<StockDetails> stockDetails = new ArrayList<>();
+            
+            FileReader reader = new FileReader("src\\" + fileName);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+ 
+            String line;
+ 
+            while ((line = bufferedReader.readLine()) != null) {
+//                System.out.println(line);
+                String[] buffer = line.split("\\%");
+                String[] string1 = buffer[0].split("\\|");
+                String[] string2 = buffer[1].split("\\|");
+                String[] string3 = buffer[2].split("\\|");
+                String[] string4 = buffer[3].split("\\|");
+                
+                //Store the read data into their respective variables to be used later to create product object.
+                String category = string4[0];
+                String code = string1[0];
+                String name = string1[1];
+                String status = string4[1];
+                
+                //Convert string to double for currentSellingPrice and currentCostPrice
+                //element 1 is currentSellingPrice and element 2 is currentCostPrice
+                double[] doubleArr = new double[2];
+                for (int i = 0; i < string2.length; i++) {
+                    doubleArr[i] = Double.parseDouble(string2[i]);
+                }
+                
+                //Convert string to integer for stockQty and minReorderQty
+                //element 1 is stockQty and element 2 is minReorderQty
+                int[] intArr = new int[2];
+                for (int i = 0; i < string3.length; i++) {
+                    intArr[i] = Integer.parseInt(string3[i]);
+                }
+
+                //read from transactionDetails.txt and create a copy of transactionDetails records
+                ArrayList<TransactionDetails> allTD = (ArrayList<TransactionDetails>) TransactionDetailsDriver.readFile(TransactionDetails.fileName, transactionDetails).clone();
+                transactionDetails.clear();
+                //Add elements of transaction details that is associated with this product code.
+                for (TransactionDetails td: allTD) {
+                    if (td.getProductCode().equals(code))
+                        transactionDetails.add(td);
+                }
+                
+                //read from stockDetails.txt and create a copy of stock details records.
+                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetailsDriver.readFile(StockDetails.fileName, stockDetails).clone();
+                stockDetails.clear();
+                //Add elements of stock details that is associated with this product code.
+                for (StockDetails sd: allSD) {
+                    if(sd.getProductCode().equals(code))
+                        stockDetails.add(sd);
+                }
+                
+                //store cloned versions of transactionDetails and stockDetails as they will be used again in subsequent loops
+                products.add(new Product(code, name, doubleArr[0], doubleArr[1], intArr[0], intArr[1], category, (ArrayList<TransactionDetails>)transactionDetails.clone(), (ArrayList<StockDetails>)stockDetails.clone(), status));
+            }
+            reader.close();
+ 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        return products;
     }
     
     public static void writeFile(String fileName, ArrayList<Product> products) {
@@ -200,7 +324,7 @@ public class Product {
   
             for (int i = 0; i < products.size(); i++) {
                 //Create a new record to be written
-                line = String.format("%s|%s%%%.2f|%.2f%%%d|%d%%%s\n", products.get(i).getCode(), products.get(i).getName(), products.get(i).getCurrentSellingPrice(), products.get(i).getCurrentCostPrice(), products.get(i).getStockQty(), products.get(i).getMinReorderQty(), products.get(i).getCategory());
+                line = String.format("%s|%s%%%.2f|%.2f%%%d|%d%%%s|%s\n", products.get(i).getCode(), products.get(i).getName(), products.get(i).getCurrentSellingPrice(), products.get(i).getCurrentCostPrice(), products.get(i).getStockQty(), products.get(i).getMinReorderQty(), products.get(i).getCategory(), products.get(i).getStatus());
                 //Writes the record to the file.
                 writer.write(line);
             }
@@ -217,8 +341,15 @@ public class Product {
     @Override
     public String toString() {
 //        return "Product code: " + code + ", Product name: " + name + ", Current selling price: " + currentSellingPrice + ", Current cost price: " + currentCostPrice + ", Stock quantity: " + stockQty + ", Product minimum reorder quantity: " + minReorderQty +  ", Category: " + category;        
-        return String.format("| %-5s | %-20s | %-20s | %18.2f | %15.2f | %8d | %16d |", code, name, category, currentSellingPrice, currentCostPrice, stockQty, minReorderQty);
+        return String.format("| %-5s | %-20s | %-20s | %18.2f | %15.2f | %8d | %16d | %-8s |", code, name, category, currentSellingPrice, currentCostPrice, stockQty, minReorderQty, status);
     }
+
+//    @Override
+//    public String toString() {
+//        return "Product{" + "code=" + code + ", name=" + name + ", currentSellingPrice=" + currentSellingPrice + ", currentCostPrice=" + currentCostPrice + ", stockQty=" + stockQty + ", minReorderQty=" + minReorderQty + ", category=" + category + ", transactionDetails=" + transactionDetails + ", stockDetails=" + stockDetails + ", status=" + status + '}';
+//    }
+
+    
 
     @Override
     public boolean equals(Object obj) {
