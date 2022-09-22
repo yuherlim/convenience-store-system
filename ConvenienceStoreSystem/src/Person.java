@@ -17,7 +17,7 @@ public abstract class Person {
     protected String address;
 
     //Constructor
-    public Person() {
+    protected Person() {
         name = "";
         ic = "";
         birthdate = "";
@@ -25,7 +25,7 @@ public abstract class Person {
         address = "";
     }
 
-    public Person(String name, String ic, String birthdate, String phoneNum, String address) {
+    protected Person(String name, String ic, String birthdate, String phoneNum, String address) {
         this.name = name;
         this.ic = ic;
         this.birthdate = birthdate;
