@@ -127,7 +127,6 @@ public class Front {
         System.out.println("6 - Staff");
         System.out.println("");
         System.out.println("0 - Home Page");
-        System.out.println("Selection: ");
         
         do {
             selection = General.intInput("Selection: ", "  Enter Integer only.");
