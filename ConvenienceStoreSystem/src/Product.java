@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /*
@@ -156,7 +155,7 @@ public class Product {
         double sumCostPrice;
         int costPriceCount;
         double averageCostPrice;
-        int prodQty = 0;
+        int prodQty;
         double currentSellingPrice;
         boolean productInvoiceExist;
         
@@ -334,7 +333,6 @@ public class Product {
             String line;
  
             while ((line = bufferedReader.readLine()) != null) {
-//                System.out.println(line);
                 String[] buffer = line.split("\\%");
                 String[] string1 = buffer[0].split("\\|");
                 String[] string2 = buffer[1].split("\\|");
