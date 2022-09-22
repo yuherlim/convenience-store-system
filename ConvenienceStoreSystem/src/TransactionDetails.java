@@ -1,6 +1,7 @@
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -97,6 +98,29 @@ public class TransactionDetails {
         }
         
         return transactionDetails;
+    }
+    
+    //method to write the data of a transaction details array list into a specified file name.
+    public static void writeFile(String fileName, ArrayList<TransactionDetails> transactionDetails) {
+        String line;
+        try {
+            //Create FileWriter set to write mode
+            FileWriter writer = new FileWriter("src\\" + fileName, false);
+  
+            for (int i = 0; i < transactionDetails.size(); i++) {
+                //Create a new record to be written
+                line = String.format("%s|%s%%%d%%%.2f\n", transactionDetails.get(i).getProductCode(), transactionDetails.get(i).getTransactionId(), transactionDetails.get(i).getQty(), transactionDetails.get(i).getSellingPrice());
+                //Writes the record to the file.
+                writer.write(line);
+            }
+  
+            // Closes the writer
+            writer.close();
+        }
+  
+        catch (Exception e) {
+            e.getStackTrace();
+        }
     }
     
     @Override

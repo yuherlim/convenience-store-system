@@ -18,14 +18,27 @@ public class Test {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         
-        Product.updateProduct();
-        Product.updateQuantity();
-        ArrayList<Product> products = Product.readFile(Product.fileName);
-        
-        ProductDriver.printHeader("searchTableHeader");
-        for (Product p : products) {
-            System.out.println(p);
-        }
+//        Product.updateProduct();
+//        Product.updateQuantity();
+//        ArrayList<Product> products = Product.readFile(Product.fileName);
+//        
+//        ProductDriver.printHeader("searchTableHeader");
+//        for (Product p : products) {
+//            System.out.println(p);
+//        }
+//        ArrayList<TransactionDetails> transDets = TransactionDetails.readFile(TransactionDetails.fileName);
+//        
+//        transDets.add(new TransactionDetails(8, "T0006", "P0001", 4.00));
+//        
+//        TransactionDetails.writeFile(TransactionDetails.fileName, transDets);
+
+//        ArrayList<StockDetails> stockDets = StockDetails.readFile(StockDetails.fileName);
+//        
+//        stockDets.add(new StockDetails("P0008", 2, 2.50, "CN0002", ""));
+//        stockDets.add(new StockDetails("P0009", 2, 2.50, "", "I0004"));
+//        
+//        StockDetails.writeFile(StockDetails.fileName, stockDets);
+
 //        Product testp = new Product();
 //        testp.setCode("P0001");
 //        testp.setName("test");

@@ -72,6 +72,34 @@ public class Supplier {
         this.industry = industry;
     }
 
+    public static void add() {
+        
+    }
+    
+    public static void search() {
+        
+    }
+    
+    public static void modify() {
+        
+    }
+    
+    public static void display() {
+        
+    }
+    
+    public static void addIndustry() {
+        
+    }
+    
+    public static void readFile() {
+        
+    }
+    
+    public static void writeFile() {
+        
+    }
+    
     @Override
     public String toString() {
         return "Supplier{" + "id=" + id + ", name=" + name + ", phoneNo=" + phoneNo + ", address=" + address + ", industry=" + industry + '}';
