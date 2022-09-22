@@ -3,7 +3,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -16,28 +15,28 @@ import java.util.Scanner;
 public class MemberDriver {
 
     public static void main(String[] args) {
-        General.clearScreen();
         menu();
 
     }
 
+    //Member main menu
     public static void menu() {
-        Scanner sc = new Scanner(System.in);
         int selection;
         int loop;
         do {
             loop = 0;
-            System.out.println("Member Submenu");
-            System.out.println("====================");
+            General.clearScreen();
+            System.out.println("================");
+            System.out.println("|Member Submenu|");
+            System.out.println("================");
             System.out.println("1.Add Member");
             System.out.println("2.Edit Member");
             System.out.println("3.Delete Member");
             System.out.println("4.Search Member");
             System.out.println("5.View Member");
             System.out.println("0.Exit function");
-            System.out.println("====================");
-            System.out.print("Enter your selection: ");
-            selection = sc.nextInt();
+            System.out.println("================");
+            selection = General.intInput("Enter your selection : ", "  Invalid selection input");
 
             switch (selection) {
                 case 1:
@@ -63,194 +62,266 @@ public class MemberDriver {
                 case 0:
                     break;
                 default:
-                    System.out.println("Invalid selection please try again");
+                    System.out.println("  Invalid selection");
                     loop = 1;
                     break;
             }
         } while (loop == 1);
     }
 
+    //Member add function
     public static void add() {
         ArrayList<Member> members = new ArrayList<Member>();
-        Scanner sc = new Scanner(System.in);
+        ArrayList<Member> memberSearch;
         Member addMember = new Member();
+        String ic;
+        String birthdate;
         char charSelection;
         int intSelection;
         int loop;
 
+        //Read member txt file
         readFile("member", members);
 
         do {
-            addMember.setId("M" + General.getCurrentDateTime("yymm") + String.format("%04d", (Member.getNumOfCustomer() + 1)));
+            General.clearScreen();
+            System.out.println("============");
+            System.out.println("|Add Member|");
+            System.out.println("============");
 
-            addMember.setName(General.stringInput("Name :", "Invalid Name format"));
+            //Prompt and get member details
+            addMember.setId("M" + General.getCurrentDateTime("yymm") + String.format("%03d", (Member.getNumOfCustomer() + 1)));
 
-            addMember.setIc(General.icInput("ic : "));
+            System.out.println("Member ID                     : " + addMember.getId());
 
-            addMember.setBirthdate(General.birthDateInput("Birthdate (dd/mm/yyyy)   :", "Invalid birthdate format", addMember.getIc()));
+            addMember.setName(General.stringInput("Member name                   : ", "  Invalid Name format"));
+
+            do {
+                loop = 0;
+                ic = General.icInput("Member IC                     : ");
+                memberSearch = Member.searchObj(ic, "IC", "All", members);
+                if (memberSearch.isEmpty() == false) {
+                    System.out.println("  IC registered");
+                    loop = 1;
+                } else {
+                    addMember.setIc(ic);
+                }
+            } while (loop == 1);
+
+            addMember.setBirthdate(General.birthDateInput("Member birthdate (dd/mm/yyyy) : ", "  Invalid birthdate format", addMember.getIc()));
             if (General.ageCalc(addMember.getBirthdate()) < 18) {
-                System.out.println("Member is under age");
+                System.out.println("  Member is under age");
                 do {
                     loop = 0;
-                    charSelection = Character.toUpperCase(General.charInput("add another member(Y/N): ", "Invalid selection input"));
+                    charSelection = Character.toUpperCase(General.charInput("Add another member(Y/N): ", "  Invalid selection input"));
                     if (charSelection != 'N' && charSelection != 'Y') {
-                        System.out.println("Invalid selection");
+                        System.out.println("  Invalid selection");
                         loop = 1;
                     }
                 } while (loop == 1);
                 continue;
             }
 
-            addMember.setPhoneNum(General.phoneInput("Phone Number : "));
+            addMember.setPhoneNum(General.phoneInput("Member phone number           : "));
 
-            addMember.setAddress(General.stringNullCheckingInput("Address : ", "Invalid Address"));
+            addMember.setAddress(General.stringNullCheckingInput("Member Address                : ", "  Invalid Address"));
 
-            addMember.setAddress("Active");
-
+            addMember.setStatus("Active");
+            General.clearScreen();
+            System.out.println("============");
+            System.out.println("|Add Member|");
+            System.out.println("============");
             Member.displayDetails(addMember);
 
+            //Prompt and get user selection on editing member details
             do {
                 loop = 0;
-                charSelection = Character.toUpperCase(General.charInput("Confirm (Y/N) X-Cancel : ", ("Invalid input")));
+                charSelection = Character.toUpperCase(General.charInput("Confirm (Y/N) X-Cancel : ", ("  Invalid input")));
 
                 switch (charSelection) {
                     case 'N':
                         do {
                             loop = 0;
-                            System.out.println("Edit menu");
+                            System.out.println("===========");
+                            System.out.println("|Edit menu|");
+                            System.out.println("===========");
                             System.out.println("1.Name ");
                             System.out.println("2.IC and Birthdate");
                             System.out.println("3.PhoneNum ");
                             System.out.println("4.Address ");
-                            intSelection = General.intInput("Selection : ", "Invalid selection input");
+                            System.out.println("===========");
+                            intSelection = General.intInput("Selection : ", "  Invalid selection input");
 
                             switch (intSelection) {
                                 case 1:
-                                    addMember.setName(General.stringInput("Name :", "Invalid Name format"));
+                                    addMember.setName(General.stringInput("Member name                   : ", "  Invalid Name format"));
                                     break;
                                 case 2:
                                     do {
                                         loop = 0;
-                                        addMember.setIc(General.icInput("ic : "));
-                                        addMember.setBirthdate(General.birthDateInput("Birthdate (dd/mm/yyyy)   :", "Invalid birthdate format", addMember.getIc()));
-                                        if (General.ageCalc(addMember.getBirthdate()) < 18) {
-                                            System.out.println("The birthDate entered is invalid");
+                                        ic = General.icInput("Member IC                     : ");
+                                        memberSearch = Member.searchObj(ic, "IC", "All", members);
+                                        if (memberSearch.isEmpty() == false) {
+                                            System.out.println("  IC registered");
                                             loop = 1;
+                                            continue;
+                                        }
+                                        birthdate = General.birthDateInput("Member birthdate (dd/mm/yyyy) : ", "  Invalid birthdate format", ic);
+                                        if (General.ageCalc(birthdate) < 18) {
+                                            System.out.println("  The birthDate entered is invalid");
+                                            loop = 1;
+                                        } else {
+                                            addMember.setIc(ic);
+                                            addMember.setBirthdate(birthdate);
                                         }
                                     } while (loop == 1);
                                     break;
                                 case 3:
-                                     addMember.setPhoneNum(General.phoneInput("Phone Number : "));
+                                    addMember.setPhoneNum(General.phoneInput("Member phone number           : "));
                                     break;
                                 case 4:
-                                    addMember.setAddress(General.stringNullCheckingInput("Address : ", "Invalid Address"));
+                                    addMember.setAddress(General.stringNullCheckingInput("Member Address                : ", "  Invalid Address"));
                                     break;
                                 default:
-                                    System.out.println("Invalid selection");
+                                    System.out.println("  Invalid selection");
                                     loop = 1;
                                     break;
                             }
 
                         } while (loop == 1);
+                        General.clearScreen();
+                        System.out.println("============");
+                        System.out.println("|Add Member|");
+                        System.out.println("============");
                         Member.displayDetails(addMember);
                         loop = 1;
                         break;
 
+                    //Create member object and add inside member object arraylist
                     case 'Y':
                         System.out.println("Member sucessfully added");
                         Member.setNumOfCustomer(Member.getNumOfCustomer() + 1);
-                        members.add(addMember);
+                        members.add(new Member(addMember.getId(), addMember.getName(), addMember.getIc(), addMember.getBirthdate(), addMember.getPhoneNum(), addMember.getAddress(), addMember.getStatus()));
                         break;
 
                     case 'X':
                         break;
 
                     default:
-                        System.out.println("Invalid selection");
+                        System.out.println("  Invalid selection");
                         loop = 1;
                         break;
                 }
 
             } while (loop == 1);
 
+            //Ask user whether add another member
             if (charSelection == 'Y') {
                 do {
                     loop = 0;
-                    charSelection = Character.toUpperCase(General.charInput("add another member(Y/N): ", "Invalid selection input"));
+                    charSelection = Character.toUpperCase(General.charInput("add another member(Y/N): ", "  Invalid selection input"));
                     if (charSelection != 'N' && charSelection != 'Y') {
-                        System.out.println("Invalid selection");
+                        System.out.println("  Invalid selection");
                         loop = 1;
                     }
                 } while (loop == 1);
             }
         } while (charSelection == 'Y');
 
+        //Write the arraylist into member txt file
         Member.add(members);
     }
 
     public static void edit() {
         ArrayList<Member> members = new ArrayList<>();
+        ArrayList<Member> memberSearch;
 
+        String ic;
+        String birthdate;
         char charSelection;
         int intSelection;
         int loop;
         int indexSelection = 0;
         String[] inputMode;
 
+        //Read Member txt file
         readFile("member", members);
 
         do {
+            General.clearScreen();
+            System.out.println("=============");
+            System.out.println("|Edit Member|");
+            System.out.println("=============");
             loop = 0;
+
+            //Search existing member and display its detail
             inputMode = Member.searchMenu();
-            indexSelection = Member.searchDisplay(inputMode[0],inputMode[1],members);
-            
-            if(indexSelection == -1){
-             charSelection = General.yesNoInput("Edit another member (Y/N) : ", "Invalid selection");
-             continue;
+            indexSelection = Member.searchDisplay(inputMode[0], inputMode[1], "All", members);
+
+            if (indexSelection == -1) {
+                charSelection = General.yesNoInput("Edit another member (Y/N) : ", "  Invalid selection");
+                continue;
             }
-           
+
+            //Prompt and get user selection on editing member details
             do {
-                charSelection = General.yesNoInput("Edit? (Y/N)", "Invalid selection");
+                charSelection = General.yesNoInput("Edit (Y/N) : ", "  Invalid selection");
 
                 switch (charSelection) {
                     case 'Y':
                         do {
                             loop = 0;
-                            System.out.println("Edit menu");
+                            System.out.println("===========");
+                            System.out.println("|Edit menu|");
+                            System.out.println("===========");
                             System.out.println("1.Name ");
                             System.out.println("2.IC and Birthdate");
                             System.out.println("3.PhoneNum ");
                             System.out.println("4.Address ");
-                            intSelection = General.intInput("Selection : ", "Invalid selection input");
+                            System.out.println("===========");
+                            intSelection = General.intInput("Selection : ", "  Invalid selection input");
 
                             switch (intSelection) {
                                 case 1:
-                                    members.get(indexSelection).setName(General.stringInput("Name :", "Invalid Name format"));
+                                    members.get(indexSelection).setName(General.stringInput("Member ID                     : ", "  Invalid Name format"));
                                     break;
                                 case 2:
                                     do {
                                         loop = 0;
-                                        members.get(indexSelection).setIc(General.icInput("ic : "));
-                                        members.get(indexSelection).setBirthdate(General.birthDateInput("Birthdate (dd/mm/yyyy)   :", "Invalid birthdate format", members.get(indexSelection).getIc()));
-                                        if (General.ageCalc(members.get(indexSelection).getBirthdate()) < 18) {
-                                            System.out.println("The birthDate entered is invalid");
+                                        ic = General.icInput("Member IC                     : ");
+                                        memberSearch = Member.searchObj(ic, "IC", "All", members);
+                                        if (memberSearch.isEmpty() == false) {
+                                            System.out.println("  IC registered");
                                             loop = 1;
+                                            continue;
+                                        }
+                                        birthdate = General.birthDateInput("Member birthdate (dd/mm/yyyy) : ", "  Invalid birthdate format", ic);
+                                        if (General.ageCalc(birthdate) < 18) {
+                                            System.out.println("  The birthDate entered is invalid");
+                                            loop = 1;
+                                        } else {
+                                            members.get(indexSelection).setIc(ic);
+                                            members.get(indexSelection).setBirthdate(birthdate);
                                         }
                                     } while (loop == 1);
                                     break;
                                 case 3:
-                                     members.get(indexSelection).setPhoneNum(General.phoneInput("Phone Number : "));
+                                    members.get(indexSelection).setPhoneNum(General.phoneInput("Member phone number           : "));
                                     break;
                                 case 4:
-                                    members.get(indexSelection).setAddress(General.stringNullCheckingInput("Address : ", "Invalid Address"));
+                                    members.get(indexSelection).setAddress(General.stringNullCheckingInput("Member Address                : ", "  Invalid Address"));
                                     break;
                                 default:
-                                    System.out.println("Invalid selection");
+                                    System.out.println("  Invalid selection");
                                     loop = 1;
                                     break;
                             }
 
                         } while (loop == 1);
+                        General.clearScreen();
+                        System.out.println("=============");
+                        System.out.println("|Edit Member|");
+                        System.out.println("=============");
                         Member.displayDetails(members.get(indexSelection));
                         loop = 1;
                         break;
@@ -264,10 +335,11 @@ public class MemberDriver {
 
             } while (loop == 1);
 
-            charSelection = General.yesNoInput("Edit another member : ", "Invalid selection");
+            charSelection = General.yesNoInput("Edit another member (Y/N)) : ", "  Invalid selection");
 
         } while (charSelection == 'Y');
 
+        //Write file
         Member.edit(members);
     }
 
@@ -277,34 +349,46 @@ public class MemberDriver {
         char charSelection;
         int indexSelection = 0;
         String[] inputMode;
-        readFile("member", members);
-        do{
-        inputMode = Member.searchMenu();
-        indexSelection = Member.searchDisplay(inputMode[0],inputMode[1],members);
-        if(indexSelection == -1){
-             charSelection = General.yesNoInput("Edit another member (Y/N) : ", "Invalid selection");
-             continue;
-            }
-                charSelection = General.yesNoInput("Edit? (Y/N)", "Invalid selection");
-                
-                switch (charSelection) {
-                    case 'Y':
-                        System.out.println("Member ID :" + members.get(indexSelection).getId() + " succesfully deactivated.");
-                        members.get(indexSelection).setStatus("Inactive");
-                        break;
-                    case 'N':
-                        break;
 
-                    default:
-                        break;
-                }
-                
-                 charSelection = General.yesNoInput("Delete another member (Y/N) : ", "Invalid selection");
-                
-          } while (charSelection == 'Y');
+        //Read Member txt file
+        readFile("member", members);
+
+        do {
+            General.clearScreen();
+            System.out.println("===============");
+            System.out.println("|Delete Member|");
+            System.out.println("===============");
+
+            //Search existing member and display its detail
+            inputMode = Member.searchMenu();
+            indexSelection = Member.searchDisplay(inputMode[0], inputMode[1], "All", members);
+            if (indexSelection == -1) {
+                charSelection = General.yesNoInput("Edit another member (Y/N) : ", "  Invalid selection");
+                continue;
+            }
+            //Prompt and get user selection on whether to delete member
+            charSelection = General.yesNoInput("Delete (Y/N) : ", "  Invalid selection");
+
+            switch (charSelection) {
+                case 'Y':
+                    System.out.println("Member ID :" + members.get(indexSelection).getId() + " succesfully deactivated.");
+                    members.get(indexSelection).setStatus("Inactive");
+                    break;
+                case 'N':
+                    break;
+
+                default:
+                    break;
+            }
+
+            charSelection = General.yesNoInput("Delete another member (Y/N) : ", "  Invalid selection");
+
+        } while (charSelection == 'Y');
+        //Write file
         Member.delete(members);
     }
 
+    //Read file method
     public static void readFile(String fileName, ArrayList<Member> members) {
         try {
             FileReader reader = new FileReader("src\\" + fileName);
