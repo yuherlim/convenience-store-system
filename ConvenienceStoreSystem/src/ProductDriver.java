@@ -302,12 +302,9 @@ public class ProductDriver {
                     System.out.println("Search results: ");
                     printHeader("searchTableHeader");
                     productSearchResults = Product.search("productCode", code);
-                    //If there are search results, store the first element of the array list as a Product object. (Product code is unique)
+                    
                     if (productSearchResults != null) {
-                        for (int i = 0; i < productSearchResults.size(); i++) {
-                            System.out.println(productSearchResults.get(i));
-                            printCount++;
-                        }
+                        printCount = Product.display(productSearchResults);
                     } else {
                         System.out.println("Product code entered does not exist.");
                     }
@@ -323,12 +320,9 @@ public class ProductDriver {
                     System.out.println("Search results: ");
                     printHeader("searchTableHeader");
                     productSearchResults = Product.search("productName", name);
-                    //If there are search results, store the first element of the array list as a Product object. (Product name is unique)
+                    
                     if (productSearchResults != null) {
-                        for (int i = 0; i < productSearchResults.size(); i++) {
-                            System.out.println(productSearchResults.get(i));
-                            printCount++;
-                        }
+                        printCount = Product.display(productSearchResults);
                     } else {
                         System.out.println("Product name entered does not exist.");
                     }
@@ -389,13 +383,11 @@ public class ProductDriver {
                         break;
                     }
                     
+                    //Print out the search results.
                     System.out.println("Search results: ");
                     printHeader("searchTableHeader");
                     if (!categoryProductSearchResults.isEmpty()) {
-                        for (int i = 0; i < categoryProductSearchResults.size(); i++) {
-                            System.out.println(categoryProductSearchResults.get(i));
-                            printCount++;
-                        }
+                        printCount = Product.display(categoryProductSearchResults);
                     } else {
                         System.out.println("No product record found.");
                     }
@@ -436,6 +428,7 @@ public class ProductDriver {
                     //Ask for product code and search for the product details with the product code.
                     String code = codeInput();
                     searchResults = Product.search("productCode", code);
+                    //If there are search results, store the first element of the array list as a Product object. (Product code is unique)
                     if (searchResults != null)
                         productSearchResult = searchResults.get(0);
                     break;
@@ -443,6 +436,7 @@ public class ProductDriver {
                     //Ask for product name and search for the product details with the product name.
                     String name = General.stringInput("Enter product name: ", "Invalid product name, please try again").toUpperCase();
                     searchResults = Product.search("productName", name);
+                    //If there are search results, store the first element of the array list as a Product object. (Product name is unique)
                     if (searchResults != null)
                         productSearchResult = searchResults.get(0);
                     break;
@@ -464,6 +458,7 @@ public class ProductDriver {
                 continue;
             }
             
+            //prevent inactive products to be modified.
             if (productSearchResult.getStatus().equals("INACTIVE")) {
                 System.out.println("The product you searched for is currently inactive. Only active products can be modified.");
                 System.out.println("");
@@ -656,6 +651,7 @@ public class ProductDriver {
         //to keep track of the number of records printed.
         int printCount;
         
+        //Let user choose whether they want to view active products or inactive products.
         int selection;
         do {
             //clear the array list for subsequent loops to store the results.
@@ -687,13 +683,11 @@ public class ProductDriver {
                 break;
             }
             
+            //print out the chosen results.
             System.out.println("Products: ");
             printHeader("searchTableHeader");
             if (!selectedProducts.isEmpty()) {
-                for (int i = 0; i < selectedProducts.size(); i++) {
-                    System.out.println(selectedProducts.get(i));
-                    printCount++;
-                }
+                printCount = Product.display(selectedProducts);
             } else {
                 System.out.println("No product record found.");
             }

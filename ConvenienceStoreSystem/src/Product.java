@@ -216,11 +216,14 @@ public class Product {
         Product.writeFile(fileName, products);
     }
     
-    //Accepts a Product array list and displays the products.
-    public void display(ArrayList<Product> products) {
+    //Accepts a Product array list, displays the products, and return the print count.
+    public static int display(ArrayList<Product> products) {
+        int printCount = 0;
         for (Product p: products) {
             System.out.println(p);
+            printCount++;
         }
+        return printCount;
     }
     
     //Accepts the file name and a product array list with the updated status and writes it to a file.
@@ -245,6 +248,7 @@ public class Product {
         }
     }
     
+    //method to read a specified file into a Product array list and return it
     public static ArrayList<Product> readFile(String fileName) {
         //Array list to store the product records
         ArrayList<Product> products = new ArrayList<>();
@@ -316,6 +320,7 @@ public class Product {
         return products;
     }
     
+    //method to write the data of a product array list into a specified file name.
     public static void writeFile(String fileName, ArrayList<Product> products) {
         String line;
         try {
@@ -344,13 +349,7 @@ public class Product {
         return String.format("| %-5s | %-20s | %-20s | %18.2f | %15.2f | %8d | %16d | %-8s |", code, name, category, currentSellingPrice, currentCostPrice, stockQty, minReorderQty, status);
     }
 
-//    @Override
-//    public String toString() {
-//        return "Product{" + "code=" + code + ", name=" + name + ", currentSellingPrice=" + currentSellingPrice + ", currentCostPrice=" + currentCostPrice + ", stockQty=" + stockQty + ", minReorderQty=" + minReorderQty + ", category=" + category + ", transactionDetails=" + transactionDetails + ", stockDetails=" + stockDetails + ", status=" + status + '}';
-//    }
-
-    
-
+    //Override equals method to compare objects using their product codes.
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
