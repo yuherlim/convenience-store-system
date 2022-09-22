@@ -202,8 +202,6 @@ public class SupplierInvoiceDriver extends General {
             
             stockDetails = StockDetailsDriver.readFile(StockDetails.fileName, stockDetails);
 
-            //Set the num of invoice as arraylist size
-            SupplierInvoice.setNumOfInv(supplierInvoice.size());
 
             do {
                 System.out.println("------------------");
@@ -214,7 +212,7 @@ public class SupplierInvoiceDriver extends General {
                 invNo = sc.nextLine().toUpperCase();
                 
                 //loop for find the same inv no.
-                for (int i = 0; i < supplierInvoice.size(); i++) {
+                for (int i = 0; i <= supplierInvoice.size(); i++) {
                     //if same, then print out result
                     if (supplierInvoice.get(i).getInvNo().equals(invNo)) {
                         SupplierInvoiceDriver.printInvoice(supplierInvoice, i, stockDetails, subTotal);
@@ -306,7 +304,8 @@ public class SupplierInvoiceDriver extends General {
         for (int i = 0; i < stockDetails.size(); i++) {
             System.out.println("print");
             if (supplierInvoice.get(index).getInvNo().equals(stockDetails.get(i).getInvNo())) {
-                System.out.printf("%s                    %.2f             %d                    %.2f \n",
+//                System.out.println(stockDetails.get(i));
+                System.out.printf("%s                 %.2f                 %d                  %.2f",
                         stockDetails.get(i).getProductCode(), stockDetails.get(i).getCostPrice(), stockDetails.get(i).getQty(), subTotal.get(i));
                 totalAmount += subTotal.get(i);
             }
