@@ -18,7 +18,7 @@ public class Test {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         
-        System.out.println(Supplier.search("supplierId", "SP0004"));
+        System.out.println(Supplier.search("supplierName", "Supplier A"));
 //        ArrayList<Supplier> suppliers = Supplier.readFile(Supplier.fileName);
 //        
 //        suppliers.add(new Supplier("testID", "testName", "testNo", "testEmail", "testAddress"));
