@@ -5,10 +5,7 @@
  */
 public abstract class Person {
 
-<<<<<<< HEAD
-=======
     //Data field
->>>>>>> 7d27cf30721ab7b777286424716fcd6a58e7128a
     protected String name;
     protected String ic;
     protected String birthdate;
@@ -16,12 +13,6 @@ public abstract class Person {
     protected String address;
 
     //Constructor
-<<<<<<< HEAD
-    protected Person(String name, String ic, String birthdate, String phoneNum, String address) {
-=======
-<<<<<<< HEAD
-    public Person(String name, String ic, String birthdate, String phoneNum, String address) {
-=======
     protected Person() {
         name = "";
         ic = "";
@@ -31,8 +22,6 @@ public abstract class Person {
     }
 
     protected Person(String name, String ic, String birthdate, String phoneNum, String address) {
->>>>>>> 7d27cf30721ab7b777286424716fcd6a58e7128a
->>>>>>> main
         this.name = name;
         this.ic = ic;
         this.birthdate = birthdate;
@@ -85,8 +74,4 @@ public abstract class Person {
     public String toString() {
         return "name=" + name + ", ic=" + ic + ", birthdate=" + birthdate + ", phoneNum=" + phoneNum + ", address=" + address;
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 7d27cf30721ab7b777286424716fcd6a58e7128a
 }
