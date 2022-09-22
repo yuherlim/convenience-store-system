@@ -1,0 +1,4 @@
+SP0001|Supplier A|60123332233|supplierA@gmail.com|6 Jln Permatang 16 Taman Desa Jaya, Johor Bahru, Johor
+SP0002|Supplier B|60123332234|supplierB@gmail.com|29 Jalan Selat Selatan 4 Pandamaran Port, Klang, Selangor
+SP0003|Supplier C|60123332235|supplierC@gmail.com|20 Jln Manis Taman Segar, Kuala Lumpur, Wilayah Persekutuan
+SP0004|Supplier D|60123332236|supplierD@gmail.com|No. 2 Jalan Tengku Ampuan Zabedah K9/K Seksyen 9, Shah Alam, Selangor
