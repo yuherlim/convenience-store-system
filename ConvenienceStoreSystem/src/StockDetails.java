@@ -25,9 +25,7 @@ public class StockDetails {
     public static String fileName = "stockDetails.txt";
 
     public StockDetails() {
-        productCode = "";
-        cnNo = "";
-        invNo = "";
+        this("", 0, 0d, "", "");
     }
 
     public StockDetails(StockDetails sd) {

@@ -99,29 +99,19 @@ public class SupplierInvoice {
 
     public static void writeFile(String fileName, ArrayList<SupplierInvoice> invoice) {
         String line;
-            //Create FileWriter set to write mode
-            try ( FileWriter writer = new FileWriter("src\\" + fileName, false)) {
+        //Create FileWriter set to write mode
+        try ( FileWriter writer = new FileWriter("src\\" + fileName, false)) {
 
-                for (int i = 0; i < invoice.size(); i++) {
-                    //Create a new record to be written
-                    line = String.format("%s|%s|%s|%s%%.2lf\n", invoice.get(i).getInvNo(), invoice.get(i).getInvDate(), invoice.get(i).getStaffName(), invoice.get(i).getSupplierName(), invoice.get(i).getAmount());
-                    //Writes the record to the file.
-                    writer.write(line);
-                }
+            for (int i = 0; i < invoice.size(); i++) {
+                //Create a new record to be written
+                line = String.format("%s|%s|%s|%s%%%.2f%%%s\n", invoice.get(i).getInvNo(), invoice.get(i).getInvDate(), invoice.get(i).getStaffName(), invoice.get(i).getSupplierName(), invoice.get(i).getAmount(), invoice.get(i).getTag());
+                //Writes the record to the file.
+                writer.write(line);
+            }
 
         } catch (IOException e) {
             e.getStackTrace();
+        }
     }
-}
 
-    @Override
-    public String toString() {
-        return '\n' + "Invoice No.: " + invNo + '\n'
-                + "Invoice Date: " + invDate + '\n'
-                + "Person Incharge: " + staffName + '\n'
-                + "Supplier: " + supplierName + '\n'
-                + "Total Amount: " + amount + '\n';
-    }
-    
-    
 }
