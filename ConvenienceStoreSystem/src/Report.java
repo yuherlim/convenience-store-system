@@ -59,7 +59,10 @@ public class Report {
         
     }
     
-    public static void productReport(){
+    public static void productReorderReport(){
+        Report reorderReport = new Report("Reorder Report", General.getCurrentDateTime());
+        ArrayList<Product> products = Product.readFile(Product.fileName);
+        
         
     }
 }
