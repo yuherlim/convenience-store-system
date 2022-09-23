@@ -458,14 +458,12 @@ public class SupplierInvoiceDriver {
             }
         } while (field < 1 || field > 3);
         
-        int j = 0;
-        
+        //loop the arrayList and replace the specify element
         for (int i = 0; i < stockDetails.size(); i++) {
-            if(stockDetails.get(i).equals(currentInvoiceStockDetails.get(stockDetailsIndex[j]))){
-                stockDetails.set(i, currentInvoiceStockDetails.get(stockDetailsIndex[j]));
-                j++;
+            if(stockDetails.get(i).equals(sd)){
+                stockDetails.set(i, sd);
+
             }
-            
         }
 
         //Update Stock Details
@@ -480,7 +478,6 @@ public class SupplierInvoiceDriver {
             totalAmount += subtotal;
         }
         
-        General.clearScreen();
         return totalAmount;
     }
 

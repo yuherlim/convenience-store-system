@@ -261,6 +261,9 @@ public class Product {
                 for (int i = 0; i < products.size(); i++) {
                     if (products.get(i).getCode().equals(searchString)) {
                         searchResultsProducts.add(new Product(products.get(i)));
+                        if(searchResultsProducts.get(i).getStatus().equals("Inactive")){
+                            return null;
+                        }
                         searchCount++;
                         break;
                     }
