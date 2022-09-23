@@ -26,6 +26,9 @@ public class Product {
     private ArrayList<TransactionDetails> transactionDetails;
     private ArrayList<StockDetails> stockDetails;
     private String status;
+    
+    //Rate of markup to get selling price from cost price.
+    private static double sellingPriceMarkupRate = 1.5;
 
     //File name to store product records.
     public static String fileName = "products.txt";
@@ -145,6 +148,14 @@ public class Product {
         this.status = status;
     }
 
+    public static double getSellingPriceMarkupRate() {
+        return sellingPriceMarkupRate;
+    }
+
+    public static void setSellingPriceMarkupRate(double sellingPriceMarkupRate) {
+        Product.sellingPriceMarkupRate = sellingPriceMarkupRate;
+    }
+    
     //method that updates the quantity, selling price, and cost price to be used when creating invoices and credit notes.
     //it will update the product details based on latest information in stockDetails.txt
     public static void updateProduct() {
@@ -191,7 +202,7 @@ public class Product {
                 p.setCurrentCostPrice(averageCostPrice);
 
                 //set the current product's selling price by marking up the cost price by 50%
-                currentSellingPrice = averageCostPrice * 1.5;
+                currentSellingPrice = averageCostPrice * sellingPriceMarkupRate;
                 p.setCurrentSellingPrice(currentSellingPrice);
 
                 //set the updated stock quantity of this product.
