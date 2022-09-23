@@ -15,7 +15,43 @@ import java.util.ArrayList;
 public class TransactionDriver {
 
     public static void main(String[] args) {
-        add();
+        
+        int selection;
+        
+        do{
+        //Transaction Menu
+        System.out.println("=============");
+        System.out.println(" Transaction ");
+        System.out.println("=============");
+        System.out.println("1 - Add new Transaction");
+        System.out.println("2 - Edit Transaction");
+        System.out.println("3 - Search Transaction");
+        System.out.println("4 - Cancel Transaction");
+        System.out.println("5 - Transaction Report" + '\n');
+        System.out.println("0 - Back to Inventory Menu" + '\n');
+
+        //get and validate input
+        selection = General.intInput("Enter your selection (0-4): ", "  Please input a number only.");
+        
+        switch(selection){
+            case 1 -> {
+                //TransactionDriver.add(); //add();
+            }
+            case 2 -> {
+                
+            }
+            case 3 -> {
+                
+            }
+            case 4 -> {
+                
+            }
+            case 5 -> {
+                Report.dailyReport(staffLogin);
+            }
+        }
+        
+        }while(selection != 0);
     }
 
     public static void add() {
@@ -40,9 +76,9 @@ public class TransactionDriver {
             System.out.println("===================");
             System.out.println("| Add transaction |");
             System.out.println("===================");
-            
+
             addTransaction.setDateTime(General.getCurrentDateTime("dateTime"));
-            
+
             addTransaction.setId("T" + General.getCurrentDateTime("yymmdd") + String.format("-%04d", (Transaction.getNumOfTransaction() + 1)));
 
             addTransaction.setStaff(Staff.searchAllStaff("Cuurent Staff", "Staff ID"));
@@ -118,7 +154,7 @@ public class TransactionDriver {
                             loop = 0;
                             orderQty = General.intInput("Product quantity : ", "  Invalid quantity input");
                             if (orderQty == 0) {
-                                System.out.println("  Invalid quantity input");                           
+                                System.out.println("  Invalid quantity input");
                                 loop = 1;
                             } else if (orderQty > addProduct.getStockQty()) {
                                 System.out.println("Product stock not enough");
@@ -168,19 +204,19 @@ public class TransactionDriver {
 
                             charSelection = General.yesNoInput("Membership (Y/N) : ", "  Invalid Selection");
                             if (charSelection == 'N') {
-                                payment = Payment.pay(transactionDetails, "No",addTransaction.getDateTime());
+                                payment = Payment.pay(transactionDetails, "No", addTransaction.getDateTime());
                                 continue;
                             }
 
                             ic = General.stringNullCheckingInput("Member IC                     : ", "  Invalid Member IC");
-                            if (General.icValidation(ic) == false){
+                            if (General.icValidation(ic) == false) {
                                 loop = 1;
                             } else {
                                 if (Member.searchObj(ic, "IC", "All", members).size() != 0) {
                                     member = Member.searchObj(ic, "IC", "All", members).get(0);
                                     if (member.getStatus().equals("Active")) {
                                         addTransaction.setMember(new Member(member));
-                                        payment = Payment.pay(transactionDetails, "Yes",addTransaction.getDateTime());
+                                        payment = Payment.pay(transactionDetails, "Yes", addTransaction.getDateTime());
                                     } else {
                                         System.out.println("  Member inactive");
                                         loop = 1;
@@ -198,7 +234,7 @@ public class TransactionDriver {
                         Transaction.setNumOfTransaction(Transaction.getNumOfTransaction() + 1);
                         TransactionDetails.add(transactionDetails);
                         Product.updateQuantity();
-            
+
                         break;
                     case 'N':
                         do {
@@ -272,11 +308,11 @@ public class TransactionDriver {
             } while (loop == 1);
 
             charSelection = General.yesNoInput("Add transaction (Y/N) : ", "  Invalid Selection");
-            
+
             transactionDetails.clear();
 
         } while (charSelection == 'Y');
-        
+
         Transaction.writeFile(Transaction.FILE_NAME, transactions);
 
     }
