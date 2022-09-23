@@ -159,7 +159,7 @@ public class Transaction {
                     System.out.println("-----------------------------------------------------------------------------------------------------");
                     System.out.println("| Transaction ID | Member ID |  Payment ID  | Amount(RM) |                Staff Name                | ");
                     System.out.println("-----------------------------------------------------------------------------------------------------");
-                    System.out.printf("|  %12s  | %9s | %12s | %7.2f    | %-40s |\n", transactions.get(i).getId(), transactions.get(i).getMember().getId(), transactions.get(i).getPayment().getPaymentId(), (transactions.get(i).getPayment().getAmount()+transactions.get(i).getPayment().getRounding()+transactions.get(i).getPayment().getSst()-transactions.get(i).getPayment().getDiscount()), transactions.get(i).getStaff().getStaffID());
+                    System.out.printf("|  %12s  | %9s | %12s | %7.2f    | %-40s |\n", transactions.get(i).getId(), transactions.get(i).getMember().getId(), transactions.get(i).getPayment().getPaymentId(), (transactions.get(i).getPayment().getAmount() + transactions.get(i).getPayment().getRounding() + transactions.get(i).getPayment().getSst() - transactions.get(i).getPayment().getDiscount()), transactions.get(i).getStaff().getStaffID());
                     System.out.println("-----------------------------------------------------------------------------------------------------");
                     charSelection = Character.toUpperCase(General.yesNoInput("Print receipt (Y/N) : ", "  Invalid Input"));
 
