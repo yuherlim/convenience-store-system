@@ -119,7 +119,7 @@ public class StaffDriver {
             switch (yOrN) {
                 case 'Y' -> {
                     //append file
-                    Staff.appendStaff("staff.txt", addStaff);
+                    Staff.appendStaff(Staff.FILE_NAME, addStaff);
 
                     Staff.setNumOfStaff(Staff.getNumOfStaff() + 1);
                     System.out.println("    == Staff Added ==");
@@ -148,7 +148,7 @@ public class StaffDriver {
             System.out.println("Staff ID  Name                            IC            Age  Phone Num    Position        Account Status");
             System.out.println("--------  ------------------------------  ------------  ---  -----------  --------------  --------------");
 
-            try ( FileReader reader = new FileReader("src\\staff.txt")) {
+            try ( FileReader reader = new FileReader("src\\" + Staff.FILE_NAME)) {
                 BufferedReader bufferedReader = new BufferedReader(reader);
                 String line;
                 while ((line = bufferedReader.readLine()) != null) {
@@ -171,7 +171,7 @@ public class StaffDriver {
             System.out.println("Staff ID  Name                            IC            Age  Phone Num    Position        Account Status  Salary");
             System.out.println("--------  ------------------------------  ------------  ---  -----------  --------------  --------------  ---------");
 
-            try ( FileReader reader = new FileReader("src\\staff.txt")) {
+            try ( FileReader reader = new FileReader("src\\" + Staff.FILE_NAME)) {
                 BufferedReader bufferedReader = new BufferedReader(reader);
                 String line;
                 while ((line = bufferedReader.readLine()) != null) {
