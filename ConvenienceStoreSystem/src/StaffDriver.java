@@ -27,14 +27,22 @@ public class StaffDriver {
             do {
                 selection = General.intInput("Selection: ", "  Please only select 0~4.");
                 switch (selection) {
-                    case 1 ->
+                    case 1 -> {
                         StaffDriver.addStaff(staffLogin);
-                    case 2 ->
+                        General.clearScreen();
+                    }
+                    case 2 -> {
                         StaffDriver.displayStaff(staffLogin);
-                    case 3 ->
+                        General.clearScreen();
+                    }
+                    case 3 -> {
                         StaffDriver.searchStaff(staffLogin);
-                    case 4 ->
+                        General.clearScreen();
+                    }
+                    case 4 -> {
                         StaffDriver.editStaff(staffLogin);
+                        General.clearScreen();
+                    }
                     case 0 -> {
                         System.out.println("****************************");
                         System.out.println("Return to Main Menu.");
@@ -52,7 +60,8 @@ public class StaffDriver {
     public static void addStaff(Staff staffLogin) {
         Scanner scanner = new Scanner(System.in);
         Staff addStaff = new Staff();
-
+        
+        General.clearScreen();
         System.out.println("-------------");
         System.out.println("| Add Staff |");
         System.out.println("-------------");
@@ -125,7 +134,8 @@ public class StaffDriver {
     public static void displayStaff(Staff staffLogin) {
         Staff displayStaff;
         int age;
-
+        
+        General.clearScreen();
         System.out.println("-----------------");
         System.out.println("| Display Staff |");
         System.out.println("-----------------");
@@ -188,9 +198,10 @@ public class StaffDriver {
         Staff searchStaff;
         int selection;
         boolean isAdmin = !staffLogin.getPosition().equals("Normal Worker");
-
+        
         do {
             do {
+                General.clearScreen();
                 System.out.println("----------------");
                 System.out.println("| Search Staff |");
                 System.out.println("----------------");
@@ -282,7 +293,8 @@ public class StaffDriver {
         boolean isOther = isAdmin;
         int selection;
         Staff editedStaff = staffLogin;
-
+        
+        General.clearScreen();
         System.out.println("----------------");
         System.out.println("| Modify Staff |");
         System.out.println("----------------");
