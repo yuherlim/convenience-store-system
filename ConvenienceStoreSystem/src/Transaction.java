@@ -26,8 +26,6 @@ public class Transaction {
     public Transaction() {
     }
 
-    ;
-    
     public Transaction(Transaction t) {
         this.id = t.getId();
         this.staff = t.getStaff();
@@ -37,8 +35,6 @@ public class Transaction {
         this.dateTime = t.dateTime;
     }
 
-    ;
-    
     public Transaction(String id, Staff staff, Member member, Payment payment, ArrayList<TransactionDetails> transactionDetails, String dateTime) {
 
         this.id = id;
