@@ -96,7 +96,6 @@ public class TransactionDetails {
             String line;
  
             while ((line = bufferedReader.readLine()) != null) {
-//                System.out.println(line);
                 String[] buffer = line.split("\\%");
                 String[] codes = buffer[0].split("\\|");
                 String string2 = buffer[1];

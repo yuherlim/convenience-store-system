@@ -12,15 +12,16 @@ public class Report {
     private String timeGenerated;
     private ArrayList<Transaction> transactions;
     private ArrayList<Product> products;
-
+    
     public Report() {
 
     }
 
     //Constructor
-    public Report(String reportTitle, String dateGenerated, ArrayList<Transaction> transactions, ArrayList<Product> products) {
+    public Report(String reportTitle, String dateGenerated, String timeGenerated, ArrayList<Transaction> transactions, ArrayList<Product> products) {
         this.reportTitle = reportTitle;
         this.dateGenerated = dateGenerated;
+        this.timeGenerated = timeGenerated;
         this.transactions = transactions;
         this.products = products;
     }
@@ -90,7 +91,6 @@ public class Report {
         System.out.println(' ' + dailyReport.getReportTitle());
         System.out.println("==============");
 
-        //System.out.println("Staff Generated: " + staffLogin.getName());
         System.out.println("Date Generated: " + dailyReport.getDateGenerated() + "    Time Generated: " + dailyReport.getTimeGenerated());
         System.out.println('\n' + "Report Date: " + checkDate);
         System.out.println("-----------------------------------------------------------------------------");
@@ -121,7 +121,7 @@ public class Report {
         General.clearScreen();
 
         //Create a new report obj
-        Report reorderReport = new Report("Reorder Report", General.getCurrentDateTime("date"), null, Product.readFile(Product.FILE_NAME));
+        Report reorderReport = new Report("Reorder Report", General.getCurrentDateTime("date"), General.getCurrentDateTime("time"), null, Product.readFile(Product.FILE_NAME));
 
         int printCount = 0;
 
@@ -129,7 +129,7 @@ public class Report {
         System.out.println("==============");
         System.out.println(reorderReport.getReportTitle());
         System.out.println("==============");
-        System.out.println("Date generated: " + reorderReport.getDateGenerated());
+        System.out.println("Date generated: " + reorderReport.getDateGenerated() + "    Time Generated: " + reorderReport.getTimeGenerated());
         System.out.println("The following products need to be reordered:");
         System.out.println("--------------------------------------------------------------");
         System.out.println("| Code  | Name                 | Quantity | Reorder Quantity |");
