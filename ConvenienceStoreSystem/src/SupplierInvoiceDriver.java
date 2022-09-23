@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class SupplierInvoiceDriver {
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        
         int selection;
 
         do {
@@ -22,11 +22,12 @@ public class SupplierInvoiceDriver {
             System.out.println("4 - Cancel Invoice" + '\n');
             System.out.println("0 - Back to Main Menu" + '\n');
 
-            System.out.print("Enter your selection (0-4): ");
-            selection = sc.nextInt();
+            //get and validate input
+            selection = General.intInput("Enter your selection (0-4): ", "  Please input a number only.");
 
             switch (selection) {
                 case 1 -> {
+                    General.clearScreen();
                     SupplierInvoiceDriver.addInvoice();
                 }
                 case 2 -> {
@@ -44,7 +45,7 @@ public class SupplierInvoiceDriver {
                 default ->
                     System.out.println("Invalid input! Please try again..." + '\n');
             }
-        } while (selection < 0 || selection > 4);
+        } while (selection != 0);
 
     }
 
@@ -200,6 +201,8 @@ public class SupplierInvoiceDriver {
             cont = General.yesNoInput("Continue add again? (Y/N) > ", "Invalid input! Please enter 'Y' or 'N' only.");
 
         } while (cont == 'Y' || cont == 'y');
+        
+        General.clearScreen();
     }
 
     //METHOD OVERLOADING
@@ -233,8 +236,7 @@ public class SupplierInvoiceDriver {
 
         } while (cont == 'Y');
 
-        //Back to Supplier Invoice menu
-        //SupplierInvoiceDriver.main(args);
+        General.clearScreen();
     }
 
     //Search with parameter and will return the index of invoice that in ArrayList found
@@ -257,7 +259,7 @@ public class SupplierInvoiceDriver {
 
         System.out.println("Invalid invoice number. Please try again...");
         General.systemPause();
-
+        
         return index = -1;
     }
 
@@ -301,7 +303,8 @@ public class SupplierInvoiceDriver {
                 if (index == -2) {
                     break;
                 }
-
+                
+                //store the result into an object
                 si = supplierInvoice.get(index);
 
             } while (index == -1);
@@ -381,6 +384,8 @@ public class SupplierInvoiceDriver {
             cont = General.yesNoInput("Continue edit again? (Y/N) > ", "Invalid input! Please enter 'Y' or 'N' only.");
 
         } while (cont == 'Y');
+        
+        General.clearScreen();
     }
 
     //Edit specify field of item list in the invoice
@@ -437,6 +442,7 @@ public class SupplierInvoiceDriver {
         }
 
         do {
+            System.out.println();
             item = General.intInput("Which item did you want to edit? : ", "  Please input a number.");
             if (item < num || item > num) {
                 System.out.printf("Please input 1-%d : ", num);
@@ -448,9 +454,8 @@ public class SupplierInvoiceDriver {
         sd = currentInvoiceStockDetails.get(item);
 
         do {
-            System.out.println('\n');
+            System.out.println();
             System.out.println("1. Product Code" + '\n' + "2. Cost Price" + '\n' + "3. Quantity");
-            System.out.print("Please select a field to edit the item (1-3): ");
             field = General.intInput("Please select a field to edit the item (1-3): ", "  Please input a number.");
 
             switch (field) {
@@ -492,9 +497,15 @@ public class SupplierInvoiceDriver {
                 }
             }
         } while (field < 1 || field > 3);
-
-        for (int i = 0; i < stockDetailsIndex.length; i++) {
-            stockDetails.set(stockDetailsIndex[i], currentInvoiceStockDetails.get(i));
+        
+        int j = 0;
+        
+        for (int i = 0; i < stockDetails.size(); i++) {
+            if(stockDetails.get(i).equals(currentInvoiceStockDetails.get(stockDetailsIndex[j]))){
+                stockDetails.set(i, currentInvoiceStockDetails.get(stockDetailsIndex[j]));
+                j++;
+            }
+            
         }
 
         //Update Stock Details
@@ -508,6 +519,8 @@ public class SupplierInvoiceDriver {
             subtotal = currentInvoiceStockDetails.get(i).getCostPrice() * currentInvoiceStockDetails.get(i).getQty();
             totalAmount += subtotal;
         }
+        
+        General.clearScreen();
         return totalAmount;
     }
 
@@ -515,7 +528,7 @@ public class SupplierInvoiceDriver {
     public static void cancelInvoice() {
         Scanner sc = new Scanner(System.in);
         String invNo;
-        char cont = 'Y';
+        char cont;
         char confirm;
         int index = 0;
 
@@ -583,6 +596,8 @@ public class SupplierInvoiceDriver {
             cont = General.yesNoInput("Continue to cancel another invoice? (Y/N) > ", " Invalid input! Please enter 'Y' or 'N' only.");
 
         } while (cont == 'Y');
+        
+        General.clearScreen();
     }
 
     //METHOD OVERLOADING
@@ -595,7 +610,8 @@ public class SupplierInvoiceDriver {
 
         //Used to store the stock details with the current invoice no.
         ArrayList<StockDetails> currentInvoiceStockDetails = new ArrayList<>();
-
+        
+        //If it is valid, then print, else print invaalid message
         if (!supplierInvoice.get(index).getTag().equals("Invalid")) {
             System.out.println();
             System.out.printf("Staff Incharge: %-36s Invoice No.: %7s\n", supplierInvoice.get(index).getStaffName(), supplierInvoice.get(index).getInvNo());
@@ -625,6 +641,7 @@ public class SupplierInvoiceDriver {
             System.out.println("Invoice has been cancelled.");
             return ++invalid;
         }
+
         return invalid;
     }
 
@@ -650,7 +667,7 @@ public class SupplierInvoiceDriver {
         }
         System.out.println("-------------------------------------------------------------------------");
         System.out.printf("Total Amount(RM)%53.2f \n\n", totalAmount);
-
+        
         return totalAmount;
     }
 }

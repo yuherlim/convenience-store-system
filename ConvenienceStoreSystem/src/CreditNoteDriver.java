@@ -441,11 +441,11 @@ public class CreditNoteDriver {
         --item;
 
         sd = currentCreditNoteStockDetails.get(item);
-
+        
+        OUTER:
         do {
             System.out.println('\n');
             System.out.println("1. Product Code" + '\n' + "2. Cost Price" + '\n' + "3. Quantity");
-            System.out.print("Please select a field to edit the item (1-3): ");
             field = General.intInput("Please select a field to edit the item (1-3): ", "  Please input a number.");
 
             switch (field) {
@@ -460,7 +460,7 @@ public class CreditNoteDriver {
                             }
                         }
                     } while (Product.search("productCode", productCode) == null);
-                    break;
+                    break OUTER;
                 }
                 case 2 -> {
                     costPrice = General.doubleInput("Enter cost price: ", "  Please enter a value with decimal place");
@@ -469,7 +469,7 @@ public class CreditNoteDriver {
                         sd.setCostPrice(costPrice);
                         currentCreditNoteStockDetails.set(item, sd);
                     }
-                    break;
+                    break OUTER;
                 }
                 case 3 -> {
                     quantity = General.intInput("Enter quantity: ", "Please enter a integer quantity");
@@ -478,7 +478,7 @@ public class CreditNoteDriver {
                         sd.setQty(quantity);
                         currentCreditNoteStockDetails.set(item, sd);
                     }
-                    break;
+                    break OUTER;
                 }
                 default -> {
                     if (field < 1 || field > 3) {
