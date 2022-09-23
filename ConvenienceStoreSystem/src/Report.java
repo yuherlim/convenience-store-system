@@ -114,10 +114,6 @@ public class Report {
         General.clearScreen();
     }
 
-    public static void monthlyReport() {
-
-    }
-
     //displays the reorder report for products that needs to be restocked.
     public static void productReorderReport() {
         General.clearScreen();
