@@ -90,7 +90,10 @@ public class Report {
         System.out.println(' ' + dailyReport.getReportTitle());
         System.out.println("==============");
 
+<<<<<<< HEAD
         //System.out.println("Staff Generated: " + staffLogin.getName());
+=======
+>>>>>>> 46d153fa3ca56483702b95dda71569bada42381a
         System.out.println("Date Generated: " + dailyReport.getDateGenerated() + "    Time Generated: " + dailyReport.getTimeGenerated());
         System.out.println('\n' + "Report Date: " + checkDate);
         System.out.println("-----------------------------------------------------------------------------");
