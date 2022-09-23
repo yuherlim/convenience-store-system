@@ -73,7 +73,7 @@ public class Report {
         this.products = products;
     }
     
-    public static void dailyReport(Staff staffLogin) {
+    public static void dailyReport() {
         General.clearScreen();
         
         Report dailyReport = new Report("Daily Report", General.getCurrentDateTime("date"), General.getCurrentDateTime("time"));
@@ -84,29 +84,28 @@ public class Report {
 
         //get all transaction into arraylist
         ArrayList<Transaction> transactions = new ArrayList<>();
-        TransactionDriver.readFile("src\\transaction.txt", transactions);
+        TransactionDriver.readFile("transaction.txt", transactions);
 
         //print report header
         System.out.println("==============");
         System.out.println(' ' + dailyReport.getReportTitle());
         System.out.println("==============");
 
-        System.out.println("Staff Generated: " + staffLogin.getName());
         System.out.println("Date Generated: " + dailyReport.getDateGenerated() + "    Time Generated: " + dailyReport.getTimeGenerated());
         System.out.println('\n' + "Report Date: " + checkDate);
-        System.out.println("-----------------------------------------------------------------------------------------------------");
-        System.out.println("| Transaction ID | Member ID |  Payment ID  | Amount(RM) |                Staff Name                | ");
-        System.out.println("-----------------------------------------------------------------------------------------------------");
+        System.out.println("-----------------------------------------------------------------------------");
+        System.out.println("| Transaction ID | Member ID |  Payment ID  | Amount(RM) |    Staff Name    |");
+        System.out.println("-----------------------------------------------------------------------------");
         for (Transaction transaction : transactions) {
             if (transaction.getDateTime().substring(0, 10).equals(checkDate)) {
-                System.out.printf("|  %12s  | %9s | %12s | %7.2f | %-40s |", transaction.getId(), transaction.getMember(), transaction.getPayment(), transaction.getPayment(), transaction.getStaff());
+                System.out.printf("|  %12s  | %9s | %12s | %10.2f | %-16s | \n", transaction.getId(), transaction.getMember().getId(), transaction.getPayment().getPaymentId(), transaction.getPayment().getAmount(), transaction.getStaff().getName());
                 transactionCount++;
             }
         }
         if (transactionCount == 0) {
-            System.out.println("| There are no transaction in " + checkDate + String.format("%59s", " ") + '|');
+            System.out.println("| There are no transaction in " + checkDate + String.format("%36s", " ") + '|');
         }
-        System.out.println("-----------------------------------------------------------------------------------------------------");
+        System.out.println("-----------------------------------------------------------------------------");
         System.out.println("");
         System.out.printf("< %d record(s) >\n", transactionCount);
         System.out.println("");
@@ -153,5 +152,4 @@ public class Report {
         System.out.println("");
         General.systemPause();
     }
-    
 }

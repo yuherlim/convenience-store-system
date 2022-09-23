@@ -23,7 +23,7 @@ public class FrontDriver {
                     }
                     switch (selectMain) {
                         case 1 -> {
-                            //Sales
+                            TransactionDriver.main(args);
                         }
                         case 2 -> {
                             Inventory.main(args);

@@ -11,7 +11,53 @@ import java.util.ArrayList;
 public class TransactionDriver {
 
     public static void main(String[] args) {    //change//  public static void main(String[] args, Staff staffLogin) {
-        add();
+        
+        int selection;
+
+        do {
+            General.clearScreen();
+            //Suplier Invoice Menu
+            System.out.println("===================");
+            System.out.println(" Sales Transaction ");
+            System.out.println("===================");
+            System.out.println("1 - Add new Transaction");
+            System.out.println("2 - Edit Transaction");
+            System.out.println("3 - Search Transaction");
+            System.out.println("4 - Cancel Transaction");
+            System.out.println("5 - View Transaction");
+            System.out.println("6 - Transaction Report" + '\n');
+            System.out.println("0 - Back to Main Menu" + '\n');
+
+            //get and validate input
+            selection = General.intInput("Enter your selection (0-6): ", "  Please input a number only.");
+
+            switch (selection) {
+                case 1 -> {
+                    TransactionDriver.add();
+                }
+                case 2 -> {
+                    
+                }
+                case 3 -> {
+                    
+                }
+                case 4 -> {
+                    
+                }
+                case 5 -> {
+                    TransactionDriver.display();
+                }
+                case 6 -> {
+                    Report.dailyReport();
+                }
+                case 0 -> {
+                    System.out.println("Returning to main menu...");
+                    General.systemPause();
+                }
+                default ->
+                    System.out.println("Invalid input! Please input 0-4 only." + '\n');
+            }
+        } while (selection != 0);
     }
 
     public static void add() {  //change//  public static void add(Staff staffLogin) {
@@ -323,5 +369,39 @@ public class TransactionDriver {
             e.printStackTrace();
         }
     }
+    
+    public static void display(){
+        General.clearScreen();
+        
+        int transactionCount = 0;
 
+        //get all transaction into arraylist
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        TransactionDriver.readFile("transaction.txt", transactions);
+
+        //print report header
+        System.out.println("=================");
+        System.out.println(" View Transction ");
+        System.out.println("=================");
+
+        //System.out.println("Staff Generated: " + staffLogin.getName());
+        System.out.println("Date: " + General.getCurrentDateTime("date") + "              Time: " + General.getCurrentDateTime("time"));
+        System.out.println("-----------------------------------------------------------------------------------------------------");
+        System.out.println("| Transaction ID | Member ID |  Payment ID  | Amount(RM) |                Staff Name                | ");
+        System.out.println("-----------------------------------------------------------------------------------------------------");
+        for (Transaction transaction : transactions) {
+            if (transaction.getDateTime().substring(0, 10).equals(General.getCurrentDateTime("date"))) {
+                System.out.printf("|  %12s  | %9s | %12s | %8.2f | %-40s | \n", transaction.getId(), transaction.getMember().getId(), transaction.getPayment().getPaymentId(), transaction.getPayment().getAmount(), transaction.getStaff().getName());
+                transactionCount++;
+            }
+        }
+        if (transactionCount == 0) {
+            System.out.println("| There are no transaction. " + String.format("%72s", " ") + '|');
+        }
+        System.out.println("-----------------------------------------------------------------------------------------------------");
+        System.out.println("");
+        System.out.printf("< %d record(s) >\n", transactionCount);
+        System.out.println("");
+        General.systemPause();
+    }
 }
