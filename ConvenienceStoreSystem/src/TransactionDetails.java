@@ -21,6 +21,7 @@ public class TransactionDetails {
     private String productCode;
     private double sellingPrice;
 
+
     public static final String FILE_NAME = "transactionDetails.txt";
     
     public TransactionDetails() {
@@ -73,6 +74,17 @@ public class TransactionDetails {
     public void setSellingPrice(double sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
+    
+    public static void add(ArrayList<TransactionDetails> addTransactionDetails){
+        ArrayList<TransactionDetails> transactionDetails = readFile(FILE_NAME);
+        
+        for(int i = 0; i <addTransactionDetails.size(); i++){
+                transactionDetails.add(addTransactionDetails.get(i));
+                }
+        
+        writeFile(FILE_NAME,transactionDetails);
+        
+    }
 
     //reads file and returns TransactionDetails array list.
     public static ArrayList<TransactionDetails> readFile(String fileName) {
@@ -101,7 +113,7 @@ public class TransactionDetails {
             reader.close();
  
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("  " + fileName + " could not be opened.");
         }
         
         return transactionDetails;
@@ -116,7 +128,7 @@ public class TransactionDetails {
   
             for (int i = 0; i < transactionDetails.size(); i++) {
                 //Create a new record to be written
-                line = String.format("%s|%s%%d%%.2f\n", transactionDetails.get(i).getProductCode(), transactionDetails.get(i).getTransactionId(), transactionDetails.get(i).getQty(), transactionDetails.get(i).getSellingPrice());
+                line = String.format("%s|%s%%%d%%%.2f\n", transactionDetails.get(i).getProductCode(), transactionDetails.get(i).getTransactionId(), transactionDetails.get(i).getQty(), transactionDetails.get(i).getSellingPrice());
                 //Writes the record to the file.
                 writer.write(line);
             }
@@ -125,8 +137,8 @@ public class TransactionDetails {
             writer.close();
         }
   
-        catch (Exception e) {
-            e.getStackTrace();
+        catch (IOException e) {
+            System.out.println("  " + fileName + " could not be opened.");
         }
     }
     

@@ -373,35 +373,35 @@ public class SupplierDriver {
                 System.out.println("-------------------");
                 System.out.println(" | Supplier Menu | ");
                 System.out.println("-------------------");
-                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');        //add login name and position
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
                 System.out.println("");
             }
             case "addSupplier" -> {
                 System.out.println("-------------------------");
                 System.out.println(" | Add new supplier(s) | ");
                 System.out.println("-------------------------");
-                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');        //add login name and position
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
                 System.out.println("");
             }
             case "modifySupplier" -> {
                 System.out.println("------------------------");
                 System.out.println(" | Modify supplier(s) | ");
                 System.out.println("------------------------");
-                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');        //add login name and position
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
                 System.out.println("");
             }
             case "searchSupplier" -> {
                 System.out.println("------------------------");
                 System.out.println(" | Search supplier(s) | ");
                 System.out.println("------------------------");
-                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');        //add login name and position
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
                 System.out.println("");
             }
             case "viewSupplier" -> {
                 System.out.println("----------------------");
                 System.out.println(" | View supplier(s) | ");
                 System.out.println("----------------------");
-                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');        //add login name and position
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
                 System.out.println("");
             }
             case "searchTableHeader" -> {

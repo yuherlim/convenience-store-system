@@ -22,9 +22,9 @@ public class Payment {
     private double rounding;
     private double amount;
     private double amountPaid;
-    private final static double sstRate = 0.06;
-    private final static double discountRate = 0.10;
-    static String fileName = "payment";
+    private final static double SST_RATE = 0.06;
+    private final static double DISCOUNT_RATE = 0.10;
+    public static final String FILE_NAME = "payment.txt";
 
     //Constructor
     public Payment() {
@@ -115,9 +115,9 @@ public class Payment {
         this.rounding = rounding;
     }
 
-    public static Payment pay(ArrayList<TransactionDetails> transactionDetails, String discountYesOrNo) {
+    public static Payment pay(ArrayList<TransactionDetails> transactionDetails, String discountYesOrNo, String dateTime) {
         ArrayList<Payment> payments = new ArrayList<>();
-        Payment.readFile(fileName, payments);
+        Payment.readFile(FILE_NAME, payments);
         Payment payment = new Payment();
         double netTotal;
         int intSelection;
@@ -131,28 +131,28 @@ public class Payment {
             payment.paymentId = "P" + General.getCurrentDateTime("yymmdd") + String.format("-%04d", (Transaction.getNumOfTransaction() + 1));
 
             if (discountYesOrNo.equals("Yes")) {
-                payment.discount = payment.amount * Payment.discountRate;
-                payment.sst = (payment.amount - payment.discount) * Payment.sstRate;
-                netTotal = Math.ceil(((payment.amount - payment.discount - payment.sst) * 20)) / 20;
-                payment.rounding = (payment.amount - payment.discount - payment.sst) - netTotal;
-                System.out.printf("                                        Discount (10%) = (%6.2f)\n", payment.discount);
+                payment.discount = payment.amount * Payment.DISCOUNT_RATE;
+                payment.sst = (payment.amount - payment.discount) * Payment.SST_RATE;
+                netTotal = Math.ceil(((payment.amount - payment.discount + payment.sst) * 20)) / 20;
+                payment.rounding = netTotal - (payment.amount - payment.discount + payment.sst);
+                System.out.printf("                                          Discount (10%%) = %7.2f\n", payment.discount);
                 System.out.println("====================================================================");
-                System.out.printf("                               Subtotal after discount = (%6.2f)\n", (payment.amount - payment.discount));
-                System.out.printf("                                              SST (6%) = (%6.2f)\n", payment.sst);
-                System.out.printf("                                         Rounding (RM) =  %6.2f\n", payment.rounding);
+                System.out.printf("                                  Subtotal after discount = %7.2f\n", (payment.amount - payment.discount));
+                System.out.printf("                                                 SST (6%%) = %7.2f\n", payment.sst);
+                System.out.printf("                                            Rounding (RM) = %7.2f\n", payment.rounding);
                 System.out.println("====================================================================");
-                System.out.printf("                                         NetTotal (RM) =  %6.2f\n", netTotal);
+                System.out.printf("                                            NetTotal (RM) = %7.2f\n", netTotal);
                 System.out.println("====================================================================");
             } else {
                 payment.discount = 0.00;
-                payment.sst = (payment.amount - payment.discount) * Payment.sstRate;
-                netTotal = Math.ceil(((payment.amount - payment.sst) * 20)) / 20;
-                payment.rounding = (payment.amount - payment.sst) - netTotal;
+                payment.sst = (payment.amount - payment.discount) * Payment.SST_RATE;
+                netTotal = Math.ceil(((payment.amount + payment.sst) * 20)) / 20;
+                payment.rounding = netTotal - (payment.amount + payment.sst);
 
-                System.out.printf("                                              SST (6%) = (%6.2f)\n", payment.sst);
-                System.out.printf("                                         Rounding (RM) =  %6.2f\n", payment.rounding);
+                System.out.printf("                                                 SST (6%%) = %7.2f\n", payment.sst);
+                System.out.printf("                                            Rounding (RM) = %7.2f\n", payment.rounding);
                 System.out.println("====================================================================");
-                System.out.printf("                                         NetTotal (RM) =  %6.2f\n", netTotal);
+                System.out.printf("                                            NetTotal (RM) = %7.2f\n", netTotal);
                 System.out.println("====================================================================");
 
             }
@@ -183,9 +183,11 @@ public class Payment {
                     break;
                 case 2:
                     payment.setPaymentType("Bank transfer");
+                    payment.setAmountPaid(netTotal);
                     break;
                 case 3:
                     payment.setPaymentType("QR pay");
+                    payment.setAmountPaid(netTotal);
                     break;
                 default:
                     loop = 1;
@@ -194,67 +196,44 @@ public class Payment {
             }
         } while (loop == 1);
 
-        if (discountYesOrNo.equals("Yes")) {
-            receiptWithDiscount(payment, transactionDetails);
-        } else {
-            receiptWithNoDiscount(payment, transactionDetails);
-        }
-        
+        receipt(payment, transactionDetails, dateTime);
+
         payments.add(new Payment(payment));
-        writeFile(fileName,payments);
+        writeFile(FILE_NAME, payments);
         return payment;
     }
 
-    public static void receiptWithDiscount(Payment payment, ArrayList<TransactionDetails> transactionDetails) {
+    public static void receipt(Payment payment, ArrayList<TransactionDetails> transactionDetails, String dateTime) {
         System.out.println("========================");
         System.out.println("Logo");
         System.out.println("========================");
         System.out.println("Address");
 
-        System.out.println("Date Time  : " + General.getCurrentDateTime("DateTime"));
+        System.out.println("Date Time  : " + dateTime);
         System.out.println("Receipt ID : " + payment.paymentId);
         System.out.println("Cashier    : ");
 
         Transaction.displayTransactionDetails(transactionDetails);
-
-        System.out.printf("                                        Discount (10%) = (%6.2f)\n", payment.discount);
+        if (payment.discount != 0) {
+            System.out.printf("                                           Discount (10%%) = %7.2f\n", payment.discount);
+            System.out.println("====================================================================");
+            System.out.printf("                                  Subtotal after discount = %7.2f\n", (payment.amount - payment.discount));
+        }
+        System.out.printf("                                                 SST (6%%) = %7.2f\n", payment.sst);
+        System.out.printf("                                            Rounding (RM) = %7.2f\n", payment.rounding);
         System.out.println("====================================================================");
-        System.out.printf("                               Subtotal after discount = (%6.2f)\n", (payment.amount - payment.discount));
-        System.out.printf("                                              SST (6%) = (%6.2f)\n", payment.sst);
-        System.out.printf("                                         Rounding (RM) =  %6.2f\n", payment.rounding);
-        System.out.println("====================================================================");
-        System.out.printf("                                      NetTotal    (RM) =  %6.2f\n", (payment));
-        System.out.printf("                                      Amount paid (RM) =  %6.2f\n", payment.amountPaid);
-        System.out.printf("                                      Change      (RM) =  %6.2f\n", (payment.amount - payment.amountPaid));
-        System.out.println("====================================================================");
-
-    }
-
-    public static void receiptWithNoDiscount(Payment payment, ArrayList<TransactionDetails> transactionDetails) {
-        System.out.println("========================");
-        System.out.println("Logo");
-        System.out.println("========================");
-        System.out.println("Address");
-
-        System.out.println("Date Time  : " + General.getCurrentDateTime("DateTime"));
-        System.out.println("Receipt ID : " + payment.paymentId);
-        System.out.println("Cashier    : ");
-
-        Transaction.displayTransactionDetails(transactionDetails);
-
-        System.out.printf("                                              SST (6%) = (%6.2f)\n", payment.sst);
-        System.out.printf("                                         Rounding (RM) =  %6.2f\n", payment.rounding);
-        System.out.println("====================================================================");
-        System.out.printf("                                      NetTotal    (RM) =  %6.2f\n", (payment));
-        System.out.printf("                                      Amount paid (RM) =  %6.2f\n", payment.amountPaid);
-        System.out.printf("                                      Change      (RM) =  %6.2f\n", (payment.amount - payment.amountPaid));
+        System.out.printf("                                        NetTotal    (RM)  = %7.2f\n", (payment.amount - payment.discount + payment.sst + payment.rounding));
+        if ("Cash".equals(payment.paymentType)) {
+            System.out.printf("                                        Amount paid (RM)  = %7.2f\n", payment.amountPaid);
+            System.out.printf("                                        Change      (RM)  = %7.2f\n", (payment.amountPaid - (payment.amount - payment.discount - payment.sst + payment.rounding)));
+        }
         System.out.println("====================================================================");
 
     }
 
     public static Payment search(String paymentId) {
         ArrayList<Payment> payments = new ArrayList<>();
-        readFile("payment", payments);
+        readFile(Payment.FILE_NAME, payments);
         for (int i = 0; i < payments.size(); i++) {
             if (payments.get(i).getPaymentId().equals(paymentId)) {
                 return payments.get(i);
@@ -272,7 +251,7 @@ public class Payment {
 
             for (int i = 0; i < payments.size(); i++) {
                 //Create a new record to be written
-                line = String.format("%s|%s%%.2f|%.2f|%.2f|%.2f|%.2f\n", payments.get(i).getPaymentId(), payments.get(i).getPaymentType(), payments.get(i).getDiscount(),payments.get(i).getSst(),payments.get(i).getRounding(),payments.get(i).getAmount(), payments.get(i).getAmountPaid());
+                line = String.format("%s|%s%%%.2f|%.2f|%.2f|%.2f|%.2f\n", payments.get(i).getPaymentId(), payments.get(i).getPaymentType(), payments.get(i).getDiscount(), payments.get(i).getSst(), payments.get(i).getRounding(), payments.get(i).getAmount(), payments.get(i).getAmountPaid());
                 //Writes the record to the file.
                 writer.write(line);
             }
@@ -297,15 +276,15 @@ public class Payment {
                 String string1[] = buffer[0].split("\\|");
                 String paymentId = string1[0];
                 String paymentType = string1[1];
-                
+
                 String double1[] = buffer[1].split("\\|");
                 String discount = double1[0];
                 String sst = double1[1];
                 String rounding = double1[2];
                 String amount = double1[3];
                 String amountPaid = double1[4];
-          
-                payments.add(new Payment(paymentId, paymentType, Double.parseDouble(discount),Double.parseDouble(sst),Double.parseDouble(rounding),Double.parseDouble(amount), Double.parseDouble(amountPaid)));
+
+                payments.add(new Payment(paymentId, paymentType, Double.parseDouble(discount), Double.parseDouble(sst), Double.parseDouble(rounding), Double.parseDouble(amount), Double.parseDouble(amountPaid)));
             }
             reader.close();
 

@@ -673,7 +673,7 @@ public class ProductDriver {
             reader.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("  " + "productCategory.txt" + " could not be opened.");
         }
 
         //Ask for the category of this product.
@@ -776,42 +776,42 @@ public class ProductDriver {
                 System.out.println("------------------");
                 System.out.println(" | Product Menu | ");
                 System.out.println("------------------");
-                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');        //add login name and position
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
                 System.out.println("");
             }
             case "addProduct" -> {
                 System.out.println("------------------------");
                 System.out.println(" | Add new product(s) | ");
                 System.out.println("------------------------");
-                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');        //add login name and position
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
                 System.out.println("");
             }
             case "modifyProduct" -> {
                 System.out.println("-----------------------");
                 System.out.println(" | Modify product(s) | ");
                 System.out.println("-----------------------");
-                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');        //add login name and position
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
                 System.out.println("");
             }
             case "searchProduct" -> {
                 System.out.println("-----------------------");
                 System.out.println(" | Search product(s) | ");
                 System.out.println("-----------------------");
-                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');        //add login name and position
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
                 System.out.println("");
             }
             case "editProductStatus" -> {
                 System.out.println("----------------------------");
                 System.out.println(" | Edit product(s) status | ");
                 System.out.println("----------------------------");
-                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');        //add login name and position
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
                 System.out.println("");
             }
             case "viewProduct" -> {
                 System.out.println("---------------------");
                 System.out.println(" | View product(s) | ");
                 System.out.println("---------------------");
-                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');        //add login name and position
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
                 System.out.println("");
             }
             case "searchTableHeader" -> {

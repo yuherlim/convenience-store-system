@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.FileWriter;
-import java.io.InputStreamReader;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Staff extends Person {
@@ -111,6 +111,21 @@ public class Staff extends Person {
         } else {
             return "Password              : " + password;
         }
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Staff other = (Staff) obj;
+        return Objects.equals(this.staffID, other.staffID);
     }
 
     //staffID validation ST-999

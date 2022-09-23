@@ -22,8 +22,8 @@ public class TransactionDriver {
         ArrayList<Transaction> transactions = new ArrayList<>();
         ArrayList<Member> members = new ArrayList<>();
         ArrayList<TransactionDetails> transactionDetails = new ArrayList<>();
-        TransactionDriver.readFile("transaction", transactions);
-        MemberDriver.readFile("member", members);
+        TransactionDriver.readFile(Transaction.FILE_NAME, transactions);
+        MemberDriver.readFile(Member.FILE_NAME, members);
 
         Transaction addTransaction = new Transaction();
         TransactionDetails addTransactionDetails = new TransactionDetails();
@@ -37,9 +37,11 @@ public class TransactionDriver {
         String ic;
 
         do {
-            System.out.println("=================");
-            System.out.println("|Add transaction|");
-            System.out.println("=================");
+            System.out.println("===================");
+            System.out.println("| Add transaction |");
+            System.out.println("===================");
+            
+            addTransaction.setDateTime(General.getCurrentDateTime("dateTime"));
             
             addTransaction.setId("T" + General.getCurrentDateTime("yymmdd") + String.format("-%04d", (Transaction.getNumOfTransaction() + 1)));
 
@@ -77,7 +79,7 @@ public class TransactionDriver {
                             System.out.println("1.Modfity product quantity");
                             System.out.println("2.Remove product");
                             System.out.println("0.Exit");
-                            intSelection = General.intInput("Selection: ", "  Invalid Selection");
+                            intSelection = General.intInput("Product selection: ", "  Invalid Selection");
 
                             switch (intSelection) {
 
@@ -166,20 +168,19 @@ public class TransactionDriver {
 
                             charSelection = General.yesNoInput("Membership (Y/N) : ", "  Invalid Selection");
                             if (charSelection == 'N') {
-                                payment = Payment.pay(transactionDetails, "No");
+                                payment = Payment.pay(transactionDetails, "No",addTransaction.getDateTime());
                                 continue;
                             }
 
                             ic = General.stringNullCheckingInput("Member IC                     : ", "  Invalid Member IC");
-                            if (General.icValidation(ic) == false) {
-                                System.out.println("  Invalid member IC");
+                            if (General.icValidation(ic) == false){
                                 loop = 1;
                             } else {
                                 if (Member.searchObj(ic, "IC", "All", members).size() != 0) {
                                     member = Member.searchObj(ic, "IC", "All", members).get(0);
                                     if (member.getStatus().equals("Active")) {
                                         addTransaction.setMember(new Member(member));
-                                        payment = Payment.pay(transactionDetails, "Yes");
+                                        payment = Payment.pay(transactionDetails, "Yes",addTransaction.getDateTime());
                                     } else {
                                         System.out.println("  Member inactive");
                                         loop = 1;
@@ -192,14 +193,18 @@ public class TransactionDriver {
                             }
                         } while (loop == 1);
                         addTransaction.setPayment(new Payment(payment));
+                        addTransaction.setTransactionDetails((ArrayList<TransactionDetails>) transactionDetails.clone());
                         transactions.add(new Transaction(addTransaction));
                         Transaction.setNumOfTransaction(Transaction.getNumOfTransaction() + 1);
+                        TransactionDetails.add(transactionDetails);
+                        Product.updateQuantity();
+            
                         break;
                     case 'N':
                         do {
                             loop = 0;
                             Transaction.displayTransactionDetails(transactionDetails);
-                            intSelection = General.intInput("Selection : ", "  Invalid selection input");
+                            intSelection = General.intInput("Product selection : ", "  Invalid selection input");
                             if (intSelection <= 0 || intSelection > transactionDetails.size()) {
                                 System.out.println("  Invalid selection");
                                 loop = 1;
@@ -227,12 +232,17 @@ public class TransactionDriver {
                                                     loop = 1;
                                                 } else {
                                                     transactionDetails.get(intSelection - 1).setQty(orderQty);
+                                                    Transaction.displayTransactionDetails(transactionDetails);
+                                                    loop = 1;
+                                                    continue confirm;
                                                 }
                                             } while (loop == 1);
                                             break;
                                         case 2:
                                             if (transactionDetails.size() > 1) {
                                                 transactionDetails.remove(intSelection - 1);
+                                                Transaction.displayTransactionDetails(transactionDetails);
+                                                loop = 1;
                                                 continue confirm;
                                             } else {
                                                 System.out.println("Transaction cancelled");
@@ -240,6 +250,7 @@ public class TransactionDriver {
                                             break;
                                         case 0:
                                             loop = 1;
+                                            Transaction.displayTransactionDetails(transactionDetails);
                                             continue confirm;
                                         default:
                                             System.out.println("  Invalid Selection");
@@ -265,6 +276,8 @@ public class TransactionDriver {
             transactionDetails.clear();
 
         } while (charSelection == 'Y');
+        
+        Transaction.writeFile(Transaction.FILE_NAME, transactions);
 
     }
 
@@ -274,8 +287,8 @@ public class TransactionDriver {
             ArrayList<TransactionDetails> transactionDetails;
             ArrayList<TransactionDetails> newTransactionDetails = new ArrayList<>();
             ArrayList<Member> members = new ArrayList<>();
-            MemberDriver.readFile("member", members);
-            transactionDetails = TransactionDetails.readFile(TransactionDetails.fileName);
+            MemberDriver.readFile(Member.FILE_NAME, members);
+            transactionDetails = TransactionDetails.readFile(TransactionDetails.FILE_NAME);
 
             FileReader reader = new FileReader("src\\" + fileName);
             BufferedReader bufferedReader = new BufferedReader(reader);
