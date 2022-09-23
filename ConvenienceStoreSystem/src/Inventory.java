@@ -27,16 +27,20 @@ public class Inventory {
 
             switch (selection) {
                 case 1 -> {
+                    General.clearScreen();
                     SupplierInvoiceDriver.main(args);
                 }
                 case 2 -> {
+                    General.clearScreen();
                     CreditNoteDriver.main(args);
                 }
                 case 3 -> {
+                    General.clearScreen();
                     Report.productReorderReport();
                 }
                 case 0 -> {
-                    System.out.println("Returning to main menu...");
+                    System.out.println("Returning to main menu...");
+                    General.systemPause();
                 }
                 default ->
                     System.out.println("Invalid input! Please enter 0-4 only." + '\n');
