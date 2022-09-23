@@ -23,6 +23,7 @@ public class TransactionDriver {
             System.out.println("1 - Add transaction");
             System.out.println("2 - Display Staff");
             System.out.println("3 - Search transaction");
+            System.out.println("4 - Daily transaction report");
             System.out.println("0 - Main Menu");
             do {
                 selection = General.intInput("Selection: ", "  Please only select 0~4.");
@@ -33,13 +34,15 @@ public class TransactionDriver {
                         add();
                     case 3 ->
                         Transaction.search();
+                    case 4 ->
+                        Report.dailyReport();
                     case 0 -> {
                         System.out.println("****************************");
                         System.out.println("Return to Main Menu.");
                         General.systemPause();
                     }
                     default ->
-                        System.out.println("  Please only select 0~3.");
+                        System.out.println("  Please only select 0~4.");
                 }
             } while (selection < 0 || selection > 4);
             General.clearScreen();

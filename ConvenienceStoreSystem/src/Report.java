@@ -110,6 +110,8 @@ public class Report {
         System.out.printf("< %d record(s) >\n", transactionCount);
         System.out.println("");
         General.systemPause();
+        
+        General.clearScreen();
     }
 
     public static void monthlyReport() {
@@ -151,5 +153,7 @@ public class Report {
         System.out.printf("< %d record(s) >\n", printCount);
         System.out.println("");
         General.systemPause();
+        
+        General.clearScreen();
     }
 }
