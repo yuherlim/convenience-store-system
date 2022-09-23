@@ -454,8 +454,11 @@ public class CreditNoteDriver {
         } while (field < 1 || field > 3);
         
         //loop the arrayList and replace the specify element
-        for (int i = 0; i < stockDetailsIndex.length; i++) {
-            stockDetails.set(stockDetailsIndex[i], currentCreditNoteStockDetails.get(i));
+        for (int i = 0; i < stockDetails.size(); i++) {
+            if(stockDetails.get(i).equals(sd)){
+                stockDetails.set(i, sd);
+
+            }
         }
 
         //Update Stock Details
@@ -469,6 +472,7 @@ public class CreditNoteDriver {
             subtotal = currentCreditNoteStockDetails.get(i).getCostPrice() * currentCreditNoteStockDetails.get(i).getQty();
             totalAmount += subtotal;
         }
+        
         return totalAmount;
     }
     
