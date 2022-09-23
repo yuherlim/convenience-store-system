@@ -32,7 +32,7 @@ public class FrontDriver {
                             ProductDriver.main(args, staffLogin);
                         }
                         case 4 -> {
-                            //Membership
+                            MemberDriver.main(args);
                         }
                         case 5 -> {
                             SupplierDriver.main(args, staffLogin);
