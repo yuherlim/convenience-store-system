@@ -60,72 +60,76 @@ public class StaffDriver {
     public static void addStaff(Staff staffLogin) {
         Scanner scanner = new Scanner(System.in);
         Staff addStaff = new Staff();
-        
+
         General.clearScreen();
+
         System.out.println("-------------");
         System.out.println("| Add Staff |");
         System.out.println("-------------");
         System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');
+        if (!staffLogin.getPosition().equals("Normal Worker")) {
+            addStaff.setName(General.stringNullCheckingInput("Name(same as IC): ", "  Name cannot be empty."));
+            addStaff.setBirthdate(General.dateInput("Birthdate(DD/MM/YYYY): ", "  Wrong date format. Enter again."));
+            addStaff.setIc(General.icInput("IC(without '-'): "));
+            addStaff.setPhoneNum(General.phoneInput("Phone Number(without '-'): "));
+            addStaff.setAddress(General.stringNullCheckingInput("Address: ", "  Address cannot be empty."));
 
-        addStaff.setName(General.stringNullCheckingInput("Name(same as IC): ", "  Name cannot be empty."));
-        addStaff.setBirthdate(General.dateInput("Birthdate(DD/MM/YYYY): ", "  Wrong date format. Enter again."));
-        addStaff.setIc(General.icInput("IC(without '-'): "));
-        addStaff.setPhoneNum(General.phoneInput("Phone Number(without '-'): "));
-        addStaff.setAddress(General.stringNullCheckingInput("Address: ", "  Address cannot be empty."));
-
-        System.out.println("Position List:- ");
-        System.out.println("  1 - Normal Worker");
-        System.out.println("  2 - Human Resource");
-        System.out.println("  3 - Manager");
-        System.out.println("  4 - Program Admin");
-        int selection;
-        do {
-            selection = General.intInput("Select Position: ", "  Selection only Interger.");
-            switch (selection) {
-                case 1 ->
-                    addStaff.setPosition("Normal Worker");
-                case 2 ->
-                    addStaff.setPosition("Human Resource");
-                case 3 ->
-                    addStaff.setPosition("Manager");
-                case 4 ->
-                    addStaff.setPosition("Program Admin");
-                default ->
-                    System.out.println("  Selection only 1-4.");
-            }
-        } while (selection < 1 || selection > 4);
-        System.out.println("Position: " + addStaff.getPosition());
-
-        addStaff.setSalary(General.doubleInput("Salary: RM ", "  Only numbers requried."));
-
-        addStaff.setStaffID(String.format("ST-%03d", Staff.getNumOfStaff() + 1));
-        addStaff.setAccountStatus("Inactive");
-
-        System.out.println("-----------------------");
-        System.out.println(" New Staff Information");
-        System.out.println("**********************************************");
-        System.out.println(addStaff.toString());
-        System.out.println(addStaff.toStringAdmin("salary"));
-        System.out.println("**********************************************");
-        char yOrN;
-        do {
-            System.out.print("Comfirm to add new staff <" + addStaff.getStaffID() + ">?(Y)es/(N)o: ");
-            yOrN = Character.toUpperCase(scanner.next().charAt(0));
-            scanner.nextLine();
-            switch (yOrN) {
-                case 'Y' -> {
-                    //append file
-                    Staff.appendStaff(Staff.FILE_NAME, addStaff);
-
-                    Staff.setNumOfStaff(Staff.getNumOfStaff() + 1);
-                    System.out.println("    == Staff Added ==");
+            System.out.println("Position List:- ");
+            System.out.println("  1 - Normal Worker");
+            System.out.println("  2 - Human Resource");
+            System.out.println("  3 - Manager");
+            System.out.println("  4 - Program Admin");
+            int selection;
+            do {
+                selection = General.intInput("Select Position: ", "  Selection only Interger.");
+                switch (selection) {
+                    case 1 ->
+                        addStaff.setPosition("Normal Worker");
+                    case 2 ->
+                        addStaff.setPosition("Human Resource");
+                    case 3 ->
+                        addStaff.setPosition("Manager");
+                    case 4 ->
+                        addStaff.setPosition("Program Admin");
+                    default ->
+                        System.out.println("  Selection only 1-4.");
                 }
-                case 'N' ->
-                    System.out.println("    == Staff Add Cancelled ==");
-                default ->
-                    System.out.println("  Only enter Y or N.");
-            }
-        } while (yOrN != 'Y' && yOrN != 'N');
+            } while (selection < 1 || selection > 4);
+            System.out.println("Position: " + addStaff.getPosition());
+
+            addStaff.setSalary(General.doubleInput("Salary: RM ", "  Only numbers requried."));
+
+            addStaff.setStaffID(String.format("ST-%03d", Staff.getNumOfStaff() + 1));
+            addStaff.setAccountStatus("Inactive");
+
+            System.out.println("-----------------------");
+            System.out.println(" New Staff Information");
+            System.out.println("**********************************************");
+            System.out.println(addStaff.toString());
+            System.out.println(addStaff.toStringAdmin("salary"));
+            System.out.println("**********************************************");
+            char yOrN;
+            do {
+                System.out.print("Comfirm to add new staff <" + addStaff.getStaffID() + ">?(Y)es/(N)o: ");
+                yOrN = Character.toUpperCase(scanner.next().charAt(0));
+                scanner.nextLine();
+                switch (yOrN) {
+                    case 'Y' -> {
+                        //append file
+                        Staff.appendStaff(Staff.FILE_NAME, addStaff);
+
+                        Staff.setNumOfStaff(Staff.getNumOfStaff() + 1);
+                        System.out.println("    == Staff Added ==");
+                    }
+                    case 'N' ->
+                        System.out.println("    == Staff Add Cancelled ==");
+                    default ->
+                        System.out.println("  Only enter Y or N.");
+                }
+            } while (yOrN != 'Y' && yOrN != 'N');
+        } else {
+            System.out.println(">> You are not allowed to add staff. Back to Main Menu");
+        }
         General.systemPause();
         General.clearScreen();
     }
@@ -134,7 +138,7 @@ public class StaffDriver {
     public static void displayStaff(Staff staffLogin) {
         Staff displayStaff;
         int age;
-        
+
         General.clearScreen();
         System.out.println("-----------------");
         System.out.println("| Display Staff |");
@@ -198,7 +202,7 @@ public class StaffDriver {
         Staff searchStaff;
         int selection;
         boolean isAdmin = !staffLogin.getPosition().equals("Normal Worker");
-        
+
         do {
             do {
                 General.clearScreen();
@@ -293,7 +297,7 @@ public class StaffDriver {
         boolean isOther = isAdmin;
         int selection;
         Staff editedStaff = staffLogin;
-        
+
         General.clearScreen();
         System.out.println("----------------");
         System.out.println("| Modify Staff |");
