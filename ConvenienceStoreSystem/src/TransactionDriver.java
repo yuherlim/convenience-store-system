@@ -47,7 +47,7 @@ public class TransactionDriver {
                 
             }
             case 5 -> {
-                Report.dailyReport(staffLogin);
+                Report.dailyReport();
             }
         }
         

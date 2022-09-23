@@ -24,23 +24,23 @@ public class Sales {
             System.out.println("5 - Daily Transaction Report" + '\n');
             System.out.println("0 - Back to Main Menu" + '\n');
 
-            selection = General.intInput("Enter your selection (0-4)", "  Please input a number only.");
+            selection = General.intInput("Enter your selection (0-5)", "  Please input a number only.");
 
             switch (selection) {
                 case 1 -> {
                     TransactionDriver.add();
                 }
                 case 2 -> {
-                    TransactionDriver.cancel();
+                    //TransactionDriver.cancel();
                 }
                 case 3 -> {
-                    TransactionDriver.search();
+                    //TransactionDriver.search();
                 }
                 case 4 -> {
-                    TransactionDriver.view();
+                    //TransactionDriver.view();
                 }
                 case 5 -> {
-                    Report.dailyTransactionReport();
+                    //Report.dailyTransactionReport();
                 }
                 case 0 -> {
                     FrontDriver.main(args);

@@ -118,8 +118,10 @@ public class SupplierInvoiceDriver {
                     if (productSearchResult != null) {
                         if (productSearchResult.get(0).getStatus().equals("ACTIVE"))
                             sd.setProductCode(productCode);
-                        else
+                        else{
+                            System.out.println("Product has been inactive.");
                             productSearchResult = null;
+                        }
                     }
                 } while (productSearchResult == null);
                 
