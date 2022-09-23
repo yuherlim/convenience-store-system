@@ -16,39 +16,38 @@ public class StaffDriver {
         //        "0176922172", "Setapak, Kuala Lumpur", "Normal Worker", "abc123", 0.0, "Active");
         //Staff submenu
         do {
+
+            System.out.println("---------");
+            System.out.println("| Staff |");
+            System.out.println("---------");
+            System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');
+            Staff.updateNumberOfStaff();
+            System.out.println("1 - Add Staff");
+            System.out.println("2 - Display Staff");
+            System.out.println("3 - Search Staff");
+            System.out.println("4 - Modify Staff" + '\n');
+            System.out.println("0 - Main Menu");
             do {
-                System.out.println("---------");
-                System.out.println("| Staff |");
-                System.out.println("---------");
-                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');        //add login name and position
-                Staff.updateNumberOfStaff();
-                System.out.println("1 - Add Staff");
-                System.out.println("2 - Display Staff");
-                System.out.println("3 - Search Staff");
-                System.out.println("4 - Modify Staff" + '\n');
-                System.out.println("0 - Main Menu");
                 selection = General.intInput("Selection: ", "  Please only select 0~4.");
-            } while (selection < 0 || selection > 4);
-
-            General.clearScreen();
-
-            switch (selection) {
-                case 1 ->
-                    StaffDriver.addStaff(staffLogin);
-                case 2 ->
-                    StaffDriver.displayStaff(staffLogin);
-                case 3 ->
-                    StaffDriver.searchStaff(staffLogin);
-                case 4 ->
-                    StaffDriver.editStaff(staffLogin);
-                case 0 -> {
-                    System.out.print("Return to Main Menu.");
-                    General.systemPause();
-                    General.clearScreen();
+                switch (selection) {
+                    case 1 ->
+                        StaffDriver.addStaff(staffLogin);
+                    case 2 ->
+                        StaffDriver.displayStaff(staffLogin);
+                    case 3 ->
+                        StaffDriver.searchStaff(staffLogin);
+                    case 4 ->
+                        StaffDriver.editStaff(staffLogin);
+                    case 0 -> {
+                        System.out.println("****************************");
+                        System.out.println("Return to Main Menu.");
+                        General.systemPause();
+                    }
+                    default ->
+                        System.out.println("  Please only select 0~4.");
                 }
-                default ->
-                    System.out.println("  Please only select 0~4.");
-            }
+            } while (selection < 0 || selection > 4);
+            General.clearScreen();
         } while (selection != 0);
     }
 
@@ -62,20 +61,11 @@ public class StaffDriver {
         System.out.println("-------------");
         System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');
 
-        System.out.print("Name(same as IC): ");
-        addStaff.setName(scanner.nextLine());
-
-        do {
-            System.out.print("IC(without '-'): ");
-            addStaff.setIc(scanner.nextLine());
-        } while (!General.icValidation(addStaff.getIc()));
-
+        addStaff.setName(General.stringNullCheckingInput("Name(same as IC): ", "  Name cannot be empty."));
         addStaff.setBirthdate(General.dateInput("Birthdate(DD/MM/YYYY): ", "  Wrong date format. Enter again."));
-
+        addStaff.setIc(General.icInput("IC(without '-'): "));
         addStaff.setPhoneNum(General.phoneInput("Phone Number(without '-'): "));
-
-        System.out.print("Address: ");
-        addStaff.setAddress(scanner.nextLine());
+        addStaff.setAddress(General.stringNullCheckingInput("Address: ", "  Address cannot be empty."));
 
         System.out.println("Position List:- ");
         System.out.println("  1 - Normal Worker");
@@ -105,12 +95,12 @@ public class StaffDriver {
         addStaff.setStaffID(String.format("ST-%03d", Staff.getNumOfStaff() + 1));
         addStaff.setAccountStatus("Inactive");
 
+        System.out.println("-----------------------");
         System.out.println(" New Staff Information");
-        System.out.println("***********************");
+        System.out.println("**********************************************");
         System.out.println(addStaff.toString());
         System.out.println(addStaff.toStringAdmin("salary"));
-        System.out.println(addStaff.toStringAdmin("password"));
-        System.out.println("***********************");
+        System.out.println("**********************************************");
         char yOrN;
         do {
             System.out.print("Comfirm to add new staff <" + addStaff.getStaffID() + ">?(Y)es/(N)o: ");

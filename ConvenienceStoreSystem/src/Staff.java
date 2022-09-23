@@ -1,3 +1,4 @@
+
 /**
  *
  * @author JiaQing
@@ -7,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.FileWriter;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class Staff extends Person {
@@ -139,13 +141,13 @@ public class Staff extends Person {
 
     //password validation
     public static String createPassword() {
+        Scanner scanner = new Scanner(System.in);
         String password;
         int loop;
-        Scanner sc = new Scanner(System.in);
         do {
             loop = 0;
             System.out.print("New password: ");
-            password = sc.nextLine();
+            password = scanner.nextLine();
             if (password.length() <= 8 || password.length() >= 32) {
                 System.out.println("> Password length should be 8-32 characters/numbers.");
                 loop = 1;
@@ -343,10 +345,9 @@ public class Staff extends Person {
                     case 8 -> {
                         if (!isOther) {
                             System.out.println("  Resign self not allowed.");
-                        } else if(editedStaff.staffID.equals("ST-000")){
+                        } else if (editedStaff.staffID.equals("ST-000")) {
                             System.out.println("  Cannot resign program admin account.");
-                        }
-                        else {
+                        } else {
                             if (editedStaff.getAccountStatus().equals("Active") || editedStaff.getAccountStatus().equals("Inactive")) {
                                 editedStaff.setAccountStatus("Resign");
                             } else {
@@ -447,4 +448,5 @@ public class Staff extends Person {
         }
 
     }
+
 }
