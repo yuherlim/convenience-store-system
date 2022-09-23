@@ -28,6 +28,13 @@ public class TransactionDetails {
         productCode = "";
     }
     
+    public TransactionDetails (TransactionDetails obj){
+        this.qty = obj.qty;
+        this.transactionId = obj.transactionId;
+        this.productCode = obj.productCode;
+        this.sellingPrice = obj.sellingPrice;
+    }
+    
     public TransactionDetails(int qty, String transactionId, String productCode, double sellingPrice) {
         this.qty = qty;
         this.transactionId = transactionId;
@@ -109,7 +116,7 @@ public class TransactionDetails {
   
             for (int i = 0; i < transactionDetails.size(); i++) {
                 //Create a new record to be written
-                line = String.format("%s|%s%%%d%%%.2f\n", transactionDetails.get(i).getProductCode(), transactionDetails.get(i).getTransactionId(), transactionDetails.get(i).getQty(), transactionDetails.get(i).getSellingPrice());
+                line = String.format("%s|%s%%d%%.2f\n", transactionDetails.get(i).getProductCode(), transactionDetails.get(i).getTransactionId(), transactionDetails.get(i).getQty(), transactionDetails.get(i).getSellingPrice());
                 //Writes the record to the file.
                 writer.write(line);
             }

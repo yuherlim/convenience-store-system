@@ -15,11 +15,21 @@ public class Member extends Person {
 
     private String id;
     private String status;
-    private static int NumOfCustomer;
+    private static int numOfCustomer;
 
     //Constructor
     public Member() {
-        super();
+          super();
+        this.status = " ";
+        this.id = " ";
+      
+    }
+    
+    public Member(Member obj){
+        super(obj.name, obj.ic, obj.birthdate, obj.phoneNum, obj.address);
+        this.id = obj.id;
+        this.status = obj.status;
+    
     }
 
     public Member(String id, String name, String ic, String birthdate, String phoneNum, String address, String status) {
@@ -38,7 +48,7 @@ public class Member extends Person {
     }
 
     public static int getNumOfCustomer() {
-        return NumOfCustomer;
+        return numOfCustomer;
     }
 
     public void setId(String id) {
@@ -50,7 +60,7 @@ public class Member extends Person {
     }
 
     public static void setNumOfCustomer(int NumOfCustomer) {
-        Member.NumOfCustomer = NumOfCustomer;
+        Member.numOfCustomer = NumOfCustomer;
     }
 
     public static void add(ArrayList<Member> members) {
