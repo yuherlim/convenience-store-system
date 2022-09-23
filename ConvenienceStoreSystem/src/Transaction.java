@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Transaction {
     private String id;
     private String dateTime;
+
     private Staff staff;
     private Member member;
     private Payment payment;
@@ -34,6 +35,7 @@ public class Transaction {
     };
     
     public Transaction(String id, Staff staff, Member member, Payment payment, ArrayList<TransactionDetails> transactionDetails,String dateTime) {
+
         this.id = id;
         this.staff = staff;
         this.member = member;
@@ -43,6 +45,8 @@ public class Transaction {
     }
 
     //Setter and getter
+
+
     public String getId() {
         return id;
     }
@@ -100,6 +104,7 @@ public class Transaction {
         this.transactionDetails = transactionDetails;
     }
     
+
     public static double displayTransactionDetails(ArrayList<TransactionDetails> transactionDetails){
         Product printProduct = new Product();
         double subtotal ;
@@ -146,7 +151,7 @@ public class Transaction {
         }
     }
     
-    
+
     
     
 }
