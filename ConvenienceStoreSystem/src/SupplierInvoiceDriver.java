@@ -39,7 +39,7 @@ public class SupplierInvoiceDriver {
                     SupplierInvoiceDriver.cancelInvoice();
                 }
                 case 0 -> {
-                    //ConvenienceStore.main();
+                    //Inventory.main();
                 }
                 default ->
                     System.out.println("Invalid input! Please try again..." + '\n');
@@ -141,12 +141,12 @@ public class SupplierInvoiceDriver {
             //need compare supplierName from Supplier class
             do {
                 supplierName = General.stringNullCheckingInput("Enter a new supplier name: ", "  Input field cannot be empty, please enter again.");
-                if (Supplier.search("supplierName", supplierName) != null) {
+                if (Supplier.search("supplierName", supplierName.toUpperCase()) != null) {
                     si.setSupplierName(supplierName);
                 } else {
                     System.out.println("  Invalid supplier name! Please try again..");
                 }
-            } while (Supplier.search("supplierName", supplierName) == null);
+            } while (Supplier.search("supplierName", supplierName.toUpperCase()) == null);
 
             //get item list of the invoice
             do {
@@ -231,11 +231,11 @@ public class SupplierInvoiceDriver {
 
             } while (searchInvoice(supplierInvoice, invNo, stockDetails) == -1);
 
-            cont = General.yesNoInput("Continue search again? (Y/N) > ", "Invalid input! Please enter 'Y' or 'N' only.");
+            cont = General.yesNoInput("Continue search again? (Y/N) > ", "  Please enter 'Y' or 'N' only.");
 
         } while (cont == 'Y');
 
-        //Back to Stock In menu
+        //Back to Supplier Invoice menu
         //SupplierInvoiceDriver.main(args);
     }
 
@@ -270,6 +270,7 @@ public class SupplierInvoiceDriver {
         String invNo;
         String input;
         char cont;
+        char confirm;
         int selection;
         int index;
 
@@ -312,10 +313,6 @@ public class SupplierInvoiceDriver {
             }
 
             do {
-                if (index == -2) {
-                    break;
-                }
-
                 System.out.println('\n');
                 System.out.println("Editable Field: ");
                 System.out.println("1. Invoice Date" + '\n' + "2. Staff Incharge" + '\n' + "3. Supplier Name"
@@ -326,14 +323,20 @@ public class SupplierInvoiceDriver {
                 switch (selection) {
                     case 1 -> {
                         input = General.dateInput("Enter invoice date(DD/MM/YYYY): ", "Please enter date with format DD/MM/YYYY");
-                        si.setInvDate(input);
+                        confirm = General.yesNoInput("Confirm to change? (Y/N) > ", "  Please enter 'Y' or 'N' only.");
+                        if(confirm == 'Y'){
+                            si.setInvDate(input);
+                        }
                         break;
                     }
                     case 2 -> {
                         do {
                             input = General.stringNullCheckingInput("Enter a new staff name: ", "  Input field cannot be empty, please enter again.");
                             if (Staff.searchAllStaff(input, "Name").getName().equals(input)) {
-                                si.setStaffName(input);
+                                confirm = General.yesNoInput("Confirm to change? (Y/N) > ", "  Please enter 'Y' or 'N' only.");
+                                if(confirm == 'Y'){
+                                    si.setStaffName(input);
+                                }
                             } else {
                                 System.out.println("Invalid staff name! Please try again..");
                             }
@@ -344,7 +347,10 @@ public class SupplierInvoiceDriver {
                         do {
                             input = General.stringNullCheckingInput("Enter a new supplier name: ", "  Input field cannot be empty, please enter again.");
                             if (Supplier.search(input, "supplierName").getName().equals(input)) {
-                                si.setSupplierName(input);
+                                confirm = General.yesNoInput("Confirm to change? (Y/N) > ", "  Please enter 'Y' or 'N' only.");
+                                if(confirm == 'Y'){
+                                    si.setSupplierName(input);
+                                }
                             } else {
                                 System.out.println("Invalid staff name! Please try again..");
                             }
@@ -439,6 +445,8 @@ public class SupplierInvoiceDriver {
                 System.out.printf("Please input 1-%d : ", num);
             }
         } while (item < num || item > num);
+        
+        --num;
 
         sd = currentInvoiceStockDetails.get(num);
 
@@ -605,7 +613,7 @@ public class SupplierInvoiceDriver {
             //Loop for display stock details
             for (int i = 0; i < currentInvoiceStockDetails.size(); i++) {
                 subtotal = currentInvoiceStockDetails.get(i).getCostPrice() * currentInvoiceStockDetails.get(i).getQty();
-                System.out.printf("%s             %.2f              %d                   %8.2f\n",
+            System.out.printf("%-5s             %7.2f                   %3d                %6.2f\n",
                         currentInvoiceStockDetails.get(i).getProductCode(), currentInvoiceStockDetails.get(i).getCostPrice(), currentInvoiceStockDetails.get(i).getQty(), subtotal);
                 totalAmount += subtotal;
             }
