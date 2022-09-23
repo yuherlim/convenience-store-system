@@ -93,6 +93,7 @@ public class Staff extends Person {
     @Override
     public String toString() {
         int age = General.ageCalc(birthdate);
+
         return "Staff ID              : " + staffID + "\n"
                 + "Name                  : " + name + "\n"
                 + "IC                    : " + ic + "\n"
@@ -100,8 +101,7 @@ public class Staff extends Person {
                 + "Age                   : " + age + "\n"
                 + "Phone Number          : " + phoneNum + "\n"
                 + "Address               : " + address + "\n"
-                + //format address to 3 lines
-                "Position              : " + position + "\n"
+                + "Position              : " + position + "\n"
                 + "Account Status        : " + accountStatus;
     }
 
@@ -112,7 +112,7 @@ public class Staff extends Person {
             return "Password              : " + password;
         }
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
