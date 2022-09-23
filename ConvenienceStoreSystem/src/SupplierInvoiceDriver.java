@@ -292,7 +292,7 @@ public class SupplierInvoiceDriver {
                     }
                     case 2 -> {
                         do {
-                            input = General.stringNullCheckingInput("Enter a new staff name: ", "  Input field cannot be empty, please enter again.");
+                            input = General.stringNullCheckingInput("Enter a staff name: ", "  Input field cannot be empty, please enter again.");
                             if (Staff.searchAllStaff(input, "Name").getName().equals(input)) {
                                 confirm = General.yesNoInput("Confirm to change? (Y/N) > ", "  Please enter 'Y' or 'N' only.");
                                 if (confirm == 'Y') {
@@ -306,7 +306,7 @@ public class SupplierInvoiceDriver {
                     }
                     case 3 -> {
                         do {
-                            input = General.stringNullCheckingInput("Enter a new supplier name: ", "  Input field cannot be empty, please enter again.");
+                            input = General.stringNullCheckingInput("Enter a supplier name: ", "  Input field cannot be empty, please enter again.");
                             if (Supplier.search(input, "supplierName") != null) {
                                 confirm = General.yesNoInput("Confirm to change? (Y/N) > ", "  Please enter 'Y' or 'N' only.");
                                 if (confirm == 'Y') {
@@ -371,10 +371,6 @@ public class SupplierInvoiceDriver {
         //Create an object to hold current item details
         StockDetails sd;
 
-        //Array to store the index of stockDetails
-        int indexNum = 0;
-        int[] stockDetailsIndex = new int[stockDetails.size()];
-
         General.clearScreen();
         System.out.println("<Edit Invoice Item>");
 
@@ -383,9 +379,6 @@ public class SupplierInvoiceDriver {
             if (supplierInvoice.get(index).getInvNo().equals(stockDetails.get(i).getInvNo())) {
                 //store the stock details with the current invoice number.
                 currentInvoiceStockDetails.add(stockDetails.get(i));
-                //store stockDetails index
-                stockDetailsIndex[indexNum] = i;
-                indexNum++;
             }
         }
 
