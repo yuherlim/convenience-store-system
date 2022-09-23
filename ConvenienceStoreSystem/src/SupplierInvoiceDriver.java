@@ -66,8 +66,8 @@ public class SupplierInvoiceDriver {
                 String tag = buffer[2];
 
                 //Convert string to double for total amount
-                double doubleArr = Double.parseDouble(buffer[1]);
-                
+                double amount = Double.parseDouble(buffer[1]);
+
                 //read from stockDetails.txt and create a copy of stock details records.
                 ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetails.readFile(StockDetails.fileName).clone();
                 stockDetails.clear();
@@ -80,7 +80,7 @@ public class SupplierInvoiceDriver {
                 }
 
                 //store cloned versions of stockDetails as it will be used again in subsequent loops
-                supplierInvoice.add(new SupplierInvoice(invNo, invDate, staffName, supplierName, (ArrayList<StockDetails>) stockDetails.clone(), doubleArr, tag));
+                supplierInvoice.add(new SupplierInvoice(invNo, invDate, staffName, supplierName, (ArrayList<StockDetails>) stockDetails.clone(), amount, tag));
 
             }
         } catch (IOException e) {
@@ -89,7 +89,7 @@ public class SupplierInvoiceDriver {
         return supplierInvoice;
     }
 
-    //Add new Invoice function
+    //Add new Invoice function / stock in
     public static void addInvoice() {
         Scanner sc = new Scanner(System.in);
         char cont;
@@ -109,7 +109,7 @@ public class SupplierInvoiceDriver {
             ArrayList<StockDetails> newStockDetails = new ArrayList<>();
 
             //Read and store into ArrayList
-            SupplierInvoiceDriver.readFile(SupplierInvoice.fileName, supplierInvoice, stockDetails);
+            supplierInvoice = SupplierInvoiceDriver.readFile(SupplierInvoice.fileName, supplierInvoice, stockDetails);
             stockDetails = StockDetails.readFile(StockDetails.fileName);
 
             //Set the num of invoice as arraylist size
@@ -127,10 +127,9 @@ public class SupplierInvoiceDriver {
             //get and validate date input
             si.setInvDate(General.dateInput("Enter invoice date: ", "  Invalid date! Please try again.."));
 
-            //need compare staffname from Staff class
+            //get and compare staffname from Staff class
             do {
-                System.out.print("Enter staff name: ");
-                staffName = sc.nextLine();
+                staffName = General.stringNullCheckingInput("Enter staff name: ", "  Input field cannot be empty, please enter again.");
                 if (Staff.searchAllStaff(staffName, "Name").getName().equals(staffName)) {
                     si.setStaffName(staffName);
                 } else {
@@ -138,7 +137,7 @@ public class SupplierInvoiceDriver {
                 }
             } while (!Staff.searchAllStaff(staffName, "Name").getName().equals(staffName));
 
-            //need compare supplierName from Supplier class
+            //get and compare supplierName from Supplier class
             do {
                 supplierName = General.stringNullCheckingInput("Enter a new supplier name: ", "  Input field cannot be empty, please enter again.");
                 if (Supplier.search("supplierName", supplierName.toUpperCase()) != null) {
@@ -170,7 +169,7 @@ public class SupplierInvoiceDriver {
                 //add stock details to stockDetails arrayList
                 newStockDetails.add(sd);
 
-                cont = General.yesNoInput("Continue to add item? (Y/N) > ", "Invalid input! Please enter 'Y' or 'N' only.");
+                cont = General.yesNoInput("Continue to add item? (Y/N) > ", "  Invalid input! Please enter 'Y' or 'N' only.");
 
             } while (cont == 'Y');
 
@@ -181,7 +180,7 @@ public class SupplierInvoiceDriver {
             //set the tag to 'Valid'
             si.setTag("Valid");
 
-            confirm = General.yesNoInput("Confirm add this invoice? (Y/N) > ", "Invalid input! Please enter 'Y' or 'N' only.");
+            confirm = General.yesNoInput("Confirm add this invoice? (Y/N) > ", "  Invalid input! Please enter 'Y' or 'N' only.");
 
             if (confirm == 'Y') {
                 //add new supplier invoice details to supplierInvoice arrayList
@@ -196,7 +195,6 @@ public class SupplierInvoiceDriver {
                 SupplierInvoice.writeFile(SupplierInvoice.fileName, supplierInvoice);
                 StockDetails.writeFile(StockDetails.fileName, stockDetails);
                 Product.updateProduct();
-                Product.updateQuantity();
             }
 
             cont = General.yesNoInput("Continue add again? (Y/N) > ", "Invalid input! Please enter 'Y' or 'N' only.");
@@ -257,7 +255,7 @@ public class SupplierInvoiceDriver {
             }
         }
 
-        System.out.println("Invalid Invoice Number. Please try again...");
+        System.out.println("Invalid invoice number. Please try again...");
         General.systemPause();
 
         return index = -1;
@@ -318,13 +316,13 @@ public class SupplierInvoiceDriver {
                 System.out.println("1. Invoice Date" + '\n' + "2. Staff Incharge" + '\n' + "3. Supplier Name"
                         + '\n' + "4. Item Details (Item code/quantity/cost price)");
 
-                selection = General.intInput("Select a field to edit (1-4): ", "Invalid Input! Please enter number only.");
+                selection = General.intInput("Select a field to edit (1-4): ", "  Invalid Input! Please enter number only.");
 
                 switch (selection) {
                     case 1 -> {
-                        input = General.dateInput("Enter invoice date(DD/MM/YYYY): ", "Please enter date with format DD/MM/YYYY");
+                        input = General.dateInput("Enter invoice date(DD/MM/YYYY): ", "  Please enter date with format DD/MM/YYYY");
                         confirm = General.yesNoInput("Confirm to change? (Y/N) > ", "  Please enter 'Y' or 'N' only.");
-                        if(confirm == 'Y'){
+                        if (confirm == 'Y') {
                             si.setInvDate(input);
                         }
                         break;
@@ -334,11 +332,11 @@ public class SupplierInvoiceDriver {
                             input = General.stringNullCheckingInput("Enter a new staff name: ", "  Input field cannot be empty, please enter again.");
                             if (Staff.searchAllStaff(input, "Name").getName().equals(input)) {
                                 confirm = General.yesNoInput("Confirm to change? (Y/N) > ", "  Please enter 'Y' or 'N' only.");
-                                if(confirm == 'Y'){
+                                if (confirm == 'Y') {
                                     si.setStaffName(input);
                                 }
                             } else {
-                                System.out.println("Invalid staff name! Please try again..");
+                                System.out.println("  Invalid staff name! Please try again..");
                             }
                         } while (!Staff.searchAllStaff(input, "Name").getName().equals(input));
                         break;
@@ -346,15 +344,15 @@ public class SupplierInvoiceDriver {
                     case 3 -> {
                         do {
                             input = General.stringNullCheckingInput("Enter a new supplier name: ", "  Input field cannot be empty, please enter again.");
-                            if (Supplier.search(input, "supplierName").getName().equals(input)) {
+                            if (Supplier.search(input, "supplierName") != null) {
                                 confirm = General.yesNoInput("Confirm to change? (Y/N) > ", "  Please enter 'Y' or 'N' only.");
-                                if(confirm == 'Y'){
+                                if (confirm == 'Y') {
                                     si.setSupplierName(input);
                                 }
                             } else {
-                                System.out.println("Invalid staff name! Please try again..");
+                                System.out.println("  Invalid supplier name! Please try again..");
                             }
-                        } while (!Supplier.search(input, "supplierName").getName().equals(input));
+                        } while (Supplier.search(input, "supplierName") == null);
                         break;
                     }
                     case 4 -> {
@@ -364,7 +362,7 @@ public class SupplierInvoiceDriver {
                     }
                     default -> {
                         if (selection < 1 || selection > 6) {
-                            System.out.println("Invalid selection! Please enter number 1-4 only.");
+                            System.out.println("  Invalid selection! Please enter number 1-4 only.");
                             General.systemPause();
                             searchInvoice(supplierInvoice, invNo, stockDetails);
                         }
@@ -436,7 +434,6 @@ public class SupplierInvoiceDriver {
             num++;
             System.out.printf("%d  %s                %.2f                  %d                   %8.2f\n",
                     num, currentInvoiceStockDetails.get(i).getProductCode(), currentInvoiceStockDetails.get(i).getCostPrice(), currentInvoiceStockDetails.get(i).getQty(), subtotal);
-
         }
 
         do {
@@ -445,10 +442,10 @@ public class SupplierInvoiceDriver {
                 System.out.printf("Please input 1-%d : ", num);
             }
         } while (item < num || item > num);
-        
-        --num;
 
-        sd = currentInvoiceStockDetails.get(num);
+        --item;
+
+        sd = currentInvoiceStockDetails.get(item);
 
         do {
             System.out.println('\n');
@@ -464,26 +461,29 @@ public class SupplierInvoiceDriver {
                             confirm = General.yesNoInput("Confirm change? (Y/N) > ", "  Invalid input! Please enter 'Y' or 'N' only.");
                             if (confirm == 'Y') {
                                 sd.setProductCode(productCode);
-                                currentInvoiceStockDetails.set(num, sd);
+                                currentInvoiceStockDetails.set(item, sd);
                             }
                         }
                     } while (Product.search("productCode", productCode) == null);
+                    break;
                 }
                 case 2 -> {
                     costPrice = General.doubleInput("Enter cost price: ", "  Please enter a value with decimal place");
                     confirm = General.yesNoInput("Confirm change? (Y/N) > ", "  Invalid input! Please enter 'Y' or 'N' only.");
                     if (confirm == 'Y') {
                         sd.setCostPrice(costPrice);
-                        currentInvoiceStockDetails.set(num, sd);
+                        currentInvoiceStockDetails.set(item, sd);
                     }
+                    break;
                 }
                 case 3 -> {
                     quantity = General.intInput("Enter quantity: ", "Please enter a integer quantity");
                     confirm = General.yesNoInput("Confirm change? (Y/N) > ", "  Invalid input! Please enter 'Y' or 'N' only.");
                     if (confirm == 'Y') {
                         sd.setQty(quantity);
-                        currentInvoiceStockDetails.set(num, sd);
+                        currentInvoiceStockDetails.set(item, sd);
                     }
+                    break;
                 }
                 default -> {
                     if (field < 1 || field > 3) {
@@ -499,6 +499,9 @@ public class SupplierInvoiceDriver {
 
         //Update Stock Details
         StockDetails.writeFile(StockDetails.fileName, stockDetails);
+
+        //Update product
+        Product.updateProduct();
 
         //calculate totalAmount and return back
         for (int i = 0; i < currentInvoiceStockDetails.size(); i++) {
@@ -567,18 +570,17 @@ public class SupplierInvoiceDriver {
                 //Update the file
                 StockDetails.writeFile(StockDetails.fileName, stockDetails);
                 SupplierInvoice.writeFile(SupplierInvoice.fileName, supplierInvoice);
-                
+
                 //Update product info
                 Product.updateProduct();
-                Product.updateQuantity();
 
                 System.out.println("Invoice cancelled successfully.");
-                cont = General.yesNoInput("Continue to cancel another invoice? (Y/N) > ", "Invalid input! Please enter 'Y' or 'N' only.");
 
             } else if (confirm == 'N') {
                 System.out.println("Process cancelled...");
-                cont = General.yesNoInput("Continue to cancel another invoice? (Y/N) > ", "Invalid input! Please enter 'Y' or 'N' only.");
             }
+
+            cont = General.yesNoInput("Continue to cancel another invoice? (Y/N) > ", " Invalid input! Please enter 'Y' or 'N' only.");
 
         } while (cont == 'Y');
     }
@@ -613,14 +615,14 @@ public class SupplierInvoiceDriver {
             //Loop for display stock details
             for (int i = 0; i < currentInvoiceStockDetails.size(); i++) {
                 subtotal = currentInvoiceStockDetails.get(i).getCostPrice() * currentInvoiceStockDetails.get(i).getQty();
-            System.out.printf("%-5s             %7.2f                   %3d                %6.2f\n",
+                System.out.printf("%-5s             %7.2f                   %3d                %6.2f\n",
                         currentInvoiceStockDetails.get(i).getProductCode(), currentInvoiceStockDetails.get(i).getCostPrice(), currentInvoiceStockDetails.get(i).getQty(), subtotal);
                 totalAmount += subtotal;
             }
             System.out.println("-------------------------------------------------------------------------");
             System.out.printf("Total Amount(RM)%53.2f \n\n", totalAmount);
         } else {
-            System.out.println("Invoice has been canceled.");
+            System.out.println("Invoice has been cancelled.");
             return ++invalid;
         }
         return invalid;

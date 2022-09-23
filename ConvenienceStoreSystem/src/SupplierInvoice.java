@@ -18,9 +18,20 @@ public class SupplierInvoice {
 
     public SupplierInvoice() {
         this.invNo = "";
+        this.invDate = "";
         this.staffName = "";
         this.supplierName = "";
         this.amount = 0d;
+    }
+    
+    public SupplierInvoice(SupplierInvoice si){
+        this.invNo = si.invNo;
+        this.invDate = si.invDate;
+        this.staffName = si.staffName;
+        this.supplierName = si.supplierName;
+        this.stockDetails = si.stockDetails;
+        this.amount = si.amount;
+        this.tag = si.tag;
     }
 
     public SupplierInvoice(String invNo, String invDate, String staffName, String supplierName, ArrayList<StockDetails> stockDetails, double amount, String tag) {

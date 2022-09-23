@@ -13,12 +13,17 @@ public class CreditNote {
     private String supplierName;
     private ArrayList<StockDetails> stockDetails;
     private double amount;
+    private String tag;
+    private static int numOfCrn;
     public static String fileName = "creditNote.txt";
     
     public CreditNote(){
         this.cnNo = "";
         this.cnDate = "";
+        this.staffName = "";
+        this.supplierName = "";
         this.amount = 0d;
+        this.tag = "";
     }
     
     public CreditNote(CreditNote cn) {
@@ -28,22 +33,23 @@ public class CreditNote {
         this.supplierName = cn.supplierName;
         this.stockDetails = cn.stockDetails;
         this.amount = cn.amount;
+        this.tag = cn.tag;
     }
     
-    public CreditNote(String cnNo, String cnDate, String staffName, String supplierName, ArrayList<StockDetails> stockDetails, double amount) {
+    public CreditNote(String cnNo, String cnDate, String staffName, String supplierName, ArrayList<StockDetails> stockDetails, double amount, String tag) {
         this.cnNo = cnNo;
         this.cnDate = cnDate;
         this.staffName = staffName;
         this.supplierName = supplierName;
         this.stockDetails = stockDetails;
         this.amount = amount;
+        this.tag = tag;
     }
 
     public String getCnNo() {
         return cnNo;
     }
 
-    //still figure auto-increment for cnNo
     public void setCnNo(String cnNo) {
         this.cnNo = cnNo;
     }
@@ -88,34 +94,37 @@ public class CreditNote {
         this.amount = amount;
     }
 
-    public static String getFileName() {
-        return fileName;
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public static int getNumOfCrn() {
+        return numOfCrn;
+    }
+
+    public static void setNumOfCrn(int numOfCrn) {
+        CreditNote.numOfCrn = numOfCrn;
     }
 
     public static void writeFile(String fileName, ArrayList<CreditNote> creditNote) {
         String line;
-        try {
-                //Create FileWriter set to write mode
+            //Create FileWriter set to write mode
             try (FileWriter writer = new FileWriter("src\\" + fileName, false)) {
 
                 for (int i = 0; i < creditNote.size(); i++) {
                     //Create a new record to be written
-                    line = String.format("%s|%s|%s|%s%%.2lf\n", creditNote.get(i).getCnNo(), creditNote.get(i).getCnDate(), creditNote.get(i).getStaffName(), creditNote.get(i).getSupplierName(), creditNote.get(i).getAmount());
+                    line = String.format("%s|%s|%s|%s%%%.2f%%%s\n", creditNote.get(i).getCnNo(), creditNote.get(i).getCnDate(), creditNote.get(i).getStaffName(), creditNote.get(i).getSupplierName(), creditNote.get(i).getAmount(), creditNote.get(i).getTag());
                     //Writes the record to the file.
                     writer.write(line);
                 }
-                // Closes the writer
-            }
-
+                
         } catch (IOException e) {
             e.getStackTrace();
         }
     }
-
-//    @Override
-//    public String toString() {
-//        return "CreditNote{" + "cnNo=" + cnNo + ", cnDate=" + cnDate + ", staffName=" + staffName + ", supplierName=" + supplierName + ", stockDetails=" + stockDetails + ", amount=" + amount + '}';
-//    }
-    
     
 }
