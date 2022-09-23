@@ -10,53 +10,40 @@ import java.util.ArrayList;
  */
 public class TransactionDriver {
 
-    public static void main(String[] args) {    //change//  public static void main(String[] args, Staff staffLogin) {
-        
+
+    public static void main(String[] args) {
         int selection;
-
         do {
+
+            System.out.println("---------------");
+            System.out.println("| Transaction |");
+            System.out.println("---------------");
+            //System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');
+            Staff.updateNumberOfStaff();
+            System.out.println("1 - Add transaction");
+            System.out.println("2 - Display Staff");
+            System.out.println("3 - Search transaction");
+            System.out.println("0 - Main Menu");
+            do {
+                selection = General.intInput("Selection: ", "  Please only select 0~4.");
+                switch (selection) {
+                    case 1 ->
+                        add();
+                    case 2 ->
+                        add();
+                    case 3 ->
+                        Transaction.search();
+                    case 0 -> {
+                        System.out.println("****************************");
+                        System.out.println("Return to Main Menu.");
+                        General.systemPause();
+                    }
+                    default ->
+                        System.out.println("  Please only select 0~3.");
+                }
+            } while (selection < 0 || selection > 4);
             General.clearScreen();
-            //Suplier Invoice Menu
-            System.out.println("===================");
-            System.out.println(" Sales Transaction ");
-            System.out.println("===================");
-            System.out.println("1 - Add new Transaction");
-            System.out.println("2 - Edit Transaction");
-            System.out.println("3 - Search Transaction");
-            System.out.println("4 - Cancel Transaction");
-            System.out.println("5 - View Transaction");
-            System.out.println("6 - Transaction Report" + '\n');
-            System.out.println("0 - Back to Main Menu" + '\n');
 
-            //get and validate input
-            selection = General.intInput("Enter your selection (0-6): ", "  Please input a number only.");
-
-            switch (selection) {
-                case 1 -> {
-                    TransactionDriver.add();
-                }
-                case 2 -> {
-                    
-                }
-                case 3 -> {
-                    
-                }
-                case 4 -> {
-                    
-                }
-                case 5 -> {
-                    TransactionDriver.display();
-                }
-                case 6 -> {
-                    Report.dailyReport();
-                }
-                case 0 -> {
-                    System.out.println("Returning to main menu...");
-                    General.systemPause();
-                }
-                default ->
-                    System.out.println("Invalid input! Please input 0-4 only." + '\n');
-            }
         } while (selection != 0);
     }
 
@@ -129,9 +116,24 @@ public class TransactionDriver {
                                 case 1:
                                     do {
                                         loop = 0;
-                                        orderQty = General.intInput("              Product quantity : ", "  Invalid quantity input");
-                                        if (orderQty > addProduct.getStockQty()) {
-                                            System.out.println("  Product stock not enough. ");
+
+                                        orderQty = General.intInput("Product quantity (0 to cancel) : ", "  Invalid quantity input");
+
+                                        if (orderQty < 0) {
+                                            System.out.println("  Invalid order quantity");
+                                            loop = 1;
+                                        } else if (orderQty == 0) {
+                                            if (transactionDetails.size() > 1) {
+                                                transactionDetails.remove(i);
+                                                break loop;
+                                            } else {
+                                                transactionDetails.remove(i);
+                                                charSelection = 'Y';
+                                                continue loop1;
+                                            }
+                                        } else if (orderQty > addProduct.getStockQty()) {
+                                            System.out.println("Product stock not enough");
+
                                             System.out.println("  Stock Qty : " + addProduct.getStockQty());
                                             loop = 1;
                                         } else {
@@ -159,10 +161,13 @@ public class TransactionDriver {
                     } else {
                         do {
                             loop = 0;
-                            orderQty = General.intInput("              Product quantity : ", "  Invalid quantity input");
-                            if (orderQty == 0) {
-                                System.out.println("  Invalid quantity input");
+
+                            orderQty = General.intInput("Product quantity (0 to cancel) : ", "  Invalid quantity input");
+                            if (orderQty < 0) {
+                                System.out.println("  Invalid order quantity");
                                 loop = 1;
+                            } else if (orderQty == 0) {
+                              
                             } else if (orderQty > addProduct.getStockQty()) {
                                 System.out.println("  Product stock not enough. ");
                                 System.out.println("  Stock Qty : " + addProduct.getStockQty());
@@ -178,11 +183,14 @@ public class TransactionDriver {
                 if (transactionDetails.size() == 0) {
                     do {
                         loop = 0;
-                        orderQty = General.intInput("              Product quantity : ", "  Invalid quantity input");
 
-                        if (orderQty == 0) {
-                            System.out.println("  Invalid quantity input");
+                        orderQty = General.intInput("Product quantity (0 to cancel) : ", "  Invalid quantity input");
+                        if (orderQty < 0) {
+                            System.out.println("  Invalid order quantity");
                             loop = 1;
+                        } else if (orderQty == 0) {
+                            charSelection = 'Y';
+                            continue loop1;
                         } else if (orderQty > addProduct.getStockQty()) {
                             System.out.println("  Product stock not enough. ");
                             System.out.println("  Stock Qty : " + addProduct.getStockQty());
@@ -210,6 +218,7 @@ public class TransactionDriver {
 
                             charSelection = General.yesNoInput("Membership (Y/N) : ", "  Invalid Selection");
                             if (charSelection == 'N') {
+                                addTransaction.setMember(new Member());
                                 payment = Payment.pay(transactionDetails, "No", addTransaction.getDateTime());
                                 continue;
                             }
@@ -265,9 +274,18 @@ public class TransactionDriver {
                                                 loop = 0;
                                                 orderQty = General.intInput("              Product quantity : ", "  Invalid quantity input");
 
-                                                if (orderQty == 0) {
-                                                    System.out.println("  Invalid quantity input");
+                                                if (orderQty < 0) {
+                                                    System.out.println("  Invalid order quantity");
                                                     loop = 1;
+                                                } else if (orderQty == 0) {
+                                                    if (transactionDetails.size() > 1) {
+                                                        transactionDetails.remove(intSelection - 1);
+                                                        Transaction.displayTransactionDetails(transactionDetails);
+                                                        loop = 1;
+                                                        continue confirm;
+                                                    } else {
+                                                        System.out.println("Transaction cancelled");
+                                                    }
                                                 } else if (orderQty > addProduct.getStockQty()) {
                                                     System.out.println("  Product stock not enough. . ");
                                                     System.out.println("  Stock Qty : " + addProduct.getStockQty());
@@ -313,11 +331,13 @@ public class TransactionDriver {
                 }
             } while (loop == 1);
 
-            charSelection = General.yesNoInput("Add transaction (Y/N) : ", "  Invalid Selection.");
+            charSelection = General.yesNoInput("Add transaction (Y/N) : ", "  Invalid Selection");
+
 
             transactionDetails.clear();
 
         } while (charSelection == 'Y');
+
     }
 
     //Read file function
