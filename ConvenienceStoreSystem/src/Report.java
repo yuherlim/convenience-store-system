@@ -74,7 +74,6 @@ public class Report {
     
     public static void dailyReport(Staff staffLogin) {
         General.clearScreen();
-        staffLogin.setName("Lim Jia QIng");
         
         Report dailyReport = new Report("Daily Report", General.getCurrentDateTime("date"), General.getCurrentDateTime("time"));
         int transactionCount = 0;
