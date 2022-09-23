@@ -1,7 +1,4 @@
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -53,47 +50,6 @@ public class SupplierInvoiceDriver {
 
     }
 
-    public static ArrayList<SupplierInvoice> readFile(String fileName, ArrayList<SupplierInvoice> supplierInvoice, ArrayList<StockDetails> stockDetails) {
-
-        try ( FileReader reader = new FileReader("src\\" + fileName)) {
-            BufferedReader bufferedReader = new BufferedReader(reader);
-
-            String line;
-
-            while ((line = bufferedReader.readLine()) != null) {
-                String[] buffer = line.split("\\%");
-                String[] string1 = buffer[0].split("\\|");
-
-                String invNo = string1[0];
-                String invDate = string1[1];
-                String staffName = string1[2];
-                String supplierName = string1[3];
-                String tag = buffer[2];
-
-                //Convert string to double for total amount
-                double amount = Double.parseDouble(buffer[1]);
-
-                //read from stockDetails.txt and create a copy of stock details records.
-                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetails.readFile(StockDetails.FILE_NAME).clone();
-                stockDetails.clear();
-
-                //Add elements of stock details that is associated with this invoice number.
-                for (StockDetails sd : allSD) {
-                    if (sd.getInvNo().equals(invNo)) {
-                        stockDetails.add(sd);
-                    }
-                }
-
-                //store cloned versions of stockDetails as it will be used again in subsequent loops
-                supplierInvoice.add(new SupplierInvoice(invNo, invDate, staffName, supplierName, (ArrayList<StockDetails>) stockDetails.clone(), amount, tag));
-
-            }
-        } catch (IOException e) {
-        }
-
-        return supplierInvoice;
-    }
-
     //Add new Invoice function / stock in
     public static void addInvoice() {
         Scanner sc = new Scanner(System.in);
@@ -114,7 +70,7 @@ public class SupplierInvoiceDriver {
             ArrayList<StockDetails> newStockDetails = new ArrayList<>();
 
             //Read and store into ArrayList
-            supplierInvoice = SupplierInvoiceDriver.readFile(SupplierInvoice.FILE_NAME, supplierInvoice, stockDetails);
+            supplierInvoice = SupplierInvoice.readFile(SupplierInvoice.FILE_NAME, supplierInvoice, stockDetails);
             stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
             //Set the num of invoice as arraylist size
@@ -144,7 +100,7 @@ public class SupplierInvoiceDriver {
 
             //get and compare supplierName from Supplier class
             do {
-                supplierName = General.stringNullCheckingInput("Enter a new supplier name: ", "  Input field cannot be empty, please enter again.");
+                supplierName = General.stringNullCheckingInput("Enter supplier name: ", "  Input field cannot be empty, please enter again.");
                 if (Supplier.search("supplierName", supplierName.toUpperCase()) != null) {
                     si.setSupplierName(supplierName);
                 } else {
@@ -180,7 +136,7 @@ public class SupplierInvoiceDriver {
 
             //display the whole invoice details
             //set the total amount that return
-            si.setAmount(SupplierInvoiceDriver.printInvoice(si, newStockDetails));
+            si.setAmount(SupplierInvoice.printInvoice(si, newStockDetails));
 
             //set the tag to 'Valid'
             si.setTag("Valid");
@@ -222,7 +178,7 @@ public class SupplierInvoiceDriver {
             ArrayList<StockDetails> stockDetails = new ArrayList<>();
 
             //Read the file and store into ArrayList
-            supplierInvoice = SupplierInvoiceDriver.readFile(SupplierInvoice.FILE_NAME, supplierInvoice, stockDetails);
+            supplierInvoice = SupplierInvoice.readFile(SupplierInvoice.FILE_NAME, supplierInvoice, stockDetails);
             stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
             do {
@@ -242,7 +198,7 @@ public class SupplierInvoiceDriver {
 
         General.clearScreen();
     }
-
+    
     //Search with parameter and will return the index of invoice that in ArrayList found
     public static int searchInvoice(ArrayList<SupplierInvoice> supplierInvoice, String invNo, ArrayList<StockDetails> stockDetails) {
 
@@ -253,7 +209,7 @@ public class SupplierInvoiceDriver {
         for (int i = 0; i < supplierInvoice.size(); i++) {
             //if same, then print out result
             if (supplierInvoice.get(i).getInvNo().equals(invNo)) {
-                invalid = SupplierInvoiceDriver.printInvoice(supplierInvoice, i, stockDetails);
+                invalid = SupplierInvoice.printInvoice(supplierInvoice, i, stockDetails);
                 if (invalid > 0) {
                     return index = -2;
                 }
@@ -289,7 +245,7 @@ public class SupplierInvoiceDriver {
             ArrayList<StockDetails> stockDetails = new ArrayList<>();
 
             //Read the file and store into ArrayList
-            supplierInvoice = SupplierInvoiceDriver.readFile(SupplierInvoice.FILE_NAME, supplierInvoice, stockDetails);
+            supplierInvoice = SupplierInvoice.readFile(SupplierInvoice.FILE_NAME, supplierInvoice, stockDetails);
             stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
             do {
@@ -545,7 +501,7 @@ public class SupplierInvoiceDriver {
             ArrayList<StockDetails> stockDetails = new ArrayList<>();
 
             //Read and store in arrayList
-            supplierInvoice = SupplierInvoiceDriver.readFile(SupplierInvoice.FILE_NAME, supplierInvoice, stockDetails);
+            supplierInvoice = SupplierInvoice.readFile(SupplierInvoice.FILE_NAME, supplierInvoice, stockDetails);
             stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
             do {
@@ -604,74 +560,4 @@ public class SupplierInvoiceDriver {
         General.clearScreen();
     }
 
-    //METHOD OVERLOADING
-    //Display invoice with specify invoice number
-    public static int printInvoice(ArrayList<SupplierInvoice> supplierInvoice, int index, ArrayList<StockDetails> stockDetails) {
-
-        int invalid = 0;
-        double totalAmount = 0d;
-        double subtotal;
-
-        //Used to store the stock details with the current invoice no.
-        ArrayList<StockDetails> currentInvoiceStockDetails = new ArrayList<>();
-        
-        //If it is valid, then print, else print invaalid message
-        if (!supplierInvoice.get(index).getTag().equals("Invalid")) {
-            System.out.println();
-            System.out.printf("Staff Incharge: %-36s Invoice No.: %7s\n", supplierInvoice.get(index).getStaffName(), supplierInvoice.get(index).getInvNo());
-            System.out.printf("Supplier: %-38s Invoice Date: %10s\n", supplierInvoice.get(index).getSupplierName(), supplierInvoice.get(index).getInvDate());
-            System.out.println("-------------------------------------------------------------------------");
-            System.out.println("Item                Cost Price               Qty               Total(RM)");
-            System.out.println("-------------------------------------------------------------------------");
-
-            //Loop for compare the same invNo.
-            for (int i = 0; i < stockDetails.size(); i++) {
-                if (supplierInvoice.get(index).getInvNo().equals(stockDetails.get(i).getInvNo())) {
-                    //store the stock details with the current invoice number.
-                    currentInvoiceStockDetails.add(new StockDetails(stockDetails.get(i)));
-                }
-            }
-
-            //Loop for display stock details
-            for (int i = 0; i < currentInvoiceStockDetails.size(); i++) {
-                subtotal = currentInvoiceStockDetails.get(i).getCostPrice() * currentInvoiceStockDetails.get(i).getQty();
-                System.out.printf("%-5s             %7.2f                   %3d                %6.2f\n",
-                        currentInvoiceStockDetails.get(i).getProductCode(), currentInvoiceStockDetails.get(i).getCostPrice(), currentInvoiceStockDetails.get(i).getQty(), subtotal);
-                totalAmount += subtotal;
-            }
-            System.out.println("-------------------------------------------------------------------------");
-            System.out.printf("Total Amount(RM)%53.2f \n\n", totalAmount);
-        } else {
-            System.out.println("Invoice has been cancelled.");
-            return ++invalid;
-        }
-
-        return invalid;
-    }
-
-    //Display invoice when adding new invoice
-    public static double printInvoice(SupplierInvoice si, ArrayList<StockDetails> newStockDetails) {
-
-        double totalAmount = 0d;
-        double subtotal;
-
-        System.out.println();
-        System.out.printf("Staff Incharge: %-36s Invoice No.: %7s\n", si.getStaffName(), si.getInvNo());
-        System.out.printf("Supplier: %-38s Invoice Date: %10s\n", si.getSupplierName(), si.getInvDate());
-        System.out.println("-------------------------------------------------------------------------");
-        System.out.println("Item                Cost Price               Qty               Total(RM)");
-        System.out.println("-------------------------------------------------------------------------");
-
-        //Loop for display the stock details
-        for (int i = 0; i < newStockDetails.size(); i++) {
-            subtotal = newStockDetails.get(i).getCostPrice() * newStockDetails.get(i).getQty();
-            System.out.printf("%-5s               %7.2f               %3d               %6.2f\n",
-                    newStockDetails.get(i).getProductCode(), newStockDetails.get(i).getCostPrice(), newStockDetails.get(i).getQty(), subtotal);
-            totalAmount += subtotal;
-        }
-        System.out.println("-------------------------------------------------------------------------");
-        System.out.printf("Total Amount(RM)%53.2f \n\n", totalAmount);
-        
-        return totalAmount;
-    }
 }

@@ -1,7 +1,4 @@
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -27,63 +24,28 @@ public class CreditNoteDriver {
 
             switch (selection) {
                 case 1 -> {
+                    General.clearScreen();
                     CreditNoteDriver.addCreditNote();
                 }
                 case 2 -> {
+                    General.clearScreen();
                     CreditNoteDriver.editCreditNote();
                 }
                 case 3 -> {
+                    General.clearScreen();
                     CreditNoteDriver.searchCreditNote();
                 }
                 case 4 -> {
+                    General.clearScreen();
                     CreditNoteDriver.cancelCreditNote();
                 }
                 case 0 -> {
-                    //Inventory.main();
+                    Inventory.main(args);
                 }
                 default ->
                     System.out.println("Invalid input! Please try again..." + '\n');
             }
-        } while (selection < 0 || selection > 4);
-    }
-
-    public static ArrayList<CreditNote> readFile(String fileName, ArrayList<CreditNote> creditNote, ArrayList<StockDetails> stockDetails) {
-        try ( FileReader reader = new FileReader("src\\" + fileName)) {
-            BufferedReader bufferedReader = new BufferedReader(reader);
-
-            String line;
-
-            while ((line = bufferedReader.readLine()) != null) {
-                String[] buffer = line.split("\\%");
-                String[] string1 = buffer[0].split("\\|");
-
-                String cnNo = string1[0];
-                String cnDate = string1[1];
-                String staffName = string1[2];
-                String supplierName = string1[3];
-                String tag = buffer[2];
-
-                //Convert string to double for total amount
-                double amount = Double.parseDouble(buffer[1]);
-
-                //read from stockDetails.txt and create a copy of stock details records.
-                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetails.readFile(StockDetails.FILE_NAME).clone();
-                stockDetails.clear();
-
-                //Add elements of stock details that is associated with this credit number.
-                for (StockDetails sd : allSD) {
-                    if (sd.getCnNo().equals(cnNo)) {
-                        stockDetails.add(sd);
-                    }
-                }
-
-                //store cloned versions of stockDetails as it will be used again in subsequent loops
-                creditNote.add(new CreditNote(cnNo, cnDate, staffName, supplierName, (ArrayList<StockDetails>) stockDetails.clone(), amount, tag));
-            }
-        } catch (IOException e) {
-        }
-
-        return creditNote;
+        } while (selection != 0);
     }
 
     //Add new Credit Note / stock return
@@ -106,7 +68,7 @@ public class CreditNoteDriver {
             ArrayList<StockDetails> newStockDetails = new ArrayList<>();
 
             //Read and store into ArrayList
-            creditNote = CreditNoteDriver.readFile(CreditNote.FILE_NAME, creditNote, stockDetails);
+            creditNote = CreditNote.readFile(CreditNote.FILE_NAME, creditNote, stockDetails);
             stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
             //Set the num of credit note as arraylist size
@@ -135,7 +97,7 @@ public class CreditNoteDriver {
 
             //get and compare to Supplier class
             do {
-                supplierName = General.stringNullCheckingInput("Enter a new supplier name: ", "  Input field cannot be empty, please enter again.");
+                supplierName = General.stringNullCheckingInput("Enter supplier name: ", "  Input field cannot be empty, please enter again.");
                 if (Supplier.search("supplierName", supplierName.toUpperCase()) != null) {
                     cn.setSupplierName(supplierName);
                 } else {
@@ -171,7 +133,7 @@ public class CreditNoteDriver {
 
             //display the whole invoice details
             //set the total amount that return
-            cn.setAmount(CreditNoteDriver.printCreditNote(cn, newStockDetails));
+            cn.setAmount(CreditNote.printCreditNote(cn, newStockDetails));
 
             //set the tag to 'Valid'
             cn.setTag("Valid");
@@ -195,10 +157,12 @@ public class CreditNoteDriver {
 
             cont = General.yesNoInput("Continue add again? (Y/N) > ", "Invalid input! Please enter 'Y' or 'N' only.");
         } while (cont == 'Y' || cont == 'y');
+        
+        General.clearScreen();
     }
 
     //METHOD OVERLOADING
-    //Searxh function
+    //Search function
     public static void searchCreditNote() {
         Scanner sc = new Scanner(System.in);
         String cnNo;
@@ -210,7 +174,7 @@ public class CreditNoteDriver {
             ArrayList<StockDetails> stockDetails = new ArrayList<>();
 
             //Read the file and store into ArrayList
-            creditNote = CreditNoteDriver.readFile(CreditNote.FILE_NAME, creditNote, stockDetails);
+            creditNote = CreditNote.readFile(CreditNote.FILE_NAME, creditNote, stockDetails);
             stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
             do {
@@ -228,11 +192,10 @@ public class CreditNoteDriver {
 
         } while (cont == 'Y');
 
-        //Back to Supplier Invoice menu
-        //SupplierInvoiceDriver.main(args);
+        General.clearScreen();
     }
 
-    //Search with parameter and will return the index of invoice that in ArrayList found
+    //Search with parameter and will return the index of credit note that in ArrayList found
     public static int searchCreditNote(ArrayList<CreditNote> creditNote, String cnNo, ArrayList<StockDetails> stockDetails) {
 
         int index;
@@ -242,7 +205,7 @@ public class CreditNoteDriver {
         for (int i = 0; i < creditNote.size(); i++) {
             //if same, then print out result
             if (creditNote.get(i).getCnNo().equals(cnNo)) {
-                invalid = CreditNoteDriver.printCreditNote(creditNote, i, stockDetails);
+                invalid = CreditNote.printCreditNote(creditNote, i, stockDetails);
                 if (invalid > 0) {
                     return index = -2;
                 }
@@ -278,7 +241,7 @@ public class CreditNoteDriver {
             ArrayList<StockDetails> stockDetails = new ArrayList<>();
 
             //Read the file and store into ArrayList
-            creditNote = CreditNoteDriver.readFile(CreditNote.FILE_NAME, creditNote, stockDetails);
+            creditNote = CreditNote.readFile(CreditNote.FILE_NAME, creditNote, stockDetails);
             stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
             do {
@@ -376,6 +339,8 @@ public class CreditNoteDriver {
             cont = General.yesNoInput("Continue edit again? (Y/N) > ", "Invalid input! Please enter 'Y' or 'N' only.");
 
         } while (cont == 'Y');
+        
+        General.clearScreen();
     }
 
     //Edit specify field of item list in the credit note
@@ -524,7 +489,7 @@ public class CreditNoteDriver {
             ArrayList<StockDetails> stockDetails = new ArrayList<>();
 
             //Read and store in arrayList
-            creditNote = CreditNoteDriver.readFile(CreditNote.FILE_NAME, creditNote, stockDetails);
+            creditNote = CreditNote.readFile(CreditNote.FILE_NAME, creditNote, stockDetails);
             stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
             do {
@@ -580,73 +545,7 @@ public class CreditNoteDriver {
             cont = General.yesNoInput("Continue to cancel another credit note? (Y/N) > ", "  Invalid input! Please enter 'Y' or 'N' only.");
 
         } while (cont == 'Y');
-    }
-    
-    //METHOD OVERLOADING
-    //Display invoice with specify invoice number
-    public static int printCreditNote(ArrayList<CreditNote> creditNote, int index, ArrayList<StockDetails> stockDetails) {
-
-        int invalid = 0;
-        double totalAmount = 0d;
-        double subtotal;
-
-        //Used to store the stock details with the current invoice no.
-        ArrayList<StockDetails> currentCreditNoteStockDetails = new ArrayList<>();
-
-        if (!creditNote.get(index).getTag().equals("Invalid")) {
-            System.out.println();
-            System.out.printf("Staff Incharge: %-36s Invoice No.: %7s\n", creditNote.get(index).getStaffName(), creditNote.get(index).getCnNo());
-            System.out.printf("Supplier: %-38s Invoice Date: %10s\n", creditNote.get(index).getSupplierName(), creditNote.get(index).getCnDate());
-            System.out.println("-------------------------------------------------------------------------");
-            System.out.println("Item                Cost Price               Qty               Total(RM)");
-            System.out.println("-------------------------------------------------------------------------");
-
-            //Loop for compare the same invNo.
-            for (int i = 0; i < stockDetails.size(); i++) {
-                if (creditNote.get(index).getCnNo().equals(stockDetails.get(i).getCnNo())) {
-                    //store the stock details with the current invoice number.
-                    currentCreditNoteStockDetails.add(new StockDetails(stockDetails.get(i)));
-                }
-            }
-
-            //Loop for display stock details
-            for (int i = 0; i < currentCreditNoteStockDetails.size(); i++) {
-                subtotal = currentCreditNoteStockDetails.get(i).getCostPrice() * currentCreditNoteStockDetails.get(i).getQty();
-                System.out.printf("%-5s             %7.2f                   %3d                %6.2f\n",
-                        currentCreditNoteStockDetails.get(i).getProductCode(), currentCreditNoteStockDetails.get(i).getCostPrice(), currentCreditNoteStockDetails.get(i).getQty(), subtotal);
-                totalAmount += subtotal;
-            }
-            System.out.println("-------------------------------------------------------------------------");
-            System.out.printf("Total Amount(RM)%53.2f \n\n", totalAmount);
-        } else {
-            System.out.println("Credit Note has been cancelled.");
-            return ++invalid;
-        }
-        return invalid;
-    }
-    
-    public static double printCreditNote(CreditNote cn, ArrayList<StockDetails> newStockDetails) {
         
-        double totalAmount = 0d;
-        double subtotal;
-
-        System.out.println();
-        System.out.printf("Staff Incharge: %-36s Invoice No.: %7s\n", cn.getStaffName(), cn.getCnNo());
-        System.out.printf("Supplier: %-38s Invoice Date: %10s\n", cn.getSupplierName(), cn.getCnDate());
-        System.out.println("-------------------------------------------------------------------------");
-        System.out.println("Item                Cost Price               Qty               Total(RM)");
-        System.out.println("-------------------------------------------------------------------------");
-
-        //Loop for display the stock details
-        for (int i = 0; i < newStockDetails.size(); i++) {
-            subtotal = newStockDetails.get(i).getCostPrice() * newStockDetails.get(i).getQty();
-            System.out.printf("%-5s               %7.2f               %3d               %6.2f\n",
-                    newStockDetails.get(i).getProductCode(), newStockDetails.get(i).getCostPrice(), newStockDetails.get(i).getQty(), subtotal);
-            totalAmount += subtotal;
-        }
-        System.out.println("-------------------------------------------------------------------------");
-        System.out.printf("Total Amount(RM)%53.2f \n\n", totalAmount);
-
-        return totalAmount;
+        General.clearScreen();
     }
 }
