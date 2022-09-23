@@ -23,10 +23,10 @@ public class FrontDriver {
                     }
                     switch (selectMain) {
                         case 1 -> {
-                            //Sales
+                            TransactionDriver.main(args);
                         }
                         case 2 -> {
-                            //Inventory Management
+                            Inventory.main(args);
                         }
                         case 3 -> {
                             ProductDriver.main(args, staffLogin);
