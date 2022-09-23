@@ -88,7 +88,8 @@ public class StockDetails {
     public static ArrayList<StockDetails> readFile(String fileName) {
         ArrayList<StockDetails> stockDetails = new ArrayList<>();
 
-        try ( FileReader reader = new FileReader("src\\" + fileName)) {
+        try {
+            FileReader reader = new FileReader("src\\" + fileName);
             BufferedReader bufferedReader = new BufferedReader(reader);
 
             String line;
@@ -113,17 +114,21 @@ public class StockDetails {
                     stockDetails.add(new StockDetails(string1[0], qty, costPrice, string1[1], ""));
                 }
             }
+            reader.close();
+            
         } catch (IOException e) {
             System.out.println("  " + fileName + " could not be opened.");
         }
+        
         return stockDetails;
     }
 
     //method to write the data of a transaction details array list into a specified file name.
     public static void writeFile(String fileName, ArrayList<StockDetails> stockDetails) {
         String line;
-        try ( //Create FileWriter set to write mode
-                 FileWriter writer = new FileWriter("src\\" + fileName, false)) {
+        try {
+            //Create FileWriter set to write mode
+            FileWriter writer = new FileWriter("src\\" + fileName, false);
             for (int i = 0; i < stockDetails.size(); i++) {
                 //Create a new record to be written
                 if (stockDetails.get(i).getInvNo().equals("")) {
