@@ -15,7 +15,7 @@ public class CreditNote {
     private double amount;
     private String tag;
     private static int numOfCrn;
-    public static String fileName = "creditNote.txt";
+    public static final String FILE_NAME = "creditNote.txt";
     
     public CreditNote(){
         this.cnNo = "";

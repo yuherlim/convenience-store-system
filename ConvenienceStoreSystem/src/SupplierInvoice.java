@@ -14,7 +14,7 @@ public class SupplierInvoice {
     private double amount;
     private String tag;
     private static int numOfInv;
-    public static String fileName = "invoice.txt";
+    public static final String FILE_NAME = "invoice.txt";
 
     public SupplierInvoice() {
         this.invNo = "";

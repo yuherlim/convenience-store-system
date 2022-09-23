@@ -74,7 +74,7 @@ public class SupplierInvoiceDriver {
                 double amount = Double.parseDouble(buffer[1]);
 
                 //read from stockDetails.txt and create a copy of stock details records.
-                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetails.readFile(StockDetails.fileName).clone();
+                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetails.readFile(StockDetails.FILE_NAME).clone();
                 stockDetails.clear();
 
                 //Add elements of stock details that is associated with this invoice number.
@@ -114,8 +114,8 @@ public class SupplierInvoiceDriver {
             ArrayList<StockDetails> newStockDetails = new ArrayList<>();
 
             //Read and store into ArrayList
-            supplierInvoice = SupplierInvoiceDriver.readFile(SupplierInvoice.fileName, supplierInvoice, stockDetails);
-            stockDetails = StockDetails.readFile(StockDetails.fileName);
+            supplierInvoice = SupplierInvoiceDriver.readFile(SupplierInvoice.FILE_NAME, supplierInvoice, stockDetails);
+            stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
             //Set the num of invoice as arraylist size
             SupplierInvoice.setNumOfInv(supplierInvoice.size());
@@ -197,8 +197,8 @@ public class SupplierInvoiceDriver {
                 }
 
                 //Updated the file information
-                SupplierInvoice.writeFile(SupplierInvoice.fileName, supplierInvoice);
-                StockDetails.writeFile(StockDetails.fileName, stockDetails);
+                SupplierInvoice.writeFile(SupplierInvoice.FILE_NAME, supplierInvoice);
+                StockDetails.writeFile(StockDetails.FILE_NAME, stockDetails);
                 Product.updateProduct();
             }
 
@@ -222,8 +222,8 @@ public class SupplierInvoiceDriver {
             ArrayList<StockDetails> stockDetails = new ArrayList<>();
 
             //Read the file and store into ArrayList
-            supplierInvoice = SupplierInvoiceDriver.readFile(SupplierInvoice.fileName, supplierInvoice, stockDetails);
-            stockDetails = StockDetails.readFile(StockDetails.fileName);
+            supplierInvoice = SupplierInvoiceDriver.readFile(SupplierInvoice.FILE_NAME, supplierInvoice, stockDetails);
+            stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
             do {
                 General.clearScreen();
@@ -289,8 +289,8 @@ public class SupplierInvoiceDriver {
             ArrayList<StockDetails> stockDetails = new ArrayList<>();
 
             //Read the file and store into ArrayList
-            supplierInvoice = SupplierInvoiceDriver.readFile(SupplierInvoice.fileName, supplierInvoice, stockDetails);
-            stockDetails = StockDetails.readFile(StockDetails.fileName);
+            supplierInvoice = SupplierInvoiceDriver.readFile(SupplierInvoice.FILE_NAME, supplierInvoice, stockDetails);
+            stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
             do {
                 General.clearScreen();
@@ -383,7 +383,7 @@ public class SupplierInvoiceDriver {
 
             //Update Supplier Invoice
             supplierInvoice.set(index, si);
-            SupplierInvoice.writeFile(SupplierInvoice.fileName, supplierInvoice);
+            SupplierInvoice.writeFile(SupplierInvoice.FILE_NAME, supplierInvoice);
 
             cont = General.yesNoInput("Continue edit again? (Y/N) > ", "Invalid input! Please enter 'Y' or 'N' only.");
 
@@ -407,7 +407,7 @@ public class SupplierInvoiceDriver {
 
         //Create empty arrayList and use it to store value after read file
         ArrayList<StockDetails> stockDetails;
-        stockDetails = StockDetails.readFile(StockDetails.fileName);
+        stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
         //Used to store the stock details with the current invoice no.
         ArrayList<StockDetails> currentInvoiceStockDetails = new ArrayList<>();
@@ -513,7 +513,7 @@ public class SupplierInvoiceDriver {
         }
 
         //Update Stock Details
-        StockDetails.writeFile(StockDetails.fileName, stockDetails);
+        StockDetails.writeFile(StockDetails.FILE_NAME, stockDetails);
 
         //Update product
         Product.updateProduct();
@@ -545,8 +545,8 @@ public class SupplierInvoiceDriver {
             ArrayList<StockDetails> stockDetails = new ArrayList<>();
 
             //Read and store in arrayList
-            supplierInvoice = SupplierInvoiceDriver.readFile(SupplierInvoice.fileName, supplierInvoice, stockDetails);
-            stockDetails = StockDetails.readFile(StockDetails.fileName);
+            supplierInvoice = SupplierInvoiceDriver.readFile(SupplierInvoice.FILE_NAME, supplierInvoice, stockDetails);
+            stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
             do {
                 General.clearScreen();
@@ -585,8 +585,8 @@ public class SupplierInvoiceDriver {
                 }
 
                 //Update the file
-                StockDetails.writeFile(StockDetails.fileName, stockDetails);
-                SupplierInvoice.writeFile(SupplierInvoice.fileName, supplierInvoice);
+                StockDetails.writeFile(StockDetails.FILE_NAME, stockDetails);
+                SupplierInvoice.writeFile(SupplierInvoice.FILE_NAME, supplierInvoice);
 
                 //Update product info
                 Product.updateProduct();

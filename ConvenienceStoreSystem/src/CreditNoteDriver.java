@@ -67,7 +67,7 @@ public class CreditNoteDriver {
                 double amount = Double.parseDouble(buffer[1]);
 
                 //read from stockDetails.txt and create a copy of stock details records.
-                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetails.readFile(StockDetails.fileName).clone();
+                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetails.readFile(StockDetails.FILE_NAME).clone();
                 stockDetails.clear();
 
                 //Add elements of stock details that is associated with this credit number.
@@ -106,8 +106,8 @@ public class CreditNoteDriver {
             ArrayList<StockDetails> newStockDetails = new ArrayList<>();
 
             //Read and store into ArrayList
-            creditNote = CreditNoteDriver.readFile(CreditNote.fileName, creditNote, stockDetails);
-            stockDetails = StockDetails.readFile(StockDetails.fileName);
+            creditNote = CreditNoteDriver.readFile(CreditNote.FILE_NAME, creditNote, stockDetails);
+            stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
             //Set the num of credit note as arraylist size
             CreditNote.setNumOfCrn(creditNote.size());
@@ -188,8 +188,8 @@ public class CreditNoteDriver {
                 }
 
                 //Updated the file information
-                CreditNote.writeFile(CreditNote.fileName, creditNote);
-                StockDetails.writeFile(StockDetails.fileName, stockDetails);
+                CreditNote.writeFile(CreditNote.FILE_NAME, creditNote);
+                StockDetails.writeFile(StockDetails.FILE_NAME, stockDetails);
                 Product.updateProduct();
             }
 
@@ -210,8 +210,8 @@ public class CreditNoteDriver {
             ArrayList<StockDetails> stockDetails = new ArrayList<>();
 
             //Read the file and store into ArrayList
-            creditNote = CreditNoteDriver.readFile(CreditNote.fileName, creditNote, stockDetails);
-            stockDetails = StockDetails.readFile(StockDetails.fileName);
+            creditNote = CreditNoteDriver.readFile(CreditNote.FILE_NAME, creditNote, stockDetails);
+            stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
             do {
                 General.clearScreen();
@@ -278,8 +278,8 @@ public class CreditNoteDriver {
             ArrayList<StockDetails> stockDetails = new ArrayList<>();
 
             //Read the file and store into ArrayList
-            creditNote = CreditNoteDriver.readFile(CreditNote.fileName, creditNote, stockDetails);
-            stockDetails = StockDetails.readFile(StockDetails.fileName);
+            creditNote = CreditNoteDriver.readFile(CreditNote.FILE_NAME, creditNote, stockDetails);
+            stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
             do {
                 General.clearScreen();
@@ -371,7 +371,7 @@ public class CreditNoteDriver {
 
             //Update Credit Note
             creditNote.set(index, cn);
-            CreditNote.writeFile(SupplierInvoice.fileName, creditNote);
+            CreditNote.writeFile(SupplierInvoice.FILE_NAME, creditNote);
 
             cont = General.yesNoInput("Continue edit again? (Y/N) > ", "Invalid input! Please enter 'Y' or 'N' only.");
 
@@ -393,7 +393,7 @@ public class CreditNoteDriver {
 
         //Create empty arrayList and use it to store value after read file
         ArrayList<StockDetails> stockDetails;
-        stockDetails = StockDetails.readFile(StockDetails.fileName);
+        stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
         //Used to store the stock details with the current invoice no.
         ArrayList<StockDetails> currentCreditNoteStockDetails = new ArrayList<>();
@@ -494,7 +494,7 @@ public class CreditNoteDriver {
         }
 
         //Update Stock Details
-        StockDetails.writeFile(StockDetails.fileName, stockDetails);
+        StockDetails.writeFile(StockDetails.FILE_NAME, stockDetails);
 
         //Update product
         Product.updateProduct();
@@ -524,8 +524,8 @@ public class CreditNoteDriver {
             ArrayList<StockDetails> stockDetails = new ArrayList<>();
 
             //Read and store in arrayList
-            creditNote = CreditNoteDriver.readFile(CreditNote.fileName, creditNote, stockDetails);
-            stockDetails = StockDetails.readFile(StockDetails.fileName);
+            creditNote = CreditNoteDriver.readFile(CreditNote.FILE_NAME, creditNote, stockDetails);
+            stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
             do {
                 General.clearScreen();
@@ -564,8 +564,8 @@ public class CreditNoteDriver {
                 }
 
                 //Update the file
-                StockDetails.writeFile(StockDetails.fileName, stockDetails);
-                CreditNote.writeFile(CreditNote.fileName, creditNote);
+                StockDetails.writeFile(StockDetails.FILE_NAME, stockDetails);
+                CreditNote.writeFile(CreditNote.FILE_NAME, creditNote);
 
                 //Update product info
                 Product.updateProduct();
