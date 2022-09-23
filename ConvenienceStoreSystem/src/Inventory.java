@@ -19,7 +19,7 @@ public class Inventory {
             System.out.println("======================");
             System.out.println("1 - Stock In");
             System.out.println("2 - Stock Return");
-            System.out.println("3 - Product Reorder Report");;
+            System.out.println("3 - Product Reorder Report");
             System.out.println("0 - Back to Main Menu" + '\n');
             
 
@@ -43,7 +43,7 @@ public class Inventory {
                     General.systemPause();
                 }
                 default ->
-                    System.out.println("Invalid input! Please enter 0-4 only." + '\n');
+                    System.out.println("Invalid input! Please enter 0-3 only." + '\n');
             }
         } while (selection != 0);
 

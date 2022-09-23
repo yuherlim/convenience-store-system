@@ -82,7 +82,7 @@ public class CreditNoteDriver {
             cn.setCnNo(String.format("CRN%04d", creditNote.size() + 1));
             System.out.println("Credit Note No.: " + cn.getCnNo());
 
-            System.out.print("Enter credit note date: ");
+            System.out.print("Enter credit note date (DD/MM/YYYY): ");
             cn.setCnDate(sc.nextLine());
 
             //get and compare to Staff class

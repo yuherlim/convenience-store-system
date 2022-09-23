@@ -24,8 +24,8 @@ public class SupplierInvoice {
         this.supplierName = "";
         this.amount = 0d;
     }
-    
-    public SupplierInvoice(SupplierInvoice si){
+
+    public SupplierInvoice(SupplierInvoice si) {
         this.invNo = si.invNo;
         this.invDate = si.invDate;
         this.staffName = si.staffName;
@@ -108,9 +108,7 @@ public class SupplierInvoice {
     public static void setNumOfInv(int numOfInv) {
         SupplierInvoice.numOfInv = numOfInv;
     }
-    
-    
-    
+
     public static ArrayList<SupplierInvoice> readFile(String fileName, ArrayList<SupplierInvoice> supplierInvoice, ArrayList<StockDetails> stockDetails) {
 
         try ( FileReader reader = new FileReader("src\\" + fileName)) {
@@ -168,7 +166,7 @@ public class SupplierInvoice {
             e.getStackTrace();
         }
     }
-    
+
     //METHOD OVERLOADING
     //Display invoice with specify invoice number
     public static int printInvoice(ArrayList<SupplierInvoice> supplierInvoice, int index, ArrayList<StockDetails> stockDetails) {
@@ -179,7 +177,7 @@ public class SupplierInvoice {
 
         //Used to store the stock details with the current invoice no.
         ArrayList<StockDetails> currentInvoiceStockDetails = new ArrayList<>();
-        
+
         //If it is valid, then print, else print invaalid message
         if (!supplierInvoice.get(index).getTag().equals("Invalid")) {
             System.out.println();
@@ -200,7 +198,7 @@ public class SupplierInvoice {
             //Loop for display stock details
             for (int i = 0; i < currentInvoiceStockDetails.size(); i++) {
                 subtotal = currentInvoiceStockDetails.get(i).getCostPrice() * currentInvoiceStockDetails.get(i).getQty();
-                System.out.printf("%-5s             %7.2f                   %3d                %6.2f\n",
+                System.out.printf("%-5s               %7.2f                %4d                %6.2f\n",
                         currentInvoiceStockDetails.get(i).getProductCode(), currentInvoiceStockDetails.get(i).getCostPrice(), currentInvoiceStockDetails.get(i).getQty(), subtotal);
                 totalAmount += subtotal;
             }
@@ -230,22 +228,22 @@ public class SupplierInvoice {
         //Loop for display the stock details
         for (int i = 0; i < newStockDetails.size(); i++) {
             subtotal = newStockDetails.get(i).getCostPrice() * newStockDetails.get(i).getQty();
-            System.out.printf("%-5s               %7.2f               %3d               %6.2f\n",
+            System.out.printf("%-5s               %7.2f                %4d                %6.2f\n",
                     newStockDetails.get(i).getProductCode(), newStockDetails.get(i).getCostPrice(), newStockDetails.get(i).getQty(), subtotal);
             totalAmount += subtotal;
         }
         System.out.println("-------------------------------------------------------------------------");
         System.out.printf("Total Amount(RM)%53.2f \n\n", totalAmount);
-        
+
         return totalAmount;
     }
 
     @Override
     public String toString() {
-        return "Invoice Number: " + invNo +
-                " Invoice Date: " + invDate +
-                " Staff Incharge: " + staffName +
-                " Supplier: " + supplierName + 
-                " Aamount:" + amount + '\n';
+        return "Invoice Number: " + invNo
+                + " Invoice Date: " + invDate
+                + " Staff Incharge: " + staffName
+                + " Supplier: " + supplierName
+                + " Aamount:" + amount + '\n';
     }
 }

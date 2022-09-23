@@ -86,7 +86,7 @@ public class SupplierInvoiceDriver {
             System.out.println("Invoice No.: " + si.getInvNo());
 
             //get and validate date input
-            si.setInvDate(General.dateInput("Enter invoice date: ", "  Invalid date! Please try again.."));
+            si.setInvDate(General.dateInput("Enter invoice date (DD/MM/YYYY): ", "  Invalid date! Please try again.."));
 
             //get and compare staffname from Staff class
             do {
@@ -103,7 +103,7 @@ public class SupplierInvoiceDriver {
                 supplierName = General.stringNullCheckingInput("Enter supplier name: ", "  Input field cannot be empty, please enter again.");
                 if (Supplier.search("supplierName", supplierName.toUpperCase()) != null) {
                     si.setSupplierName(supplierName);
-                } else {
+                } else if (Supplier.search("supplierName", supplierName.toUpperCase()) == null){
                     System.out.println("  Invalid supplier name! Please try again..");
                 }
             } while (Supplier.search("supplierName", supplierName.toUpperCase()) == null);
@@ -124,13 +124,6 @@ public class SupplierInvoiceDriver {
                         }
                     }
                 } while (productSearchResult == null);
-                
-//                do {
-//                    productCode = ProductDriver.codeInput();
-//                    if (Product.search("productCode", productCode) != null) {
-//                        sd.setProductCode(productCode);
-//                    }
-//                } while (Product.search("productCode", productCode) == null);
 
                 System.out.print("Enter the quantity: ");
                 sd.setQty(sc.nextInt());
