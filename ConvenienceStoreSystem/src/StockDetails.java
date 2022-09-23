@@ -22,7 +22,7 @@ public class StockDetails {
     private String cnNo;
     private String invNo;
 
-    public static String fileName = "stockDetails.txt";
+    public static final String FILE_NAME = "stockDetails.txt";
     
     public StockDetails() {
         productCode = "";
@@ -117,7 +117,7 @@ public class StockDetails {
             reader.close();
  
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("  " + fileName + " could not be opened.");
         }
         
         return stockDetails;
@@ -144,8 +144,8 @@ public class StockDetails {
             writer.close();
         }
   
-        catch (Exception e) {
-            e.getStackTrace();
+        catch (IOException e) {
+            System.out.println("  " + fileName + " could not be opened.");
         }
     }
     

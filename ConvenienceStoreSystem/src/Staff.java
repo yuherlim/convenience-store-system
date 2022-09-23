@@ -1,3 +1,4 @@
+
 /**
  *
  * @author JiaQing
@@ -7,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.FileWriter;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class Staff extends Person {
@@ -17,6 +19,8 @@ public class Staff extends Person {
     private double salary;
     private String accountStatus;
     private static int numOfStaff;
+    public static final String FILE_NAME = "staff.txt";
+    public static final String TEMP_FILE_NAME = "staffTemp.txt";
 
     //Constructor
     public Staff() {
@@ -137,13 +141,13 @@ public class Staff extends Person {
 
     //password validation
     public static String createPassword() {
+        Scanner scanner = new Scanner(System.in);
         String password;
         int loop;
-        Scanner sc = new Scanner(System.in);
         do {
             loop = 0;
             System.out.print("New password: ");
-            password = sc.nextLine();
+            password = scanner.nextLine();
             if (password.length() <= 8 || password.length() >= 32) {
                 System.out.println("> Password length should be 8-32 characters/numbers.");
                 loop = 1;
@@ -162,7 +166,7 @@ public class Staff extends Person {
 
     //update number of staff
     public static void updateNumberOfStaff() {
-        try ( FileReader reader = new FileReader("src\\staff.txt")) {
+        try ( FileReader reader = new FileReader("src\\" + FILE_NAME)) {
             BufferedReader bufferedReader = new BufferedReader(reader);
             numOfStaff = -1;
             while (bufferedReader.readLine() != null) {
@@ -175,8 +179,8 @@ public class Staff extends Person {
     }
 
     //append one line staffInfo into file
-    public static void appendStaff(String fileName, Staff staffInfo) {
-        try ( FileWriter writer = new FileWriter("src\\" + fileName, true)) {
+    public static void appendStaff(String FILE_NAME, Staff staffInfo) {
+        try ( FileWriter writer = new FileWriter("src\\" + FILE_NAME, true)) {
             String line = String.format("%s|%s|%s|%s|%s|%s|%s|%s|%f|%s\n",
                     staffInfo.staffID, staffInfo.name, staffInfo.ic, staffInfo.birthdate,
                     staffInfo.phoneNum, staffInfo.address, staffInfo.position,
@@ -199,7 +203,7 @@ public class Staff extends Person {
         boolean staffExist = false;
 
         //read file
-        try ( FileReader reader = new FileReader("src\\staff.txt")) {
+        try ( FileReader reader = new FileReader("src\\" + FILE_NAME)) {
             BufferedReader bufferedReader = new BufferedReader(reader);
             String line;
             OUTER:
@@ -295,7 +299,7 @@ public class Staff extends Person {
             if (isAdmin) {
                 switch (selection2) {
                     case 1 -> {
-                        editedStaff.setAddress(General.stringNullCheckingInput("Address: ", "Address cannot be empty."));
+                        editedStaff.setAddress(General.stringNullCheckingInput("Address: ", "  Address cannot be empty."));
                     }
                     case 2 -> {
                         editedStaff.setPhoneNum(General.phoneInput("Phone Number(without '-'): "));
@@ -305,10 +309,10 @@ public class Staff extends Person {
                     }
 
                     case 4 -> {
-                        editedStaff.setName(General.stringNullCheckingInput("Name: ", "Name cannot be empty."));
+                        editedStaff.setName(General.stringNullCheckingInput("Name: ", "  Name cannot be empty."));
                     }
                     case 5 -> {
-                        editedStaff.setBirthdate(General.dateInput("Birthdate(DD/MM/YYYY): ", "Wrong date format. Enter again."));
+                        editedStaff.setBirthdate(General.dateInput("Birthdate(DD/MM/YYYY): ", "  Wrong date format. Enter again."));
                         editedStaff.setIc(General.icInput("IC                   : "));
                     }
                     case 6 -> {
@@ -340,7 +344,9 @@ public class Staff extends Person {
                     }
                     case 8 -> {
                         if (!isOther) {
-                            System.out.println("Resign self not allowed.");
+                            System.out.println("  Resign self not allowed.");
+                        } else if (editedStaff.staffID.equals("ST-000")) {
+                            System.out.println("  Cannot resign program admin account.");
                         } else {
                             if (editedStaff.getAccountStatus().equals("Active") || editedStaff.getAccountStatus().equals("Inactive")) {
                                 editedStaff.setAccountStatus("Resign");
@@ -363,7 +369,7 @@ public class Staff extends Person {
             } else {
                 switch (selection2) {
                     case 1 -> {
-                        editedStaff.setAddress(General.stringNullCheckingInput("Address: ", "Address cannot be empty."));
+                        editedStaff.setAddress(General.stringNullCheckingInput("Address: ", "  Address cannot be empty."));
                     }
                     case 2 -> {
                         editedStaff.setPhoneNum(General.phoneInput("Phone Number(without '-'): "));
@@ -391,7 +397,7 @@ public class Staff extends Person {
     public static void editStaffFile(Staff editedStaff) {
         Staff staffResult;
         String lineFile, lineEdit;
-        try ( FileReader reader = new FileReader("src\\staff.txt")) {
+        try ( FileReader reader = new FileReader("src\\" + FILE_NAME)) {
             BufferedReader bufferedReader = new BufferedReader(reader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -400,7 +406,7 @@ public class Staff extends Person {
                         staffDetail[3], staffDetail[4], staffDetail[5], staffDetail[6],
                         staffDetail[7], Double.parseDouble(staffDetail[8]), staffDetail[9]);
                 if (staffDetail[0].equals(editedStaff.getStaffID())) {
-                    try ( FileWriter writer = new FileWriter("src\\staffTemp.txt", true)) {
+                    try ( FileWriter writer = new FileWriter("src\\" + TEMP_FILE_NAME, true)) {
                         lineEdit = String.format("%s|%s|%s|%s|%s|%s|%s|%s|%f|%s\n",
                                 editedStaff.staffID, editedStaff.name, editedStaff.ic, editedStaff.birthdate,
                                 editedStaff.phoneNum, editedStaff.address, editedStaff.position,
@@ -412,7 +418,7 @@ public class Staff extends Person {
                         e.getStackTrace();
                     }
                 } else {
-                    try ( FileWriter writer = new FileWriter("src\\staffTemp.txt", true)) {
+                    try ( FileWriter writer = new FileWriter("src\\" + TEMP_FILE_NAME, true)) {
                         lineFile = String.format("%s|%s|%s|%s|%s|%s|%s|%s|%f|%s\n",
                                 staffResult.staffID, staffResult.name, staffResult.ic, staffResult.birthdate,
                                 staffResult.phoneNum, staffResult.address, staffResult.position,
@@ -427,20 +433,20 @@ public class Staff extends Person {
             }
             reader.close();
             //delete src\\staff.txt
-            File deleteFile = new File("src\\staff.txt");
+            File deleteFile = new File("src\\" + FILE_NAME);
             if (!deleteFile.delete()) {
-                System.out.println("Failed to delete the file \"src\\staff.txt\".");
+                System.out.println("Failed to delete the file \"src\\" + FILE_NAME + "\".");
             }
             //reneme src\\staffTemp.txt to src\\staff.txt
-            File rename = new File("src\\staffTemp.txt");
-            File renameResult = new File("src\\staff.txt");
+            File rename = new File("src\\" + TEMP_FILE_NAME);
+            File renameResult = new File("src\\" + FILE_NAME);
             if (!rename.renameTo(renameResult)) {
                 System.out.println("Rename Failed");
             }
-
         } catch (IOException e) {
-            System.out.println("staff.txt open failed.");
+            System.out.println(FILE_NAME + "open failed.");
         }
 
     }
+
 }

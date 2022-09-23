@@ -29,8 +29,10 @@ public class Product {
     private String status; 
     
     //File name to store product records.
-    public static String fileName = "products.txt";
-    
+
+    public static final String FILE_NAME = "products.txt";
+
+    //Constructor
     public Product() {
         this.code = "";
         this.name = "";
@@ -148,11 +150,12 @@ public class Product {
     //it will update the product details based on latest information in stockDetails.txt
     public static void updateProduct() {
         //Read current products into an array list.
-        ArrayList<Product> products = readFile(Product.fileName);
-        
+
+        ArrayList<Product> products = readFile(Product.FILE_NAME);
+
         //Read current stockDetails into an array list.
-        ArrayList<StockDetails> stockDetails = StockDetails.readFile(StockDetails.fileName);
-        
+        ArrayList<StockDetails> stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
+
         double sumCostPrice;
         int costPriceCount;
         double averageCostPrice;
@@ -163,9 +166,7 @@ public class Product {
         for (Product p : products) {
             sumCostPrice = 0d;
             costPriceCount = 0;
-            averageCostPrice = 0d;
             prodQty = 0;
-            currentSellingPrice = 0d;
             productInvoiceExist = false;
             //loop calculate the sum of the cost prices for this product and update the product's current quantity.
             for (int i = 0; i < stockDetails.size(); i++) {
@@ -199,19 +200,22 @@ public class Product {
         }
         
         //update the edited product details
-        modify(Product.fileName, products);
-        
+
+        modify(Product.FILE_NAME, products);
+
+
     }
     
     //method that updates the quantity when a transaction is made.
     //it will update the product details based on latest information in transactionDetails.txt
     public static void updateQuantity() {
         //Read current products into an array list.
-        ArrayList<Product> products = readFile(Product.fileName);
-        
+
+        ArrayList<Product> products = readFile(Product.FILE_NAME);
+
         //Read the current transaction details into an array list.
         ArrayList<TransactionDetails> transactionDetails = TransactionDetails.readFile(TransactionDetails.FILE_NAME);
-        
+
         //Deduct the quantity of products in transactions from the total quantity that a product has.
         for (Product p : products) {
             for (TransactionDetails td: transactionDetails) {
@@ -222,7 +226,7 @@ public class Product {
         }
         
         //update the edited product details
-        modify(Product.fileName, products);
+        modify(Product.FILE_NAME, products);
     }
     
     //Accepts the file name and a product array list with additional new products and writes it to a file.
@@ -235,17 +239,20 @@ public class Product {
     public static ArrayList<Product> search(String searchType, String searchString) {
         
         //Read product details and store it into an array list
-        ArrayList<Product> products = readFile(Product.fileName);
-        
-        
+
+        ArrayList<Product> products = readFile(Product.FILE_NAME);
+
+
         //Array list to store the search results for products
         ArrayList<Product> searchResultsProducts = new ArrayList<>();
         
         //to keep track of the searchCount
         int searchCount = 0;
-        
-        switch(searchType) {
-            case "productCode":
+
+
+        switch (searchType) {
+            case "productCode" -> {
+
                 for (int i = 0; i < products.size(); i++) {
                     if (products.get(i).getCode().equals(searchString)) {
                         searchResultsProducts.add(new Product(products.get(i)));
@@ -253,8 +260,8 @@ public class Product {
                         break;
                     } 
                 }
-                break;
-            case "productName":
+            }
+            case "productName" -> {
                 for (int i = 0; i < products.size(); i++) {
                     if (products.get(i).getName().equals(searchString)) {
                         searchResultsProducts.add(new Product(products.get(i)));
@@ -262,20 +269,21 @@ public class Product {
                         break;
                     } 
                 }
-                break;
-            //No break added in if statement because there can be more than 1 search results in productCategory.
-            case "productCategory":
+            }
+            case "productCategory" -> {
                 for (int i = 0; i < products.size(); i++) {
                     if (products.get(i).getCategory().equals(searchString)) {
                         searchResultsProducts.add(new Product(products.get(i)));
                         searchCount++;
                     } 
                 }
-                break;
-            default:
-                System.out.println("Invalid searchType.");
+            }
+            default -> System.out.println("Invalid searchType.");
         }
-        if (searchCount == 0)
+
+        //No break added in if statement because there can be more than 1 search results in productCategory.
+        if (searchCount == 0) {
+
             return null;
         
         return (ArrayList<Product>)searchResultsProducts.clone();
@@ -312,10 +320,10 @@ public class Product {
             writer.write(category + "\n");    
             // Closes the writer
             writer.close();
-        }
-  
-        catch (Exception e) {
-            e.getStackTrace();
+
+        } catch (IOException e) {
+            System.out.println("  " + fileName + " could not be opened.");
+
         }
     }
     
@@ -371,7 +379,7 @@ public class Product {
                 }
                 
                 //read from stockDetails.txt and create a copy of stock details records.
-                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetails.readFile(StockDetails.fileName).clone();
+                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetails.readFile(StockDetails.FILE_NAME).clone();
                 stockDetails.clear();
                 //Add elements of stock details that is associated with this product code.
                 for (StockDetails sd: allSD) {
@@ -385,7 +393,7 @@ public class Product {
             reader.close();
  
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("  " + fileName + " could not be opened.");
         }
         
         return products;
@@ -407,10 +415,10 @@ public class Product {
   
             // Closes the writer
             writer.close();
-        }
-  
-        catch (Exception e) {
-            e.getStackTrace();
+
+        } catch (IOException e) {
+            System.out.println("  " + fileName + " could not be opened.");
+
         }
     }
     

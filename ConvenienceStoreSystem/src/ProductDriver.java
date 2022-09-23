@@ -13,45 +13,36 @@ import java.util.ArrayList;
  * @author Yu
  */
 public class ProductDriver {
-    public static void main(String[] args) {
+    public static void main(String[] args, Staff staffLogin) {
         int selection;
         do {
-            selection = productMenu();
+            selection = productMenu(staffLogin);
             switch(selection) {
-                case 1:
-                    addProduct();
-                    break;
-                case 2:
-                    modifyProduct();
-                    break;
-                case 3:
-                    editProductStatus();
-                    break;
-                case 4:
-                    searchProduct();
-                    break;
-                case 5:
-                    viewProduct();
-                    break;
-                case 0:
+                case 1 -> addProduct(staffLogin);
+                case 2 -> modifyProduct(staffLogin);
+                case 3 -> editProductStatus(staffLogin);
+                case 4 -> searchProduct(staffLogin);
+                case 5 -> viewProduct(staffLogin);
+                case 0 -> {
                     System.out.println("Returning to main menu...");
                     General.systemPause();
-                    break;
-                default:
+                }
+                default -> {
                     System.out.println("Please ensure your selection is (0-5).");
                     General.systemPause();
+                }
             }
         } while(selection != 0);
     }
     
     
     //Method to add a new product
-    public static void addProduct() {
+    public static void addProduct(Staff staffLogin) {
         //Give user a choice to return to product menu.
         int selection;
         do {
             General.clearScreen();
-            printHeader("addProduct");
+            printHeader("addProduct", staffLogin);
             System.out.println("Available choices: ");
             System.out.println("1. Start adding product(s)");
             System.out.println("");
@@ -59,15 +50,16 @@ public class ProductDriver {
             System.out.println("");
             selection = General.intInput("Enter your selection (0-1) : ", "Invalid input, please enter an integer.");
             switch(selection) {
-                case 1:
-                    break;
-                case 0:
+                case 1 -> {
+                }
+                case 0 -> {
                     System.out.println("Returning to product menu...");
                     General.systemPause();
-                    break;
-                default:
+                }
+                default -> {
                     System.out.println("Please ensure your selection is (0-1).");
                     General.systemPause();
+                }
             }
         } while(selection != 0 && selection != 1);
         
@@ -75,10 +67,10 @@ public class ProductDriver {
             return;
         
         //Read the current product list into an array list
-        ArrayList<Product> products = Product.readFile(Product.fileName);
+        ArrayList<Product> products = Product.readFile(Product.FILE_NAME);
         
         //Loop for user input and adding products.
-        char cont = 'Y';
+        char cont;
         do {
             General.clearScreen();
             
@@ -116,13 +108,13 @@ public class ProductDriver {
             Product p1 = new Product(currentProductCode, name, currentSellingPrice, currentCostPrice, stockQty, minReorderQty, category, null, null, status);
             
             //confirmation of adding of product.
-            char confirmation = 'N';
+            char confirmation;
             confirmation = General.yesNoInput("Confirm add product? (Y)es/(N)o : ", "Invalid input, please enter Y or N.");
             if (confirmation == 'Y') {
                 products.add(p1);
                 System.out.println("Product added successfully.");
                 //Write to file after finish adding product details.
-                Product.add(Product.fileName, products);
+                Product.add(Product.FILE_NAME, products);
             } else {
                 System.out.println("Product is not added.");
             }
@@ -135,7 +127,7 @@ public class ProductDriver {
     }
     
     //method to search for products and print the search results.
-    public static void searchProduct() {
+    public static void searchProduct(Staff staffLogin) {
         //Array list to store the returned search results
         ArrayList<Product> productSearchResults;
         
@@ -144,10 +136,10 @@ public class ProductDriver {
         int selection;
         do {
             General.clearScreen();
-            printHeader("searchProduct");
+            printHeader("searchProduct", staffLogin);
             selection = searchMenu("search");
             switch(selection) {
-                case 1:
+                case 1 -> {
                     //Ask for product code and search for the product details with the product code.
                     String code = codeInput();
                     printCount = 0;
@@ -155,7 +147,7 @@ public class ProductDriver {
                     General.clearScreen();
                     
                     System.out.println("Search results: ");
-                    printHeader("searchTableHeader");
+                    printHeader("searchTableHeader", staffLogin);
                     productSearchResults = Product.search("productCode", code);
                     
                     if (productSearchResults != null) {
@@ -168,8 +160,8 @@ public class ProductDriver {
                     System.out.printf("< %d record(s) >\n", printCount);
                     System.out.println("");
                     General.systemPause();
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     //Ask for product name and search for the product details with the product name.
                     String name = General.stringInput("Enter product name: ", "Invalid product name, please try again").toUpperCase();
                     printCount = 0;
@@ -177,7 +169,7 @@ public class ProductDriver {
                     General.clearScreen();
                     
                     System.out.println("Search results: ");
-                    printHeader("searchTableHeader");
+                    printHeader("searchTableHeader", staffLogin);
                     productSearchResults = Product.search("productName", name);
                     
                     if (productSearchResults != null) {
@@ -190,9 +182,8 @@ public class ProductDriver {
                     System.out.printf("< %d record(s) >\n", printCount);
                     System.out.println("");
                     General.systemPause();
-                    break;
-                case 3:
-                    
+                }
+                case 3 -> {
                     //Ask for product category and search for the product details with the product category.
                     String category = General.stringInput("Enter category of product: ", "Invalid category name, please try again.").toUpperCase();
                     printCount = 0;
@@ -215,30 +206,31 @@ public class ProductDriver {
                         General.clearScreen();
                         activeOrInactiveSelection = searchMenu("activeOrInactive");
                         switch(activeOrInactiveSelection) {
-                            case 1:
+                            case 1 -> {
                                 for (Product product: productSearchResults) {
                                     categoryProductSearchResults.add(new Product(product));
                                 }
-                                break;
-                            case 2:
+                            }
+                            case 2 -> {
                                 for (Product product: productSearchResults) {
                                     if (product.getStatus().equals("ACTIVE"))
                                         categoryProductSearchResults.add(new Product(product));
                                 }
-                                break;
-                            case 3:
+                            }
+                            case 3 -> {
                                 for (Product product: productSearchResults) {
                                     if (product.getStatus().equals("INACTIVE"))
                                         categoryProductSearchResults.add(new Product(product));
                                 }
-                                break;
-                            case 0:
+                            }
+                            case 0 -> {
                                 System.out.println("Returning to product menu...");
                                 General.systemPause();
-                                break;
-                            default:
+                            }
+                            default -> {
                                 System.out.println("Please ensure your selection is (0-3).");
                                 General.systemPause();
+                            }
                         }
                     } while(activeOrInactiveSelection != 0 && activeOrInactiveSelection != 1 && activeOrInactiveSelection != 2 && activeOrInactiveSelection != 3);
                     
@@ -251,7 +243,7 @@ public class ProductDriver {
                     
                     //Print out the search results.
                     System.out.println("Search results: ");
-                    printHeader("searchTableHeader");
+                    printHeader("searchTableHeader", staffLogin);
                     if (!categoryProductSearchResults.isEmpty()) {
                         printCount = Product.display(categoryProductSearchResults);
                     } else {
@@ -262,26 +254,27 @@ public class ProductDriver {
                     System.out.printf("< %d record(s) >\n", printCount);
                     System.out.println("");
                     General.systemPause();
-                    break;
-                case 0:
+                }
+                case 0 -> {
                     System.out.println("Returning to product menu...");
                     General.systemPause();
-                    break;
-                default:
+                }
+                default -> {
                     System.out.println("Please ensure your selection is (0-3).");
                     General.systemPause();
+                }
             }
             
         } while(selection != 0);
     }
     
     //method to modify product details.
-    public static void modifyProduct() {
+    public static void modifyProduct(Staff staffLogin) {
         //Read the current product records into an array list.
-        ArrayList<Product> products = Product.readFile(Product.fileName);
+        ArrayList<Product> products = Product.readFile(Product.FILE_NAME);
         
         //Product array list to store the search results
-        ArrayList<Product> searchResults = new ArrayList<>();
+        ArrayList<Product> searchResults;
         
         //Product object to store search result.
         Product productSearchResult = new Product();
@@ -290,34 +283,36 @@ public class ProductDriver {
         int selection;
         do {
             General.clearScreen();
-            printHeader("modifyProduct");
+            printHeader("modifyProduct", staffLogin);
             
             selection = modifyMenu("search");
             switch(selection) {
-                case 1:
+                case 1 -> {
                     //Ask for product code and search for the product details with the product code.
                     String code = codeInput();
                     searchResults = Product.search("productCode", code);
                     //If there are search results, store the first element of the array list as a Product object. (Product code is unique)
                     if (searchResults != null)
                         productSearchResult = searchResults.get(0);
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     //Ask for product name and search for the product details with the product name.
                     String name = General.stringInput("Enter product name: ", "Invalid product name, please try again").toUpperCase();
                     searchResults = Product.search("productName", name);
                     //If there are search results, store the first element of the array list as a Product object. (Product name is unique)
                     if (searchResults != null)
                         productSearchResult = searchResults.get(0);
-                    break;
-                case 0:
+                }
+                case 0 -> {
                     System.out.println("Returning to product menu...");
                     General.systemPause();
                     continue;
-                default:
+                }
+                default -> {
                     System.out.println("Please ensure your selection is (0-2).");
                     General.systemPause();
                     continue;
+                }
             }
             
             General.clearScreen();
@@ -326,7 +321,7 @@ public class ProductDriver {
             if (searchResults == null) {
                 System.out.println("");
                 System.out.println("Search Results: ");
-                printHeader("searchTableHeader");
+                printHeader("searchTableHeader", staffLogin);
                 System.out.println("Product does not exist.");
                 General.systemPause();
                 continue;
@@ -345,45 +340,47 @@ public class ProductDriver {
                 General.clearScreen();
                 //print search results
                 System.out.println("Search Results: ");
-                printHeader("searchTableHeader");
+                printHeader("searchTableHeader", staffLogin);
                 System.out.println(productSearchResult);
                 System.out.println("");
                 
                 modifyFieldSelection = modifyMenu("modifyField"); 
                 switch(modifyFieldSelection) {
-                    case 1:
+                    case 1 -> {
                         //Ask for new product name.
                         String name = nameInput();
                         productSearchResult.setName(name);
-                        break;
-                    case 2:
+                    }
+                    case 2 -> {
                         //Ask for new product selling price.
                         double currentSellingPrice = currentSellingPriceInput(productSearchResult.getCurrentCostPrice());
                         productSearchResult.setCurrentSellingPrice(currentSellingPrice);
-                        break;
-                    case 3:
+                    }
+                    case 3 -> {
                         //Ask for new category
                         String category = categoryInput();
                         productSearchResult.setCategory(category);
-                        break;
-                    case 4:
+                    }
+                    case 4 -> {
                         //Ask for new product reorder quantity.
                         int minReorderQty = minReorderQtyInput();
                         productSearchResult.setMinReorderQty(minReorderQty);
-                        break;
-                    case 0:
+                    }
+                    case 0 -> {
                         System.out.println("Returning to modify product menu...");
                         General.systemPause();
                         continue;
-                    default: 
+                    } 
+                    default -> {
                         System.out.println("Please ensure your selection is (0-4).");
                         General.systemPause();
                         continue;
+                    }
                 }
                 
                 
                 //ask for confirmation.
-                char confirmation = 'N';
+                char confirmation;
                 confirmation = General.yesNoInput("Confirm modify product details? (Y)es/(N)o : ", "Invalid input, please enter Y or N.");
                 
                 if (confirmation == 'Y') {
@@ -396,7 +393,7 @@ public class ProductDriver {
                     }
                     
                     //modify the product list with the edited details.
-                    Product.modify(Product.fileName, products);
+                    Product.modify(Product.FILE_NAME, products);
                     System.out.println("Product details successfully modified.");
                 } else {
                     //loop through the products array list and find the product that was not edited.
@@ -417,9 +414,9 @@ public class ProductDriver {
     }
     
     //method to edit the product status either become active or inactive
-    public static void editProductStatus() {
+    public static void editProductStatus(Staff staffLogin) {
         //Read the current product list into an array list
-        ArrayList<Product> products = Product.readFile(Product.fileName);
+        ArrayList<Product> products = Product.readFile(Product.FILE_NAME);
         
         //Product array list to store the search results
         ArrayList<Product> searchResults = new ArrayList<>();
@@ -431,32 +428,33 @@ public class ProductDriver {
         int searchSelection;
         do {
             General.clearScreen();
-            printHeader("editProductStatus");
+            printHeader("editProductStatus", staffLogin);
             
             searchSelection = editProductStatusMenu();
             switch(searchSelection) {
-                case 1:
+                case 1 -> {
                     //Ask for product code and search for the product details with the product code.
                     String code = codeInput();
                     searchResults = Product.search("productCode", code);
                     if (searchResults != null)
                         productSearchResult = searchResults.get(0);
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     //Ask for product name and search for the product details with the product name.
                     String name = General.stringInput("Enter product name: ", "Invalid product name, please try again").toUpperCase();
                     searchResults = Product.search("productName", name);
                     if (searchResults != null)
                         productSearchResult = searchResults.get(0);
-                    break;
-                case 0:
+                }
+                case 0 -> {
                     System.out.println("Returning to product menu...");
                     General.systemPause();
-                    break;
-                default:
+                }
+                default -> {
                     System.out.println("Please ensure your selection is (0-2).");
                     General.systemPause();
                     continue;
+                }
             }
             
             if (searchSelection == 0)
@@ -468,7 +466,7 @@ public class ProductDriver {
             if (searchResults == null) {
                 System.out.println("");
                 System.out.println("Search Results: ");
-                printHeader("searchTableHeader");
+                printHeader("searchTableHeader", staffLogin);
                 System.out.println("Product does not exist.");
                 General.systemPause();
                 continue;
@@ -477,7 +475,7 @@ public class ProductDriver {
             //print search results
             System.out.println("");
             System.out.println("Search Results: ");
-            printHeader("searchTableHeader");
+            printHeader("searchTableHeader", staffLogin);
             System.out.println(productSearchResult);
             System.out.println("");
             
@@ -496,7 +494,7 @@ public class ProductDriver {
                     }
                     
                     //update the product list with the new status.
-                    Product.editProductStatus(Product.fileName, products);
+                    Product.editProductStatus(Product.FILE_NAME, products);
                     System.out.println("Product status successfully updated.");
                 } else {
                     System.out.println("Product status not updated.");
@@ -515,7 +513,7 @@ public class ProductDriver {
                     }
                     
                     //update the product list with the new status.
-                    Product.editProductStatus(Product.fileName, products);
+                    Product.editProductStatus(Product.FILE_NAME, products);
                     System.out.println("Product status successfully updated.");
                 } else {
                     System.out.println("Product status not updated.");
@@ -527,11 +525,11 @@ public class ProductDriver {
     }
     
     //method to view products
-    public static void viewProduct() {
+    public static void viewProduct(Staff staffLogin) {
         
         
         //Read the current product records into an array list.
-        ArrayList<Product> products = Product.readFile(Product.fileName);
+        ArrayList<Product> products = Product.readFile(Product.FILE_NAME);
         
         //Product array list to store the desired type (active/inactive) product to view
         ArrayList<Product> selectedProducts = new ArrayList<>();
@@ -543,7 +541,7 @@ public class ProductDriver {
         int selection;
         do {
             General.clearScreen();
-            printHeader("viewProduct");
+            printHeader("viewProduct", staffLogin);
             
             //clear the array list for subsequent loops to store the results.
             selectedProducts.clear();
@@ -551,26 +549,27 @@ public class ProductDriver {
             printCount = 0;
             selection = viewProductMenu();
             switch(selection) {
-                case 1:
+                case 1 -> {
                     for (Product product: products) {
                         if (product.getStatus().equals("ACTIVE"))
                             selectedProducts.add(new Product(product));
                     }
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     for (Product product: products) {
                         if (product.getStatus().equals("INACTIVE"))
                             selectedProducts.add(new Product(product));
                     }
-                    break;
-                case 0:
+                }
+                case 0 -> {
                     System.out.println("Returning to product menu...");
                     General.systemPause();
-                    break;
-                default:
+                }
+                default -> {
                     System.out.println("Please ensure your selection is (0-2).");
                     General.systemPause();
                     continue;
+                }
             }
             
             if (selection == 0) {
@@ -581,7 +580,7 @@ public class ProductDriver {
             
             //print out the chosen results.
             System.out.println("Products: ");
-            printHeader("searchTableHeader");
+            printHeader("searchTableHeader", staffLogin);
             if (!selectedProducts.isEmpty()) {
                 printCount = Product.display(selectedProducts);
             } else {
@@ -634,8 +633,8 @@ public class ProductDriver {
     //Validation for product name
     public static String nameInput() {
         //read current product list in to array list
-        ArrayList<Product> products = new ArrayList<>();
-        products = Product.readFile(Product.fileName);
+        ArrayList<Product> products = Product.readFile(Product.FILE_NAME);
+
         //Validate product name to prevent duplicate products to be created.
         String name;
         boolean validName;
@@ -674,7 +673,7 @@ public class ProductDriver {
             reader.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("  " + "productCategory.txt" + " could not be opened.");
         }
 
         //Ask for the category of this product.
@@ -771,58 +770,63 @@ public class ProductDriver {
     }
     
     //method to print headers.
-    public static void printHeader(String headerType) {
+    public static void printHeader(String headerType, Staff staffLogin) {
         switch(headerType) {
-            case "productMenu":
+            case "productMenu" -> {
                 System.out.println("------------------");
                 System.out.println(" | Product Menu | ");
                 System.out.println("------------------");
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
                 System.out.println("");
-                break;
-            case "addProduct":
+            }
+            case "addProduct" -> {
                 System.out.println("------------------------");
                 System.out.println(" | Add new product(s) | ");
                 System.out.println("------------------------");
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
                 System.out.println("");
-                break;
-            case "modifyProduct":
+            }
+            case "modifyProduct" -> {
                 System.out.println("-----------------------");
                 System.out.println(" | Modify product(s) | ");
                 System.out.println("-----------------------");
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
                 System.out.println("");
-                break;
-            case "searchProduct":
+            }
+            case "searchProduct" -> {
                 System.out.println("-----------------------");
                 System.out.println(" | Search product(s) | ");
                 System.out.println("-----------------------");
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
                 System.out.println("");
-                break;
-            case "editProductStatus":
+            }
+            case "editProductStatus" -> {
                 System.out.println("----------------------------");
                 System.out.println(" | Edit product(s) status | ");
                 System.out.println("----------------------------");
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
                 System.out.println("");
-                break;
-            case "viewProduct":
+            }
+            case "viewProduct" -> {
                 System.out.println("---------------------");
                 System.out.println(" | View product(s) | ");
                 System.out.println("---------------------");
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());        //add login name and position
                 System.out.println("");
-                break;
-            case "searchTableHeader":
+            }
+            case "searchTableHeader" -> {
                 System.out.println("---------------------------------------------------------------------------------------------------------------------------------------");
                 System.out.println("| Code  | Name                 | Category             | Selling price (RM) | Cost Price (RM) | Quantity | Reorder Quantity | Status   |");
                 System.out.println("---------------------------------------------------------------------------------------------------------------------------------------");
-                break;
-            default:
-                System.out.println("Header type does not exist.");
+            }
+            default -> System.out.println("Header type does not exist.");
         }
     }
     
     //Display the product menu and return selection.
-    public static int productMenu() {
+    public static int productMenu(Staff staffLogin) {
         General.clearScreen();
-        printHeader("productMenu");
+        printHeader("productMenu", staffLogin);
         System.out.println("1. Add new product(s)");
         System.out.println("2. Modify product(s)");
         System.out.println("3. Edit product(s) status");
@@ -865,7 +869,7 @@ public class ProductDriver {
     public static int searchMenu(String menuType) {
         int selection = 0;
         switch(menuType) {
-            case "search":
+            case "search" -> {
                 System.out.println("Which field do you want to search by?");
                 System.out.println("Available choices: ");
                 System.out.println("1. Product Code");
@@ -876,8 +880,8 @@ public class ProductDriver {
                 System.out.println("");
                 
                 selection = General.intInput("Enter selection (0-3) : ", "Invalid input, please enter an integer.");
-                break;
-            case "activeOrInactive":
+            }
+            case "activeOrInactive" -> {
                 System.out.println("All, active or inactive category of products?");
                 System.out.println("Available choices: ");
                 System.out.println("1. All");
@@ -888,9 +892,8 @@ public class ProductDriver {
                 System.out.println("");
                 
                 selection = General.intInput("Enter selection (0-3) : ", "Invalid input, please enter an integer.");
-                break;
-            default:
-                System.out.println("Menu type does not exist.");
+            }
+            default -> System.out.println("Menu type does not exist.");
         }
         
         
@@ -901,7 +904,7 @@ public class ProductDriver {
     public static int modifyMenu(String menuType) {
         int selection = 0;
         switch(menuType) {
-            case "search":
+            case "search" -> {
                 System.out.println("Which field do you want to search by?");
                 System.out.println("Available choices: ");
                 System.out.println("1. Product Code");
@@ -911,8 +914,8 @@ public class ProductDriver {
                 System.out.println("");
 
                 selection = General.intInput("Enter selection (0-2) : ", "Invalid input, please enter an integer.");
-                break;
-            case "modifyField":
+            }
+            case "modifyField" -> {
                 System.out.println("Which field do you want to modify?");
                 System.out.println("Available choices: ");
                 System.out.println("1. Product Name");
@@ -924,9 +927,8 @@ public class ProductDriver {
                 System.out.println("");
 
                 selection = General.intInput("Enter selection (0-4) : ", "Invalid input, please enter an integer.");
-                break;
-            default:
-                System.out.println("Menu type does not exist.");
+            }
+            default -> System.out.println("Menu type does not exist.");
         }
         
         return selection;

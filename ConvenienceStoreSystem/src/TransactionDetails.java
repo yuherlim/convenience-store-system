@@ -21,7 +21,8 @@ public class TransactionDetails {
     private String productCode;
     private double sellingPrice;
 
-    public final static String FILE_NAME = "transactionDetails.txt";
+
+    public static final String FILE_NAME = "transactionDetails.txt";
     
     public TransactionDetails() {
         transactionId = "";
@@ -112,7 +113,7 @@ public class TransactionDetails {
             reader.close();
  
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("  " + fileName + " could not be opened.");
         }
         
         return transactionDetails;
@@ -136,8 +137,8 @@ public class TransactionDetails {
             writer.close();
         }
   
-        catch (Exception e) {
-            e.getStackTrace();
+        catch (IOException e) {
+            System.out.println("  " + fileName + " could not be opened.");
         }
     }
     

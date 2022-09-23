@@ -23,7 +23,7 @@ public class Supplier {
     private String address;
     
     //fileName containing supplier details.
-    public static String fileName = "supplier.txt";
+    public static final String FILE_NAME = "supplier.txt";
 
     public Supplier() {
         this("","","","","");
@@ -95,7 +95,7 @@ public class Supplier {
     public static Supplier search(String searchType, String searchString) {
         
         //Read supplier details and store it into an array list
-        ArrayList<Supplier> suppliers = readFile(Supplier.fileName);
+        ArrayList<Supplier> suppliers = readFile(Supplier.FILE_NAME);
         
         
         //Array list to store the search results for suppliers
@@ -106,7 +106,7 @@ public class Supplier {
         
         //break when record is found because there supplierId and supplierNames are unique.
         switch(searchType) {
-            case "supplierId":
+            case "supplierId" -> {
                 for (int i = 0; i < suppliers.size(); i++) {
                     if (suppliers.get(i).getId().equals(searchString)) {
                         searchResultsSuppliers.add(new Supplier(suppliers.get(i)));
@@ -114,8 +114,8 @@ public class Supplier {
                         break;
                     } 
                 }
-                break;
-            case "supplierName":
+            }
+            case "supplierName" -> {
                 for (int i = 0; i < suppliers.size(); i++) {
                     if (suppliers.get(i).getName().equals(searchString)) {
                         searchResultsSuppliers.add(new Supplier(suppliers.get(i)));
@@ -123,9 +123,8 @@ public class Supplier {
                         break;
                     } 
                 }
-                break;
-            default:
-                System.out.println("Invalid searchType.");
+            }
+            default -> System.out.println("Invalid searchType.");
         }
         if (searchCount == 0)
             return null;
@@ -172,7 +171,7 @@ public class Supplier {
             reader.close();
  
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("  " + fileName + " could not be opened.");
         }
         
         return suppliers;
@@ -196,8 +195,8 @@ public class Supplier {
             writer.close();
         }
   
-        catch (Exception e) {
-            e.getStackTrace();
+        catch (IOException e) {
+            System.out.println("  " + fileName + " could not be opened.");
         }
     }
     

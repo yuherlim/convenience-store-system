@@ -1,2 +1,2 @@
 # convenience-store-system
-Convenience store system for assignment
+Convenience store POS system for assignment
