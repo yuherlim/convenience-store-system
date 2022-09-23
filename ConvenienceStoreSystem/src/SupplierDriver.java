@@ -14,41 +14,34 @@ import java.util.regex.Pattern;
  */
 public class SupplierDriver {
     
-    public static void main(String[] args) {
+    public static void main(String[] args, Staff staffLogin) {
         int selection;
         do {
-            selection = supplierMenu();
+            selection = supplierMenu(staffLogin);
             switch(selection) {
-                case 1:
-                    addSupplier();
-                    break;
-                case 2:
-                    modifySupplier();
-                    break;
-                case 3:
-                    searchSupplier();
-                    break;
-                case 4:
-                    viewSupplier();
-                    break;
-                case 0:
+                case 1 -> addSupplier(staffLogin);
+                case 2 -> modifySupplier(staffLogin);
+                case 3 -> searchSupplier(staffLogin);
+                case 4 -> viewSupplier(staffLogin);
+                case 0 -> {
                     System.out.println("Returning to main menu...");
                     General.systemPause();
-                    break;
-                default:
+                }
+                default -> {
                     System.out.println("Please ensure your selection is (0-4).");
                     General.systemPause();
+                }
             }
         } while(selection != 0);
     }
     
     //Method to add a new suplier
-    public static void addSupplier() {
+    public static void addSupplier(Staff staffLogin) {
         //Give user a choice to return to supplier menu.
         int selection;
         do {
             General.clearScreen();
-            printHeader("addSupplier");
+            printHeader("addSupplier", staffLogin);
             System.out.println("Available choices: ");
             System.out.println("1. Start adding supplier(s)");
             System.out.println("");
@@ -56,15 +49,16 @@ public class SupplierDriver {
             System.out.println("");
             selection = General.intInput("Enter your selection (0-1) : ", "Invalid input, please enter an integer.");
             switch(selection) {
-                case 1:
-                    break;
-                case 0:
+                case 1 -> {
+                }
+                case 0 -> {
                     System.out.println("Returning to supplier menu...");
                     General.systemPause();
-                    break;
-                default:
+                }
+                default -> {
                     System.out.println("Please ensure your selection is (0-1).");
                     General.systemPause();
+                }
             }
         } while(selection != 0 && selection != 1);
         
@@ -72,11 +66,11 @@ public class SupplierDriver {
             return;
         
         //Read the current supplier list into an array list
-        ArrayList<Supplier> suppliers = Supplier.readFile(Supplier.fileName);
+        ArrayList<Supplier> suppliers = Supplier.readFile(Supplier.FILE_NAME);
         
         
         //Loop for user input and adding suppliers.
-        char cont = 'Y';
+        char cont;
         do {
             General.clearScreen();
             
@@ -113,13 +107,13 @@ public class SupplierDriver {
             Supplier sp = new Supplier(currentSupplierId, name, phoneNo, email, address);
             
             //confirmation of adding of supplier.
-            char confirmation = 'N';
+            char confirmation;
             confirmation = General.yesNoInput("Confirm add supplier? (Y)es/(N)o : ", "Invalid input, please enter Y or N.");
             if (confirmation == 'Y') {
                 suppliers.add(sp);
                 System.out.println("Supplier added successfully.");
                 //Write to file after finish adding supplier details.
-                Supplier.add(Supplier.fileName, suppliers);
+                Supplier.add(Supplier.FILE_NAME, suppliers);
             } else {
                 System.out.println("Supplier is not added.");
             }
@@ -133,9 +127,9 @@ public class SupplierDriver {
     }
     
     //method to modify supplier details.
-    public static void modifySupplier() {
+    public static void modifySupplier(Staff staffLogin) {
         //Read the current supplier records into an array list.
-        ArrayList<Supplier> suppliers = Supplier.readFile(Supplier.fileName);
+        ArrayList<Supplier> suppliers = Supplier.readFile(Supplier.FILE_NAME);
         
         //Supplier object to store search result.
         Supplier supplierSearchResult;
@@ -145,28 +139,30 @@ public class SupplierDriver {
         do {
             General.clearScreen();
             
-            printHeader("modifySupplier");
+            printHeader("modifySupplier", staffLogin);
             
             selection = modifyMenu("search");
             switch(selection) {
-                case 1:
+                case 1 -> {
                     //Ask for supplier ID and search for the supplier details with the supplier ID.
                     String supplierId = idInput();
                     supplierSearchResult = Supplier.search("supplierId", supplierId);
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     //Ask for supplier name and search for the supplier details with the supplier name.
                     String name = General.stringInput("Enter supplier name: ", "Invalid supplier name, please try again").toUpperCase();
                     supplierSearchResult = Supplier.search("supplierName", name);
-                    break;
-                case 0:
+                }
+                case 0 -> {
                     System.out.println("Returning to supplier menu...");
                     General.systemPause();
                     continue;
-                default:
+                }
+                default -> {
                     System.out.println("Please ensure your selection is (0-2).");
                     General.systemPause();
                     continue;
+                }
             }
             
             General.clearScreen();
@@ -175,7 +171,7 @@ public class SupplierDriver {
             if (supplierSearchResult == null) {
                 System.out.println("");
                 System.out.println("Search Results: ");
-                printHeader("searchTableHeader");
+                printHeader("searchTableHeader", staffLogin);
                 System.out.println("Supplier does not exist.");
                 General.systemPause();
                 continue;
@@ -189,45 +185,47 @@ public class SupplierDriver {
                 //print search results
                 System.out.println("");
                 System.out.println("Search Results: ");
-                printHeader("searchTableHeader");
+                printHeader("searchTableHeader", staffLogin);
                 System.out.println(supplierSearchResult);
                 System.out.println("");
                 
                 modifyFieldSelection = modifyMenu("modifyField"); 
                 switch(modifyFieldSelection) {
-                    case 1:
+                    case 1 -> {
                         //Ask for new supplier name.
                         String name = nameInput();
                         supplierSearchResult.setName(name);
-                        break;
-                    case 2:
+                    }
+                    case 2 -> {
                         //Ask for new phone number.
                         String phoneNo = General.phoneInput("Enter phone number : ");
                         supplierSearchResult.setPhoneNo(phoneNo);
-                        break;
-                    case 3:
+                    }
+                    case 3 -> {
                         //Ask for new email
                         String email = emailInput();
                         supplierSearchResult.setEmail(email);
-                        break;
-                    case 4:
+                    }
+                    case 4 -> {
                         //Ask for new address.
                         String address = General.stringNullCheckingInput("Enter address: ", "Empty input detected, please try again.").toUpperCase();
                         supplierSearchResult.setAddress(address);
-                        break;
-                    case 0:
+                    }
+                    case 0 -> {
                         System.out.println("Returning to modify supplier menu...");
                         General.systemPause();
                         continue;
-                    default: 
+                    } 
+                    default -> {
                         System.out.println("Please ensure your selection is (0-4).");
                         General.systemPause();
                         continue;
+                    }
                 }
                 
                 
                 //ask for confirmation.
-                char confirmation = 'N';
+                char confirmation;
                 confirmation = General.yesNoInput("Confirm modify supplier details? (Y)es/(N)o : ", "Invalid input, please enter Y or N.");
                 
                 if (confirmation == 'Y') {
@@ -240,7 +238,7 @@ public class SupplierDriver {
                     }
                     
                     //modify the supplier list with the edited details.
-                    Supplier.modify(Supplier.fileName, suppliers);
+                    Supplier.modify(Supplier.FILE_NAME, suppliers);
                     System.out.println("Supplier details successfully modified.");
                 } else {
                     //loop through the suppliers array list and find the supplier that was not edited.
@@ -261,7 +259,7 @@ public class SupplierDriver {
     }
     
     //method to search for suppliers and print the search results.
-    public static void searchSupplier() {
+    public static void searchSupplier(Staff staffLogin) {
         //object to store the returned search results
         Supplier supplierSearchResult;
         //Array list to store search results to be printed
@@ -272,13 +270,13 @@ public class SupplierDriver {
         int selection;
         do {
             General.clearScreen();
-            printHeader("searchSupplier");
+            printHeader("searchSupplier", staffLogin);
             
             //clear the searchResultList for subsequent loops
             searchResultList.clear();
             selection = searchMenu();
             switch(selection) {
-                case 1:
+                case 1 -> {
                     //Ask for supplier ID and search for the supplier details with the supplier ID.
                     String supplierId = idInput();
                     printCount = 0;
@@ -286,7 +284,7 @@ public class SupplierDriver {
                     General.clearScreen();
                     
                     System.out.println("Search results: ");
-                    printHeader("searchTableHeader");
+                    printHeader("searchTableHeader", staffLogin);
                     supplierSearchResult = Supplier.search("supplierId", supplierId);
                     
                     if (supplierSearchResult != null) {
@@ -301,8 +299,8 @@ public class SupplierDriver {
                     System.out.printf("< %d record(s) >\n", printCount);
                     System.out.println("");
                     General.systemPause();
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     //Ask for supplier name and search for the supplier details with the supplier name.
                     String name = General.stringInput("Enter supplier name: ", "Invalid supplier name, please try again").toUpperCase();
                     printCount = 0;
@@ -310,7 +308,7 @@ public class SupplierDriver {
                     General.clearScreen();
                     
                     System.out.println("Search results: ");
-                    printHeader("searchTableHeader");
+                    printHeader("searchTableHeader", staffLogin);
                     supplierSearchResult = Supplier.search("supplierName", name);
                     
                     if (supplierSearchResult != null) {
@@ -325,34 +323,35 @@ public class SupplierDriver {
                     System.out.printf("< %d record(s) >\n", printCount);
                     System.out.println("");
                     General.systemPause();
-                    break;
-                case 0:
+                }
+                case 0 -> {
                     System.out.println("Returning to supplier menu...");
                     General.systemPause();
-                    break;
-                default:
+                }
+                default -> {
                     System.out.println("Please ensure your selection is (0-2).");
                     General.systemPause();
+                }
             }
             
         } while(selection != 0);
     }
     
     //method to view suppliers
-    public static void viewSupplier() {
+    public static void viewSupplier(Staff staffLogin) {
         General.clearScreen();
         
-        printHeader("viewSupplier");
+        printHeader("viewSupplier", staffLogin);
         
         //Read the current supplier records into an array list.
-        ArrayList<Supplier> suppliers = Supplier.readFile(Supplier.fileName);
+        ArrayList<Supplier> suppliers = Supplier.readFile(Supplier.FILE_NAME);
         
         //to keep track of the number of records printed.
         int printCount = 0;
         
         //print out all the suppliers
         System.out.println("Suppliers: ");
-        printHeader("searchTableHeader");
+        printHeader("searchTableHeader", staffLogin);
         
         if (!suppliers.isEmpty()) {
             printCount = Supplier.display(suppliers);
@@ -368,52 +367,56 @@ public class SupplierDriver {
     }
     
     //method to print headers.
-    public static void printHeader(String headerType) {
+    public static void printHeader(String headerType, Staff staffLogin) {
         switch(headerType) {
-            case "supplierMenu":
+            case "supplierMenu" -> {
                 System.out.println("-------------------");
                 System.out.println(" | Supplier Menu | ");
                 System.out.println("-------------------");
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');        //add login name and position
                 System.out.println("");
-                break;
-            case "addSupplier":
+            }
+            case "addSupplier" -> {
                 System.out.println("-------------------------");
                 System.out.println(" | Add new supplier(s) | ");
                 System.out.println("-------------------------");
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');        //add login name and position
                 System.out.println("");
-                break;
-            case "modifySupplier":
+            }
+            case "modifySupplier" -> {
                 System.out.println("------------------------");
                 System.out.println(" | Modify supplier(s) | ");
                 System.out.println("------------------------");
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');        //add login name and position
                 System.out.println("");
-                break;
-            case "searchSupplier":
+            }
+            case "searchSupplier" -> {
                 System.out.println("------------------------");
                 System.out.println(" | Search supplier(s) | ");
                 System.out.println("------------------------");
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');        //add login name and position
                 System.out.println("");
-                break;
-            case "viewSupplier":
+            }
+            case "viewSupplier" -> {
                 System.out.println("----------------------");
                 System.out.println(" | View supplier(s) | ");
                 System.out.println("----------------------");
+                System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');        //add login name and position
                 System.out.println("");
-                break;
-            case "searchTableHeader":
+            }
+            case "searchTableHeader" -> {
                 System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 System.out.println("| Code   | Name                      | Phone number | Email                                    | Address                                                                |");
                 System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                break;
-            default:
-                System.out.println("Header type does not exist.");
+            }
+            default -> System.out.println("Header type does not exist.");
         }
     }
     
     //Validation for supplier name
     public static String nameInput() {
         //read current supplier list in to array list
-        ArrayList<Supplier> suppliers = Supplier.readFile(Supplier.fileName);
+        ArrayList<Supplier> suppliers = Supplier.readFile(Supplier.FILE_NAME);
         
         //Validate supplier name to prevent duplicate suppliers to be created.
         String name;
@@ -495,9 +498,9 @@ public class SupplierDriver {
     }
     
     //Display the supplier menu and return selection.
-    public static int supplierMenu() {
+    public static int supplierMenu(Staff staffLogin) {
         General.clearScreen();
-        printHeader("supplierMenu");
+        printHeader("supplierMenu", staffLogin);
         System.out.println("1. Add new supplier(s)");
         System.out.println("2. Modify supplier(s)");
         System.out.println("3. Search supplier(s)");
@@ -526,7 +529,7 @@ public class SupplierDriver {
     public static int modifyMenu(String menuType) {
         int selection = 0;
         switch(menuType) {
-            case "search":
+            case "search" -> {
                 System.out.println("Which field do you want to search by?");
                 System.out.println("Available choices: ");
                 System.out.println("1. Supplier ID");
@@ -536,8 +539,8 @@ public class SupplierDriver {
                 System.out.println("");
 
                 selection = General.intInput("Enter selection (0-2) : ", "Invalid input, please enter an integer.");
-                break;
-            case "modifyField":
+            }
+            case "modifyField" -> {
                 System.out.println("Which field do you want to modify?");
                 System.out.println("Available choices: ");
                 System.out.println("1. Supplier Name");
@@ -549,9 +552,8 @@ public class SupplierDriver {
                 System.out.println("");
 
                 selection = General.intInput("Enter selection (0-4) : ", "Invalid input, please enter an integer.");
-                break;
-            default:
-                System.out.println("Menu type does not exist.");
+            }
+            default -> System.out.println("Menu type does not exist.");
         }
         
         return selection;

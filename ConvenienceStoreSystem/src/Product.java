@@ -31,7 +31,7 @@ public class Product {
     private static double sellingPriceMarkupRate = 1.5;
 
     //File name to store product records.
-    public static String fileName = "products.txt";
+    public static final String FILE_NAME = "products.txt";
 
     //Constructor
     public Product() {
@@ -160,10 +160,10 @@ public class Product {
     //it will update the product details based on latest information in stockDetails.txt
     public static void updateProduct() {
         //Read current products into an array list.
-        ArrayList<Product> products = readFile(Product.fileName);
+        ArrayList<Product> products = readFile(Product.FILE_NAME);
 
         //Read current stockDetails into an array list.
-        ArrayList<StockDetails> stockDetails = StockDetails.readFile(StockDetails.fileName);
+        ArrayList<StockDetails> stockDetails = StockDetails.readFile(StockDetails.FILE_NAME);
 
         double sumCostPrice;
         int costPriceCount;
@@ -212,7 +212,7 @@ public class Product {
         }
 
         //update the edited product details
-        modify(Product.fileName, products);
+        modify(Product.FILE_NAME, products);
 
     }
 
@@ -220,10 +220,10 @@ public class Product {
     //it will update the product details based on latest information in transactionDetails.txt
     public static void updateQuantity() {
         //Read current products into an array list.
-        ArrayList<Product> products = readFile(Product.fileName);
+        ArrayList<Product> products = readFile(Product.FILE_NAME);
 
         //Read the current transaction details into an array list.
-        ArrayList<TransactionDetails> transactionDetails = TransactionDetails.readFile(TransactionDetails.fileName);
+        ArrayList<TransactionDetails> transactionDetails = TransactionDetails.readFile(TransactionDetails.FILE_NAME);
 
         //Deduct the quantity of products in transactions from the total quantity that a product has.
         for (Product p : products) {
@@ -235,7 +235,7 @@ public class Product {
         }
 
         //update the edited product details
-        modify(Product.fileName, products);
+        modify(Product.FILE_NAME, products);
     }
 
     //Accepts the file name and a product array list with additional new products and writes it to a file.
@@ -248,7 +248,7 @@ public class Product {
     public static ArrayList<Product> search(String searchType, String searchString) {
 
         //Read product details and store it into an array list
-        ArrayList<Product> products = readFile(Product.fileName);
+        ArrayList<Product> products = readFile(Product.FILE_NAME);
 
         //Array list to store the search results for products
         ArrayList<Product> searchResultsProducts = new ArrayList<>();
@@ -372,7 +372,7 @@ public class Product {
                 }
 
                 //read from transactionDetails.txt and create a copy of transactionDetails records
-                ArrayList<TransactionDetails> allTD = (ArrayList<TransactionDetails>) TransactionDetails.readFile(TransactionDetails.fileName).clone();
+                ArrayList<TransactionDetails> allTD = (ArrayList<TransactionDetails>) TransactionDetails.readFile(TransactionDetails.FILE_NAME).clone();
                 transactionDetails.clear();
                 //Add elements of transaction details that is associated with this product code.
                 for (TransactionDetails td : allTD) {
@@ -382,7 +382,7 @@ public class Product {
                 }
 
                 //read from stockDetails.txt and create a copy of stock details records.
-                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetails.readFile(StockDetails.fileName).clone();
+                ArrayList<StockDetails> allSD = (ArrayList<StockDetails>) StockDetails.readFile(StockDetails.FILE_NAME).clone();
                 stockDetails.clear();
                 //Add elements of stock details that is associated with this product code.
                 for (StockDetails sd : allSD) {

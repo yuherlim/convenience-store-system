@@ -21,7 +21,7 @@ public class TransactionDetails {
     private String productCode;
     private double sellingPrice;
 
-    public static String fileName = "transactionDetails.txt";
+    public static final String FILE_NAME = "transactionDetails.txt";
     
     public TransactionDetails() {
         transactionId = "";
