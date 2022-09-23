@@ -81,7 +81,7 @@ public class MemberDriver {
         int loop;
 
         //Read member txt file
-        readFile("member", members);
+        readFile(Member.FILE_NAME, members);
 
         do {
             General.clearScreen();
@@ -245,7 +245,7 @@ public class MemberDriver {
         String[] inputMode;
 
         //Read Member txt file
-        readFile("member", members);
+        readFile(Member.FILE_NAME, members);
 
         do {
             General.clearScreen();
@@ -351,7 +351,7 @@ public class MemberDriver {
         String[] inputMode;
 
         //Read Member txt file
-        readFile("member", members);
+        readFile(Member.FILE_NAME, members);
 
         do {
             General.clearScreen();
