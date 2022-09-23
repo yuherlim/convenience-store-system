@@ -19,12 +19,11 @@ public class Inventory {
             System.out.println("======================");
             System.out.println("1 - Stock In");
             System.out.println("2 - Stock Return");
-            System.out.println("3 - Product Reorder Report");
-            System.out.println("4 - Monthly Stock Report" + '\n');
+            System.out.println("3 - Product Reorder Report");;
             System.out.println("0 - Back to Main Menu" + '\n');
             
 
-            selection = General.intInput("Enter your selection (0-4)", "  Please input a number only.");
+            selection = General.intInput("Enter your selection (0-3)", "  Please input a number only.");
 
             switch (selection) {
                 case 1 -> {
@@ -35,9 +34,6 @@ public class Inventory {
                 }
                 case 3 -> {
                     Report.productReorderReport();
-                }
-                case 4 -> {
-                    //Report.monthlyStockReport();
                 }
                 case 0 -> {
                     System.out.println("Returning to main menu...");

@@ -102,26 +102,4 @@ public class Report {
         General.systemPause();
     }
     
-    public static void monthlyStockInReport(){
-         
-        int count;
-        
-        ArrayList<SupplierInvoice> supplierInvoice = new ArrayList<>();
-        ArrayList<Product> product = new ArrayList<>();
-        ArrayList<StockDetails> stockDetails = new ArrayList<>();
-        
-        SupplierInvoice si;
-        Product p;
-        
-        //read file and store to the arraylist
-        supplierInvoice = SupplierInvoice.readFile(SupplierInvoice.FILE_NAME, supplierInvoice, stockDetails);
-        product = Product.readFile(Product.FILE_NAME);
-        
-        System.out.println("=========================");
-        System.out.println(" Monthly Stock In Report ");
-        System.out.println("=========================");
-        System.out.println("Date generated: " + General.getCurrentDateTime("date"));
-        System.out.println("");
-        
-    }
 }
