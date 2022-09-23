@@ -104,6 +104,12 @@ public class Transaction {
         this.transactionDetails = transactionDetails;
     }
     
+    public void search(){
+   
+    
+    
+    }
+    
 
     public static double displayTransactionDetails(ArrayList<TransactionDetails> transactionDetails){
         Product printProduct = new Product();
