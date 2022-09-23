@@ -175,9 +175,7 @@ public class Product {
         for (Product p : products) {
             sumCostPrice = 0d;
             costPriceCount = 0;
-            averageCostPrice = 0d;
             prodQty = 0;
-            currentSellingPrice = 0d;
             productInvoiceExist = false;
             //loop calculate the sum of the cost prices for this product and update the product's current quantity.
             for (int i = 0; i < stockDetails.size(); i++) {
@@ -257,7 +255,7 @@ public class Product {
         int searchCount = 0;
 
         switch (searchType) {
-            case "productCode":
+            case "productCode" -> {
                 for (int i = 0; i < products.size(); i++) {
                     if (products.get(i).getCode().equals(searchString)) {
                         searchResultsProducts.add(new Product(products.get(i)));
@@ -265,8 +263,8 @@ public class Product {
                         break;
                     }
                 }
-                break;
-            case "productName":
+            }
+            case "productName" -> {
                 for (int i = 0; i < products.size(); i++) {
                     if (products.get(i).getName().equals(searchString)) {
                         searchResultsProducts.add(new Product(products.get(i)));
@@ -274,19 +272,18 @@ public class Product {
                         break;
                     }
                 }
-                break;
-            //No break added in if statement because there can be more than 1 search results in productCategory.
-            case "productCategory":
+            }
+            case "productCategory" -> {
                 for (int i = 0; i < products.size(); i++) {
                     if (products.get(i).getCategory().equals(searchString)) {
                         searchResultsProducts.add(new Product(products.get(i)));
                         searchCount++;
                     }
                 }
-                break;
-            default:
-                System.out.println("Invalid searchType.");
+            }
+            default -> System.out.println("Invalid searchType.");
         }
+        //No break added in if statement because there can be more than 1 search results in productCategory.
         if (searchCount == 0) {
             return null;
         }
@@ -325,8 +322,8 @@ public class Product {
             writer.write(category + "\n");
             // Closes the writer
             writer.close();
-        } catch (Exception e) {
-            e.getStackTrace();
+        } catch (IOException e) {
+            System.out.println("  " + fileName + " could not be opened.");
         }
     }
 
@@ -397,7 +394,7 @@ public class Product {
             reader.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("  " + fileName + " could not be opened.");
         }
 
         return products;
@@ -419,8 +416,8 @@ public class Product {
 
             // Closes the writer
             writer.close();
-        } catch (Exception e) {
-            e.getStackTrace();
+        } catch (IOException e) {
+            System.out.println("  " + fileName + " could not be opened.");
         }
     }
 
