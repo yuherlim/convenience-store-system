@@ -285,6 +285,7 @@ public class Product {
         if (searchCount == 0) {
 
             return null;
+        }
         
         return (ArrayList<Product>)searchResultsProducts.clone();
         
