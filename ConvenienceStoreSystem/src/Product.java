@@ -286,7 +286,6 @@ public class Product {
 
             return null;
         }
-        
         return (ArrayList<Product>)searchResultsProducts.clone();
         
     }

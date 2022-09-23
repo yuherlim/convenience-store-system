@@ -233,7 +233,7 @@ public class Payment {
 
     public static Payment search(String paymentId) {
         ArrayList<Payment> payments = new ArrayList<>();
-        readFile("payment", payments);
+        readFile(Payment.FILE_NAME, payments);
         for (int i = 0; i < payments.size(); i++) {
             if (payments.get(i).getPaymentId().equals(paymentId)) {
                 return payments.get(i);

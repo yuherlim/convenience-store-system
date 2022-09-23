@@ -22,7 +22,7 @@ public class TransactionDriver {
         ArrayList<Transaction> transactions = new ArrayList<>();
         ArrayList<Member> members = new ArrayList<>();
         ArrayList<TransactionDetails> transactionDetails = new ArrayList<>();
-        TransactionDriver.readFile("transaction", transactions);
+        TransactionDriver.readFile(Transaction.FILE_NAME, transactions);
         MemberDriver.readFile(Member.FILE_NAME, members);
 
         Transaction addTransaction = new Transaction();
@@ -37,9 +37,9 @@ public class TransactionDriver {
         String ic;
 
         do {
-            System.out.println("=================");
-            System.out.println("|Add transaction|");
-            System.out.println("=================");
+            System.out.println("===================");
+            System.out.println("| Add transaction |");
+            System.out.println("===================");
             
             addTransaction.setDateTime(General.getCurrentDateTime("dateTime"));
             
@@ -277,7 +277,7 @@ public class TransactionDriver {
 
         } while (charSelection == 'Y');
         
-        Transaction.writeFile(Transaction.fileName, transactions);
+        Transaction.writeFile(Transaction.FILE_NAME, transactions);
 
     }
 
