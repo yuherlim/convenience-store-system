@@ -412,7 +412,7 @@ public class CreditNoteDriver {
         for (int i = 0; i < stockDetails.size(); i++) {
             if (creditNote.get(index).getCnNo().equals(stockDetails.get(i).getCnNo())) {
                 //store the stock details with the current credit note number.
-                currentCreditNoteStockDetails.add(new StockDetails(stockDetails.get(i)));
+                currentCreditNoteStockDetails.add(stockDetails.get(i));
                 //store stockDetails index
                 stockDetailsIndex[indexNum] = i;
                 indexNum++;
@@ -487,7 +487,8 @@ public class CreditNoteDriver {
                 }
             }
         } while (field < 1 || field > 3);
-
+        
+        //loop the arrayList and replace the specify element
         for (int i = 0; i < stockDetailsIndex.length; i++) {
             stockDetails.set(stockDetailsIndex[i], currentCreditNoteStockDetails.get(i));
         }

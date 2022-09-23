@@ -20,7 +20,7 @@ public class SupplierInvoiceDriver {
             System.out.println("2 - Edit Invoice");
             System.out.println("3 - Search Invoice");
             System.out.println("4 - Cancel Invoice" + '\n');
-            System.out.println("0 - Back to Main Menu" + '\n');
+            System.out.println("0 - Back to Inventory Menu" + '\n');
 
             //get and validate input
             selection = General.intInput("Enter your selection (0-4): ", "  Please input a number only.");
@@ -31,19 +31,23 @@ public class SupplierInvoiceDriver {
                     SupplierInvoiceDriver.addInvoice();
                 }
                 case 2 -> {
+                    General.clearScreen();
                     SupplierInvoiceDriver.editInvoice();
                 }
                 case 3 -> {
+                    General.clearScreen();
                     SupplierInvoiceDriver.searchInvoice();
                 }
                 case 4 -> {
+                    General.clearScreen();
                     SupplierInvoiceDriver.cancelInvoice();
                 }
                 case 0 -> {
-                    //Inventory.main();
+                    General.clearScreen();
+                    Inventory.main(args);
                 }
                 default ->
-                    System.out.println("Invalid input! Please try again..." + '\n');
+                    System.out.println("Invalid input! Please input 0-4 only." + '\n');
             }
         } while (selection != 0);
 
@@ -422,7 +426,7 @@ public class SupplierInvoiceDriver {
         for (int i = 0; i < stockDetails.size(); i++) {
             if (supplierInvoice.get(index).getInvNo().equals(stockDetails.get(i).getInvNo())) {
                 //store the stock details with the current invoice number.
-                currentInvoiceStockDetails.add(new StockDetails(stockDetails.get(i)));
+                currentInvoiceStockDetails.add(stockDetails.get(i));
                 //store stockDetails index
                 stockDetailsIndex[indexNum] = i;
                 indexNum++;

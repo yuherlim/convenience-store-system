@@ -22,7 +22,7 @@ public class FrontDriver {
                             //Sales
                         }
                         case 2 -> {
-                            //Inventory Management
+                            Inventory.main(args);
                         }
                         case 3 -> {
                             ProductDriver.main(args);
