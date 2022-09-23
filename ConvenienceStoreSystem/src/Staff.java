@@ -341,7 +341,10 @@ public class Staff extends Person {
                     case 8 -> {
                         if (!isOther) {
                             System.out.println("Resign self not allowed.");
-                        } else {
+                        } else if(editedStaff.staffID.equals("ST-000")){
+                            System.out.println("Cannot resign program admin account.");
+                        }
+                        else {
                             if (editedStaff.getAccountStatus().equals("Active") || editedStaff.getAccountStatus().equals("Inactive")) {
                                 editedStaff.setAccountStatus("Resign");
                             } else {
