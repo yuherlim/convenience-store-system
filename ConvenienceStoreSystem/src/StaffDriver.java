@@ -11,10 +11,7 @@ import java.util.Scanner;
 public class StaffDriver {
 
     public static void main(String[] args, Staff staffLogin) {
-        int selection;      //Normal Worker OR Program Admin
-        //staffLogin = new Staff("ST-000", "Lim Jia Qing", "990809015027", "08/09/1999",
-        //        "0176922172", "Setapak, Kuala Lumpur", "Normal Worker", "abc123", 0.0, "Active");
-        //Staff submenu
+        int selection;
         do {
 
             System.out.println("---------");
@@ -146,7 +143,7 @@ public class StaffDriver {
                     displayStaff = new Staff(staffDetail[0], staffDetail[1], staffDetail[2],
                             staffDetail[3], staffDetail[4], staffDetail[5], staffDetail[6],
                             staffDetail[7], Double.parseDouble(staffDetail[8]), staffDetail[9]);
-                    //calc age
+                    //Calculate age
                     age = General.ageCalc(displayStaff.getBirthdate());
                     System.out.printf(" %s   %-30s  %s  %3d  %-11s  %-14s  %-14s\n",
                             displayStaff.getStaffID(), displayStaff.getName(), displayStaff.getIc(), age,
@@ -169,7 +166,7 @@ public class StaffDriver {
                     displayStaff = new Staff(staffDetail[0], staffDetail[1], staffDetail[2],
                             staffDetail[3], staffDetail[4], staffDetail[5], staffDetail[6],
                             staffDetail[7], Double.parseDouble(staffDetail[8]), staffDetail[9]);
-                    //calc age
+                    //Calculate age
                     age = General.ageCalc(displayStaff.getBirthdate());
                     System.out.printf(" %s   %-30s  %s  %3d  %-11s  %-14s  %-14s  %5.2f\n",
                             displayStaff.getStaffID(), displayStaff.getName(), displayStaff.getIc(), age,

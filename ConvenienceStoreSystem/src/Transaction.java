@@ -20,7 +20,7 @@ public class Transaction {
     private Payment payment;
     private ArrayList<TransactionDetails> transactionDetails;
     private static int numOfTransaction;
-    static String fileName = "transaction.txt";
+    public static final String FILE_NAME = "transaction.txt";
 
     //Constuctor
     public Transaction(){};
