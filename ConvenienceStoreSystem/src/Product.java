@@ -210,7 +210,7 @@ public class Product {
         ArrayList<Product> products = readFile(Product.fileName);
         
         //Read the current transaction details into an array list.
-        ArrayList<TransactionDetails> transactionDetails = TransactionDetails.readFile(TransactionDetails.fileName);
+        ArrayList<TransactionDetails> transactionDetails = TransactionDetails.readFile(TransactionDetails.FILE_NAME);
         
         //Deduct the quantity of products in transactions from the total quantity that a product has.
         for (Product p : products) {
@@ -308,7 +308,7 @@ public class Product {
             //Create FileWriter set to append mode (second parameter true) 
             FileWriter writer = new FileWriter("src\\" + fileName, true);
   
-            //Write the new category into the specified fileName.
+            //Write the new category into the specified FILE_NAME.
             writer.write(category + "\n");    
             // Closes the writer
             writer.close();
@@ -362,7 +362,7 @@ public class Product {
                 }
 
                 //read from transactionDetails.txt and create a copy of transactionDetails records
-                ArrayList<TransactionDetails> allTD = (ArrayList<TransactionDetails>) TransactionDetails.readFile(TransactionDetails.fileName).clone();
+                ArrayList<TransactionDetails> allTD = (ArrayList<TransactionDetails>) TransactionDetails.readFile(TransactionDetails.FILE_NAME).clone();
                 transactionDetails.clear();
                 //Add elements of transaction details that is associated with this product code.
                 for (TransactionDetails td: allTD) {

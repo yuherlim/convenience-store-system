@@ -19,6 +19,7 @@ public class Transaction {
     private Payment payment;
     private ArrayList<TransactionDetails> transactionDetails;
     private static int numOfTransaction;
+    static String fileName = "transaction.txt";
 
     //Constuctor
     public Transaction(){};
@@ -118,7 +119,7 @@ public class Transaction {
         total += subtotal;
         }
          System.out.println("====================================================================");
-         System.out.printf("                                                     Total = %6.2f\n",total);
+         System.out.printf("                                                    Total = %7.2f\n",total);
          System.out.println("====================================================================");
          
          return total;

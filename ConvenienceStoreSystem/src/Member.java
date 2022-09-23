@@ -16,6 +16,7 @@ public class Member extends Person {
     private String id;
     private String status;
     private static int numOfCustomer;
+    public static final String FILE_NAME = "member.txt";
 
     //Constructor
     public Member() {
@@ -64,7 +65,7 @@ public class Member extends Person {
     }
 
     public static void add(ArrayList<Member> members) {
-        writeFile("member", members);
+        writeFile(FILE_NAME, members);
 
     }
 
@@ -73,7 +74,7 @@ public class Member extends Person {
         ArrayList<Member> members = new ArrayList<>();
         char charSelection;
         String[] inputMode;
-        MemberDriver.readFile("member", members);
+        MemberDriver.readFile(FILE_NAME, members);
 
         do {
             General.clearScreen();
@@ -441,12 +442,12 @@ public class Member extends Person {
     }
 
     public static void edit(ArrayList<Member> members) {
-        writeFile("member", members);
+        writeFile(FILE_NAME, members);
 
     }
 
     public static void delete(ArrayList<Member> members) {
-        writeFile("member", members);
+        writeFile(FILE_NAME, members);
 
     }
 
@@ -457,7 +458,7 @@ public class Member extends Person {
         Scanner sc = new Scanner(System.in);
         int loop;
         //Read member txt file
-        MemberDriver.readFile("member", members);
+        MemberDriver.readFile(FILE_NAME, members);
         do {
             do {
                 loop = 0;
