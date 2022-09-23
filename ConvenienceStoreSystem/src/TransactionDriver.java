@@ -125,7 +125,6 @@ public class TransactionDriver {
                                         } else if (orderQty == 0) {
                                             if (transactionDetails.size() > 1) {
                                                 transactionDetails.remove(i);
-                                                break loop;
                                             } else {
                                                 transactionDetails.remove(i);
                                                 charSelection = 'Y';
@@ -161,12 +160,7 @@ public class TransactionDriver {
                         do {
                             loop = 0;
                             orderQty = General.intInput("Product quantity : ", "  Invalid quantity input");
-                            if (orderQty < 0) {
-                                System.out.println("  Invalid order quantity");
-                                loop = 1;
-                            } else if (orderQty == 0) {
-                              
-                            } else if (orderQty > addProduct.getStockQty()) {
+                            if (orderQty > addProduct.getStockQty()) {
                                 System.out.println("Product stock not enough");
                                 System.out.println("  Stock Qty : " + addProduct.getStockQty());
                                 loop = 1;
@@ -278,9 +272,6 @@ public class TransactionDriver {
                                                 } else if (orderQty == 0) {
                                                     if (transactionDetails.size() > 1) {
                                                         transactionDetails.remove(intSelection - 1);
-                                                        Transaction.displayTransactionDetails(transactionDetails);
-                                                        loop = 1;
-                                                        continue confirm;
                                                     } else {
                                                         System.out.println("Transaction cancelled");
                                                     }
