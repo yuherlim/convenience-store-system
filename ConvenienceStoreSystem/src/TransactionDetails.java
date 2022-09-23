@@ -101,7 +101,7 @@ public class TransactionDetails {
             reader.close();
  
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("  " + fileName + " could not be opened.");
         }
         
         return transactionDetails;
@@ -125,8 +125,8 @@ public class TransactionDetails {
             writer.close();
         }
   
-        catch (Exception e) {
-            e.getStackTrace();
+        catch (IOException e) {
+            System.out.println("  " + fileName + " could not be opened.");
         }
     }
     
