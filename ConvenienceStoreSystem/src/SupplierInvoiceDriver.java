@@ -111,12 +111,24 @@ public class SupplierInvoiceDriver {
             //get item list of the invoice
             do {
                 StockDetails sd = new StockDetails();
+                ArrayList<Product> productSearchResult;     
                 do {
                     productCode = ProductDriver.codeInput();
-                    if (Product.search("productCode", productCode) != null) {
-                        sd.setProductCode(productCode);
+                    productSearchResult = Product.search("productCode", productCode);
+                    if (productSearchResult != null) {
+                        if (productSearchResult.get(0).getStatus().equals("ACTIVE"))
+                            sd.setProductCode(productCode);
+                        else
+                            productSearchResult = null;
                     }
-                } while (Product.search("productCode", productCode) == null);
+                } while (productSearchResult == null);
+                
+//                do {
+//                    productCode = ProductDriver.codeInput();
+//                    if (Product.search("productCode", productCode) != null) {
+//                        sd.setProductCode(productCode);
+//                    }
+//                } while (Product.search("productCode", productCode) == null);
 
                 System.out.print("Enter the quantity: ");
                 sd.setQty(sc.nextInt());
