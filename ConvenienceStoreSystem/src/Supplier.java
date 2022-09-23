@@ -23,7 +23,7 @@ public class Supplier {
     private String address;
     
     //fileName containing supplier details.
-    public static String fileName = "supplier.txt";
+    public static final String FILE_NAME = "supplier.txt";
 
     public Supplier() {
         this("","","","","");
@@ -95,7 +95,7 @@ public class Supplier {
     public static Supplier search(String searchType, String searchString) {
         
         //Read supplier details and store it into an array list
-        ArrayList<Supplier> suppliers = readFile(Supplier.fileName);
+        ArrayList<Supplier> suppliers = readFile(Supplier.FILE_NAME);
         
         
         //Array list to store the search results for suppliers

@@ -46,7 +46,7 @@ public class Front {
             do {
                 String staffIdEnter = Staff.staffIDInput("Staff ID: ", "Invalid Staff ID.");
 
-                try ( FileReader reader = new FileReader("src\\staff.txt")) {
+                try ( FileReader reader = new FileReader("src\\" + Staff.FILE_NAME)) {
                     BufferedReader bufferedReader = new BufferedReader(reader);
 
                     String line;
@@ -63,7 +63,7 @@ public class Front {
                     }
                     reader.close();
                 } catch (IOException e) {
-                    System.out.println("  staff.txt open failed.");
+                    System.out.println("  " + Staff.FILE_NAME +" open failed.");
                 }
 
                 if (!staffIdExist) {
@@ -117,7 +117,7 @@ public class Front {
         System.out.println("===========");
         System.out.println(" Main Menu");
         System.out.println("===========");
-        System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition() + '\n');
+        System.out.println("<" + staffLogin.getName() + "> | " + staffLogin.getPosition());
         System.out.println("");
         System.out.println("1 - Sales");
         System.out.println("2 - Inventory Management");

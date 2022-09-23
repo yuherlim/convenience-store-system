@@ -296,6 +296,8 @@ public class General {
                 return dtf.format(now).substring(0, 2);
             case "yymm":
                 return dtf.format(now).substring(8, 10) + dtf.format(now).substring(3, 5);
+            case "yymmdd":
+                return dtf.format(now).substring(8, 10) + dtf.format(now).substring(3, 5) + dtf.format(now).substring(0, 2);
             default:
                 System.out.println("  Invalid mode selection");
 
