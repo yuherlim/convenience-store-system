@@ -68,7 +68,7 @@ public class Report {
         General.clearScreen();
         
         //Create a new report obj
-        Report reorderReport = new Report("Reorder Report", General.getCurrentDateTime("date"), null, Product.readFile(Product.fileName));
+        Report reorderReport = new Report("Reorder Report", General.getCurrentDateTime("date"), null, Product.readFile(Product.FILE_NAME));
        
         int printCount = 0;
         

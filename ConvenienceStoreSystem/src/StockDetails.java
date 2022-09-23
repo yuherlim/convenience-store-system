@@ -22,7 +22,7 @@ public class StockDetails {
     private String cnNo;
     private String invNo;
 
-    public static String fileName = "stockDetails.txt";
+    public static final String FILE_NAME = "stockDetails.txt";
     
     public StockDetails() {
         productCode = "";
